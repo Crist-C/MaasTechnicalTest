@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ccastro.maas.ui.theme.MaasTheme
+import com.ccastro.maas.ui.theme.Typography
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,9 +49,8 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
                 ) {
-                    MainMenuS("Android")
+                    MainMenu()
                 }
             }
         }
@@ -57,53 +58,90 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainMenuS(name: String, modifier: Modifier = Modifier) {
-    val image = painterResource(id = R.drawable.logo_maas)
+fun MainMenu(modifier: Modifier = Modifier) {
+    val image = painterResource(id = R.drawable.logo_maas_dark_theme)
     Column(
-        modifier = Modifier.fillMaxSize().padding(26.dp),
-        verticalArrangement = Arrangement.SpaceEvenly
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = CenterHorizontally
     ) {
-        Image(
+
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(CenterHorizontally),
-            painter = image,
-            contentDescription = "Logotipo de la app"
-        )
-        Text(
-            text = "Que bueno verte de nuevo ☺!",
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 20.sp
-        )
-        Text(
-            text = "Mis Tarjetas",
-            modifier = modifier,
-            fontWeight = FontWeight.Medium,
-            fontSize = 20.sp
-        )
+                .background(MaterialTheme.colorScheme.background)
+        ){
 
-        /*
-        UserCardComponent(
-            UserCard(
-                cardNumber = "1010 0000 0858 2785",
-                userName = "Cristian K. Castro Parra",
-                cardType = "Adulto",
-                amount = 10000,
-                cardStatus = "activa"
+            Image(
+                modifier = Modifier
+                    .size(size = 100.dp)
+                    .padding(horizontal = 14.dp),
+                painter = image,
+                contentDescription = "Logotipo de la app"
             )
-        )*/
+        }
+        MainMenuContent(modifier = Modifier.weight(0.8f))
+    }
 
-        DemoCardList()?.let { MyUserCardList(userCardList = it) }
+}
+
+@Composable
+fun MainMenuContent(modifier: Modifier = Modifier) {
+    val defaultTypography = Typography
+    Column(
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.background),
+        verticalArrangement = Arrangement.Top
+    ) {
         Text(
-            text = "Estaciones y paradas cercanas",
-            modifier = modifier,
-            fontWeight = FontWeight.Medium,
-            fontSize = 20.sp
+            text = "Que bueno tenerte de nuevo",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Black
         )
-        /*
+        Column(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(vertical = 16.dp),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = "Mis Tarjetas",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp, vertical = 8.dp),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold
+            )
+            /*
+            UserCardComponent(
+                UserCard(
+                    cardNumber = "1010 0000 0858 2785",
+                    userName = "Cristian K. Castro Parra",
+                    cardType = "Adulto",
+                    amount = 10000,
+                    cardStatus = "activa"
+                )
+            )*/
+            DemoCardList()?.let { MyUserCardList(userCardList = it) }
+        }
+        Column(
+            modifier = Modifier.wrapContentSize()
+        ) {
+            Text(
+                text = "Estaciones cercanas",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp, vertical = 8.dp),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.SemiBold
+            )
+            /*
         StoppingPlaceCardComponent(
             stoppingPlace = StoppingPlace(
                 "086A06",
@@ -114,7 +152,8 @@ fun MainMenuS(name: String, modifier: Modifier = Modifier) {
         )
          */
 
-        DemoStoppinPlaceList()?.let{ StoppingPlacesNearList(stoppingPlacesList = it)}
+            DemoStoppinPlaceList()?.let { StoppingPlacesNearList(stoppingPlacesList = it) }
+        }
     }
 
 }
@@ -166,17 +205,17 @@ fun StoppingPlaceCardComponent(stoppingPlace: StoppingPlace, modifier: Modifier 
                 .wrapContentSize()
                 .padding(bottom = 4.dp, start = 24.dp, end = 24.dp),
             verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = CenterHorizontally
         ) {
             Text(
                 text = stoppingPlace.id,
                 modifier = Modifier
                     .background(
                         shape = RoundedCornerShape(bottomStartPercent = 10, bottomEndPercent = 10),
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                        color = MaterialTheme.colorScheme.primaryContainer
                     )
                     .padding(4.dp),
-                color = MaterialTheme.colorScheme.onPrimary
+                color = Color.White
             )
             Text(
                 modifier = Modifier,
@@ -279,8 +318,7 @@ fun UserCardData(userCard: UserCard, modifier: Modifier = Modifier){
             )
             Text(
                 text = userCard.cardStatus,
-                modifier = modifier,
-                fontStyle = FontStyle.Italic
+                modifier = modifier
             )
         }
     }
@@ -338,6 +376,22 @@ fun DemoStoppinPlaceList() : List<StoppingPlace>{
 
 //                      PREVIEWS
 
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun MainMenuPreview() {
+    MaasTheme {
+        MainMenuContent()
+    }
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun MainMenuImagePreview() {
+    MaasTheme {
+        MainMenu()
+    }
+}
+
 @Preview(showBackground = false, showSystemUi = false)
 @Composable
 fun StoppinListPreview() {
@@ -348,14 +402,6 @@ fun StoppinListPreview() {
 }
 
 @Preview(showBackground = false, showSystemUi = false)
-@Composable
-fun UserCardListPreview() {
-    MaasTheme {
-        DemoCardList()?.let { MyUserCardList(userCardList = it) }
-    }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun StoppingPlaceCardPreview() {
     MaasTheme {
@@ -372,6 +418,14 @@ fun StoppingPlaceCardPreview() {
 
 @Preview(showBackground = false, showSystemUi = false)
 @Composable
+fun UserCardListPreview() {
+    MaasTheme {
+        DemoCardList()?.let { MyUserCardList(userCardList = it) }
+    }
+}
+
+@Preview(showBackground = false, showSystemUi = false)
+@Composable
 fun UserCardComponentPreview(){
     MaasTheme {
         UserCardComponent(
@@ -383,13 +437,5 @@ fun UserCardComponentPreview(){
                 cardStatus = "activa"
             )
         )
-    }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun MainMenuPreview() {
-    MaasTheme {
-        MainMenuS("Android")
     }
 }

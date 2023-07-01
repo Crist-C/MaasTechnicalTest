@@ -36,3 +36,29 @@ val Green700 = Color(0xFF275812)
 val GreenVariant700 = Color(0xFF557A0E)
 val Blue700 = Color(0xFF0B1389)
 val BlueVariant700 = Color(0xFF090925)
+
+val White200 = Color(0xFFFDFDF6)
+val Red200 = Color(0xFFFB1C1C)
+val Red40 = Color(0xFFFFDCDCC)
+val Red80 = Color(0xFFF1997B)
+val Red500 = Color(0xFFBF0C0C)
+val Red700 = Color(0xFF860B0B)
+
+val Orange200 = Color(0xFFFE7F09)
+val Orange40 = Color(0xFFFEEEDE)
+val Orange80 = Color(0xFFFEAE63)
+val Orange500 = Color(0xFFD56B09)
+val Orange700 = Color(0xFF9A5009)
+
+val Gray40 = Color(0xFFCED8BB)
+val Gray80 = Color(0xFF757575)
+val Gray500 = Color(0xFF3C3C3C)
+val Gray700 = Color(0xFF232420)
+
+val defaultBackground = Color(0xFFFFFBFE)
+val defaultSurface = Color(0xFFFFFBFE)
+val defaultOnPrimary = Color.White
+val defaultOnSecondary = Color.White
+val defaultOnTertiary = Color.White
+val defaultOnBackground = Color(0xFF1C1B1F)
+val defaultOnSurface = Color(0xFF1C1B1F)
