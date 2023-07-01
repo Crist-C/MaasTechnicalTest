@@ -1,15 +1,13 @@
 package com.ccastro.maas.ui.theme
 
 import androidx.compose.material3.Typography
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.resolveDefaults
-import androidx.compose.ui.unit.sp
 import com.ccastro.maas.R
 
-val InterFamily = FontFamily(
+
+val InterFamily : FontFamily = FontFamily(
     Font(R.font.inter_black, FontWeight.Black),
     Font(R.font.inter_bold, FontWeight.Bold),
     Font(R.font.inter_extra_bold, FontWeight.ExtraBold),
@@ -22,29 +20,25 @@ val InterFamily = FontFamily(
 )
 
 // Set of Material typography styles to start with
+private val defaultTypography = Typography()
 val Typography = Typography(
+    displayLarge = defaultTypography.displayLarge.copy(fontFamily = InterFamily),
+    displayMedium = defaultTypography.displayMedium.copy(fontFamily = InterFamily),
+    displaySmall = defaultTypography.displaySmall.copy(fontFamily = InterFamily),
 
-    bodyLarge = TextStyle(
-        fontFamily = InterFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
-    )
-    /* Other default text styles to override
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
-    ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
-    )
-    */
+    headlineLarge = defaultTypography.headlineLarge.copy(fontFamily = InterFamily),
+    headlineMedium = defaultTypography.headlineMedium.copy(fontFamily = InterFamily),
+    headlineSmall = defaultTypography.headlineSmall.copy(fontFamily = InterFamily),
+
+    titleLarge = defaultTypography.titleLarge.copy(fontFamily = InterFamily),
+    titleMedium = defaultTypography.titleMedium.copy(fontFamily = InterFamily),
+    titleSmall = defaultTypography.titleSmall.copy(fontFamily = InterFamily),
+
+    bodyLarge = defaultTypography.bodyLarge.copy(fontFamily = InterFamily),
+    bodyMedium = defaultTypography.bodyMedium.copy(fontFamily = InterFamily),
+    bodySmall = defaultTypography.bodySmall.copy(fontFamily = InterFamily),
+
+    labelLarge = defaultTypography.labelLarge.copy(fontFamily = InterFamily),
+    labelMedium = defaultTypography.labelMedium.copy(fontFamily = InterFamily),
+    labelSmall = defaultTypography.labelSmall.copy(fontFamily = InterFamily)
 )
