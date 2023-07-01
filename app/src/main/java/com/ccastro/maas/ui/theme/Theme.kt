@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorScheme = darkColorScheme(
 
@@ -55,7 +56,7 @@ private val DarkColorScheme = darkColorScheme(
 private val LightColorScheme = lightColorScheme(
     primary = Green200,
     onPrimary = GreenVariant40,
-    primaryContainer = Green500,
+    primaryContainer = Green200,
     onPrimaryContainer = Green40,
     inversePrimary = GreenVariant200, // Pendiente variar
 
@@ -72,7 +73,7 @@ private val LightColorScheme = lightColorScheme(
     background = White200,
     onBackground = Gray500,
     surface = White200,
-    onSurface = Gray500,        // Color de Letra
+    onSurface = BlueVariant500,        // Color de Letra
     surfaceVariant = Green700,
     onSurfaceVariant = Green40,
     surfaceTint = Green80,
@@ -100,15 +101,15 @@ fun MaasTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
+        darkTheme ->DarkColorScheme
         else -> LightColorScheme
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primaryContainer.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            window.statusBarColor = colorScheme.background.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
 
