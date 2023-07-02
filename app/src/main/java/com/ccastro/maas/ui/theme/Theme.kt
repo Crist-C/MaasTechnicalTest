@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorScheme = darkColorScheme(
 
@@ -49,7 +48,7 @@ private val DarkColorScheme = darkColorScheme(
     outline = Green200,
     outlineVariant = Blue200,
 
-    scrim = Gray500,
+    scrim = Gray700,
 
 )
 
@@ -70,10 +69,10 @@ private val LightColorScheme = lightColorScheme(
     tertiaryContainer = Orange700,
     onTertiaryContainer = Orange80,
 
-    background = White200,
+    background = Color.White,
     onBackground = Gray500,
-    surface = White200,
-    onSurface = BlueVariant500,        // Color de Letra
+    surface = GreenVariant40,
+    onSurface = BlueVariant700,        // Color de Letra
     surfaceVariant = Green700,
     onSurfaceVariant = Green40,
     surfaceTint = Green80,
@@ -84,7 +83,7 @@ private val LightColorScheme = lightColorScheme(
     outline = Green200,
     outlineVariant = Blue200,
 
-    scrim = Gray500,
+    scrim = Gray700,
 
 )
 

@@ -30,7 +30,7 @@ fun StoppingPlaceComponent(stoppingPlace: StoppingPlace, modifier: Modifier = Mo
             .padding(horizontal = 16.dp),
         shape = MaterialTheme.shapes.extraLarge,
         shadowElevation = 6.dp,
-        color = MaterialTheme.colorScheme.surface
+        color = MaterialTheme.colorScheme.background
     ) {
         Column(
             modifier = modifier
@@ -44,7 +44,7 @@ fun StoppingPlaceComponent(stoppingPlace: StoppingPlace, modifier: Modifier = Mo
                 modifier = Modifier
                     .background(
                         shape = RoundedCornerShape(bottomStartPercent = 10, bottomEndPercent = 10),
-                        color = MaterialTheme.colorScheme.primaryContainer
+                        color = MaterialTheme.colorScheme.primary
                     )
                     .padding(4.dp),
                 color = Color.White
@@ -70,7 +70,7 @@ fun StoppingPlaceComponent(stoppingPlace: StoppingPlace, modifier: Modifier = Mo
 //                      DISPLAY LIST OBJECTS FUNCTIONS
 
 @Composable
-fun StoppingPlacesNearList(stoppingPlacesList: List<StoppingPlace>, modifier: Modifier = Modifier) {
+fun StoppingPlacesNearList(stoppingPlacesList: List<StoppingPlace>) {
     LazyRow {
         items(stoppingPlacesList) { stoppingPlace ->
             StoppingPlaceComponent(stoppingPlace = stoppingPlace)
@@ -80,8 +80,8 @@ fun StoppingPlacesNearList(stoppingPlacesList: List<StoppingPlace>, modifier: Mo
 
 //                      DATA DEMOS
 
-fun DemoStoppinPlaceList(): List<StoppingPlace> {
-    var stoppinPlaceList: List<StoppingPlace> = listOf()
+fun demoStoppinPlaceList(): List<StoppingPlace> {
+    val stoppinPlaceList: MutableList<StoppingPlace> = mutableListOf()
 
     for (i in 0..3) {
         stoppinPlaceList += StoppingPlace(
@@ -116,7 +116,7 @@ fun StoppingPlaceCardPreview() {
 @Composable
 fun StoppingListPreview() {
     MaasTheme {
-        DemoStoppinPlaceList().let { StoppingPlacesNearList(stoppingPlacesList = it) }
+        demoStoppinPlaceList().let { StoppingPlacesNearList(stoppingPlacesList = it) }
     }
 
 }

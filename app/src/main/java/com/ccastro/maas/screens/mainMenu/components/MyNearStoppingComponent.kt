@@ -1,10 +1,6 @@
 package com.ccastro.maas.screens.mainMenu.components
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -13,60 +9,44 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ccastro.maas.UserCard
+import com.ccastro.maas.StoppingPlace
 import com.ccastro.maas.ui.theme.MaasTheme
 
 @Composable
-fun MyCardsComponent(
-    userCards: List<UserCard> = listOf(UserCard()),
-) {
+fun MyNearStoppingComponent (stoppingPlaces: List<StoppingPlace> = listOf(StoppingPlace()) ){
+
     Surface(
         modifier = Modifier.wrapContentSize(),
         shadowElevation = 8.dp,
         shape = RoundedCornerShape(topStartPercent = 0, bottomStartPercent = 0)
-    ) {
+    ){
         Column(
-            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp, start = 4.dp),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.Start
+            modifier = Modifier.padding(top = 8.dp, bottom = 24.dp, start = 4.dp)
+                .wrapContentSize()
         ) {
             Text(
-                text = "Mis Tarjetas",
+                text = "Estaciones cercanas",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp, vertical = 8.dp),
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold
             )
-            BoxWithConstraints {
-                UserCardListComponent(userCardList = userCards)
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(top = 170.dp),
-                    verticalAlignment = Alignment.Bottom,
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    ButtonDelete()
-                    Spacer(modifier = Modifier.padding(4.dp))
-                    ButtonAdd()
-                }
-
-            }
+            StoppingPlacesNearList(stoppingPlacesList = stoppingPlaces)
         }
-
     }
+
 }
+
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun MyCardsComponentPreview() {
+fun MyNearStoppingsComponentPreview() {
     MaasTheme {
-        MyCardsComponent()
+        MyNearStoppingComponent()
     }
 }

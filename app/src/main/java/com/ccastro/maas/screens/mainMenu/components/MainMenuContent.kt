@@ -5,11 +5,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,11 +28,7 @@ import com.ccastro.maas.ui.theme.MaasTheme
  *  LOS CONTENT SON LOS MÉTODOS QUE CONTIENEN LA TOTALIDAD DE LA INTERFAZ
  */
 @Composable
-fun MainMenuContent(
-    userCards: List<UserCard> = listOf(UserCard()),
-    stoppingPlaces: List<StoppingPlace> = listOf(StoppingPlace()),
-    modifier: Modifier = Modifier,
-) {
+fun MainMenuContent( userCards: List<UserCard> = listOf(UserCard()), stoppingPlaces: List<StoppingPlace> = listOf(StoppingPlace()) ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -42,15 +38,15 @@ fun MainMenuContent(
     ) {
         MainMenuHead()
         MainMenuBody(
+            modifier = Modifier.weight(0.8f),
             userCards,
-            stoppingPlaces,
-            modifier = Modifier.weight(0.8f)
+            stoppingPlaces
         )
     }
 }
 
 @Composable
-fun MainMenuHead(modifier: Modifier = Modifier) {
+fun MainMenuHead() {
     val image = painterResource(id = R.drawable.logo_maas_dark_theme)
     Row(
         modifier = Modifier
@@ -71,9 +67,9 @@ fun MainMenuHead(modifier: Modifier = Modifier) {
 
 @Composable
 fun MainMenuBody(
+    modifier: Modifier = Modifier,
     userCards: List<UserCard> = listOf(UserCard()),
     stoppingPlaces: List<StoppingPlace> = listOf(StoppingPlace()),
-    modifier: Modifier = Modifier,
 ) {
 
     Column(
@@ -84,24 +80,13 @@ fun MainMenuBody(
             text = "Que bueno tenerte de nuevo",
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp),
+                .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Black
         )
-        MyCardsComponent(userCards, stoppingPlaces)
-        Column(
-            modifier = Modifier.wrapContentSize()
-        ) {
-            Text(
-                text = "Estaciones cercanas",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 8.dp),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.SemiBold
-            )
-            StoppingPlacesNearList(stoppingPlacesList = stoppingPlaces)
-        }
+        MyCardsComponent(userCards)
+        Spacer(modifier = Modifier.padding(vertical = 16.dp))
+        MyNearStoppingComponent(stoppingPlaces)
     }
 
 }
@@ -113,7 +98,7 @@ fun MainMenuBody(
 @Composable
 fun MainMenuContentPreview() {
     MaasTheme {
-        MainMenuContent(DemoCardList(), DemoStoppinPlaceList())
+        MainMenuContent(DemoCardList(), demoStoppinPlaceList())
     }
 }
 
