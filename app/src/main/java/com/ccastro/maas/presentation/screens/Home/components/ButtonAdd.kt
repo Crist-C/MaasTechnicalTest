@@ -1,4 +1,4 @@
-package com.ccastro.maas.presentation.screens.mainMenu.components
+package com.ccastro.maas.presentation.screens.Home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -22,8 +22,8 @@ import com.ccastro.maas.R
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
-fun ButtonDelete(onClick : ()->Unit) {
-    val image = painterResource(id = R.drawable.icon_delete_24)
+fun ButtonAdd(onClick: ()->Unit) {
+    val image = painterResource(id = R.drawable.icon_add_24)
 
     Surface(
         modifier = Modifier
@@ -55,8 +55,8 @@ fun ButtonDelete(onClick : ()->Unit) {
 
 @Preview(showBackground = true, showSystemUi = false)
 @Composable
-fun ButtonDeletePreview() {
+fun ButtonAddPreview() {
     MaasTheme {
-        ButtonDelete({})
+        ButtonAdd({})
     }
 }

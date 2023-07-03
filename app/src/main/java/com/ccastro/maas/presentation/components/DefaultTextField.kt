@@ -32,7 +32,7 @@ fun DefaultTextField (
         onValueChange = {onValueChange(it)},
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         label = {
-            Text(text = label)
+            Text(text = label, )
         },
         maxLines = 1,
         leadingIcon = {
@@ -42,7 +42,8 @@ fun DefaultTextField (
                 tint = MaterialTheme.colorScheme.secondary
             )
         },
-        visualTransformation = if(hideText) PasswordVisualTransformation() else VisualTransformation.None
+        visualTransformation = if(hideText) PasswordVisualTransformation() else VisualTransformation.None,
+
 
     )
 }

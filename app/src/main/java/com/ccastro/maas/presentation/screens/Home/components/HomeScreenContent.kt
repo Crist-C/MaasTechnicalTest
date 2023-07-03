@@ -1,4 +1,4 @@
-package com.ccastro.maas.presentation.screens.mainMenu.components
+package com.ccastro.maas.presentation.screens.Home.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +28,7 @@ import com.ccastro.maas.presentation.ui.theme.MaasTheme
  *  LOS CONTENT SON LOS MÉTODOS QUE CONTIENEN LA TOTALIDAD DE LA INTERFAZ
  */
 @Composable
-fun MainMenuContent(
+fun HomeScreenContent(
     userCards: List<UserCard> = listOf(UserCard()),
     stoppingPlaces: List<StoppingPlace> = listOf(StoppingPlace()),
     navController: NavHostController
@@ -40,8 +40,8 @@ fun MainMenuContent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        MainMenuHead()
-        MainMenuBody(
+        HomeHead()
+        HomeBody(
             modifier = Modifier.weight(0.8f),
             userCards,
             stoppingPlaces,
@@ -51,7 +51,7 @@ fun MainMenuContent(
 }
 
 @Composable
-fun MainMenuHead() {
+fun HomeHead() {
 
     Row(
         modifier = Modifier
@@ -67,7 +67,7 @@ fun MainMenuHead() {
 }
 
 @Composable
-fun MainMenuBody(
+fun HomeBody(
     modifier: Modifier = Modifier,
     userCards: List<UserCard> = listOf(UserCard()),
     stoppingPlaces: List<StoppingPlace> = listOf(StoppingPlace()),
@@ -98,25 +98,25 @@ fun MainMenuBody(
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun MainMenuContentPreview() {
+fun HomeContentPreview() {
     MaasTheme {
-        MainMenuContent(demoCardList(), demoStoppinPlaceList(), rememberNavController())
+        HomeScreenContent(demoCardList(), demoStoppinPlaceList(), rememberNavController())
     }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun MainMenuHeadPreview() {
+fun HomeHeadPreview() {
     MaasTheme {
-        MainMenuHead()
+        HomeHead()
     }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun MainMenuBodyPreview() {
+fun HomeBodyPreview() {
     MaasTheme {
-        MainMenuBody(navController = rememberNavController())
+        HomeBody(navController = rememberNavController())
     }
 }
 

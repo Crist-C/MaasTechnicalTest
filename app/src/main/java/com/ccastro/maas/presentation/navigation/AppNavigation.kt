@@ -6,9 +6,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.ccastro.maas.presentation.screens.addUserCard.AddUserCardScreen
 import com.ccastro.maas.presentation.screens.login.LoginScreen
-import com.ccastro.maas.presentation.screens.mainMenu.MainMenuScreen
-import com.ccastro.maas.presentation.screens.mainMenu.components.demoCardList
-import com.ccastro.maas.presentation.screens.mainMenu.components.demoStoppinPlaceList
+import com.ccastro.maas.presentation.screens.Home.HomeScreen
+import com.ccastro.maas.presentation.screens.Home.components.demoCardList
+import com.ccastro.maas.presentation.screens.Home.components.demoStoppinPlaceList
 import com.ccastro.maas.presentation.screens.singup.SingupScreen
 
 @Composable
@@ -27,7 +27,7 @@ fun AppNavigation(navHostController: NavHostController) {
         }
 
         composable(route = AppScreens.Home.route){
-            MainMenuScreen(navHostController = navHostController, userCards = demoCardList(), stoppingPlace = demoStoppinPlaceList())
+            HomeScreen(navHostController = navHostController, userCards = demoCardList(), stoppingPlace = demoStoppinPlaceList())
         }
 
         composable(route = AppScreens.AddUserCard.route){

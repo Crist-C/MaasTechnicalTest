@@ -1,4 +1,4 @@
-package com.ccastro.maas.presentation.screens.mainMenu.components
+package com.ccastro.maas.presentation.screens.Home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border

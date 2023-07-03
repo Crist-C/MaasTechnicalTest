@@ -3,6 +3,7 @@ package com.ccastro.maas.presentation.screens.singup.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
@@ -60,28 +61,28 @@ fun SingupFieldsCard(modifier: Modifier = Modifier, navHostController: NavHostCo
                 sentenceStyle = MaterialTheme.typography.titleSmall
             )
             DefaultTextField(
-                modifier = Modifier,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 25.dp),
                 value = "",
                 onValueChange = {},
                 label = "Nombre de usuario",
                 icon = Icons.Default.Email
             )
             DefaultTextField(
-                modifier = Modifier,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 25.dp),
                 value = "",
                 onValueChange = {},
                 label = "Correo electrónico",
                 icon = Icons.Default.Email
             )
             DefaultTextField(
-                modifier = Modifier,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 25.dp),
                 value = "",
                 onValueChange = {},
                 label = "Password",
                 icon = Icons.Default.Email
             )
             DefaultTextField(
-                modifier = Modifier,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 25.dp),
                 value = "",
                 onValueChange = {},
                 label = "Confirmar Password",

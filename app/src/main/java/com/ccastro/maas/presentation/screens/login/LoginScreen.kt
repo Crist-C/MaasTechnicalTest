@@ -14,10 +14,13 @@ import com.ccastro.maas.presentation.ui.theme.MaasTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navHostController: NavHostController) {
+
+    val viewModel = LoginViewModel()
+
     Scaffold(
         topBar = {},
         content = {
-            LoginContent(navHostController)
+            LoginContent(viewModel, navHostController)
         },
         bottomBar = {}
     )

@@ -1,4 +1,4 @@
-package com.ccastro.maas.presentation.screens.mainMenu.components
+package com.ccastro.maas.presentation.screens.Home.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
