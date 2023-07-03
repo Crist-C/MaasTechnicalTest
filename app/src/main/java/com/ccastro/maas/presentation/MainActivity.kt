@@ -1,4 +1,4 @@
-package com.ccastro.maas
+package com.ccastro.maas.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -6,12 +6,14 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.ccastro.maas.screens.mainMenu.MainMenuScreen
-import com.ccastro.maas.screens.mainMenu.components.DemoCardList
-import com.ccastro.maas.screens.mainMenu.components.demoStoppinPlaceList
-import com.ccastro.maas.ui.theme.MaasTheme
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.ccastro.maas.presentation.navigation.AppNavigation
+import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 class MainActivity : ComponentActivity() {
+
+    private lateinit var navController: NavHostController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -20,7 +22,11 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    MainMenuScreen(userCards = DemoCardList(), stoppingPlace = demoStoppinPlaceList())
+                    navController = rememberNavController()
+                    AppNavigation(navHostController = navController)
+
+                    //MainMenuScreen(userCards = DemoCardList(), stoppingPlace = demoStoppinPlaceList())
+                    //AddUserCardScreen()
                 }
             }
         }

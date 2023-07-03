@@ -1,4 +1,4 @@
-package com.ccastro.maas.ui.theme
+package com.ccastro.maas.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -22,7 +22,7 @@ private val DarkColorScheme = darkColorScheme(
     onPrimary = GreenVariant40,
     primaryContainer = Green500,
     onPrimaryContainer = Green40,
-    inversePrimary = GreenVariant200, // Pendiente variar
+    inversePrimary = Blue200, // Pendiente variar
 
     secondary = Blue200,
     onSecondary = Blue40,
@@ -45,7 +45,7 @@ private val DarkColorScheme = darkColorScheme(
     error = Red500,
     errorContainer = Red700,
 
-    outline = Green200,
+    outline = Blue200,
     outlineVariant = Blue200,
 
     scrim = Gray700,
@@ -55,14 +55,14 @@ private val DarkColorScheme = darkColorScheme(
 private val LightColorScheme = lightColorScheme(
     primary = Green200,
     onPrimary = GreenVariant40,
-    primaryContainer = Green200,
-    onPrimaryContainer = Green40,
-    inversePrimary = GreenVariant200, // Pendiente variar
+    primaryContainer = Green200,      // TopBar Color
+    onPrimaryContainer = Green500,      // Text on TopBar Color
+    inversePrimary = Red200,            // Pendiente variar
 
     secondary = Blue200,
     onSecondary = Blue40,
-    secondaryContainer = BlueVariant500,
-    onSecondaryContainer = Blue40,
+    secondaryContainer = Green500,          // Filled Button Color
+    onSecondaryContainer = GreenVariant40,  // Text on Filled Button Color
 
     tertiary = Orange200,
     onTertiary = Orange40,
@@ -71,16 +71,17 @@ private val LightColorScheme = lightColorScheme(
 
     background = Color.White,
     onBackground = Gray500,
-    surface = GreenVariant40,
-    onSurface = BlueVariant700,        // Color de Letra
-    surfaceVariant = Green700,
-    onSurfaceVariant = Green40,
-    surfaceTint = Green80,
+
+    surface = GreenVariant40,         // elevatedButtons, Superficies, Cards,
+    onSurface = Gray700,        // Color de Letra
+    surfaceVariant = White200,
+    onSurfaceVariant = BlueVariant700,
+    surfaceTint = Blue80,
 
     error = Red500,
     errorContainer = Red700,
 
-    outline = Green200,
+    outline = Gray80,
     outlineVariant = Blue200,
 
     scrim = Gray700,
@@ -100,7 +101,7 @@ fun MaasTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme ->DarkColorScheme
+        darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
     val view = LocalView.current

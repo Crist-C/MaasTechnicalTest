@@ -1,4 +1,4 @@
-package com.ccastro.maas.ui.theme
+package com.ccastro.maas.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.Font

@@ -1,15 +1,16 @@
-package com.ccastro.maas.screens.mainMenu
+package com.ccastro.maas.presentation.screens.addUserCard
 
 import android.annotation.SuppressLint
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import com.ccastro.maas.screens.mainMenu.components.AddUserCardContent
+import androidx.navigation.NavHostController
+import com.ccastro.maas.presentation.screens.addUserCard.components.AddUserCardContent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun AddUserCardScreen() {
+fun AddUserCardScreen(navHostController: NavHostController) {
     Scaffold(
         topBar = {},
         content = {

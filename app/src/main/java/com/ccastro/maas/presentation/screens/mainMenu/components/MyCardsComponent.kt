@@ -1,4 +1,4 @@
-package com.ccastro.maas.screens.mainMenu.components
+package com.ccastro.maas.presentation.screens.mainMenu.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -18,12 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ccastro.maas.UserCard
-import com.ccastro.maas.ui.theme.MaasTheme
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.ccastro.maas.domain.UserCard
+import com.ccastro.maas.presentation.navigation.AppScreens
+import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
 fun MyCardsComponent(
     userCards: List<UserCard> = listOf(UserCard()),
+    navController: NavHostController
 ) {
     Surface(
         modifier = Modifier.wrapContentSize(),
@@ -52,9 +56,9 @@ fun MyCardsComponent(
                     verticalAlignment = Alignment.Bottom,
                     horizontalArrangement = Arrangement.End
                 ) {
-                    ButtonDelete()
+                    ButtonDelete {}
                     Spacer(modifier = Modifier.padding(4.dp))
-                    ButtonAdd()
+                    ButtonAdd { navController.navigate(route = AppScreens.AddUserCard.route) }
                 }
 
             }
@@ -67,6 +71,6 @@ fun MyCardsComponent(
 @Composable
 fun MyCardsComponentPreview() {
     MaasTheme {
-        MyCardsComponent()
+        MyCardsComponent(navController = rememberNavController())
     }
 }

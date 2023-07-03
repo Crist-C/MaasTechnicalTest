@@ -1,6 +1,5 @@
-package com.ccastro.maas.screens.mainMenu.components
+package com.ccastro.maas.presentation.screens.mainMenu.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,20 +14,25 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ccastro.maas.R
-import com.ccastro.maas.StoppingPlace
-import com.ccastro.maas.UserCard
-import com.ccastro.maas.ui.theme.MaasTheme
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.ccastro.maas.domain.StoppingPlace
+import com.ccastro.maas.domain.UserCard
+import com.ccastro.maas.presentation.components.LogoMaasComponent
+import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 /**
  *  LOS CONTENT SON LOS MÉTODOS QUE CONTIENEN LA TOTALIDAD DE LA INTERFAZ
  */
 @Composable
-fun MainMenuContent( userCards: List<UserCard> = listOf(UserCard()), stoppingPlaces: List<StoppingPlace> = listOf(StoppingPlace()) ) {
+fun MainMenuContent(
+    userCards: List<UserCard> = listOf(UserCard()),
+    stoppingPlaces: List<StoppingPlace> = listOf(StoppingPlace()),
+    navController: NavHostController
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -40,26 +44,23 @@ fun MainMenuContent( userCards: List<UserCard> = listOf(UserCard()), stoppingPla
         MainMenuBody(
             modifier = Modifier.weight(0.8f),
             userCards,
-            stoppingPlaces
+            stoppingPlaces,
+            navController
         )
     }
 }
 
 @Composable
 fun MainMenuHead() {
-    val image = painterResource(id = R.drawable.logo_maas_dark_theme)
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
     ) {
-
-        Image(
-            modifier = Modifier
+        LogoMaasComponent( modifier = Modifier
                 .size(size = 100.dp)
-                .padding(horizontal = 14.dp),
-            painter = image,
-            contentDescription = "Logotipo de la app"
+                .padding(horizontal = 14.dp)
         )
     }
 
@@ -70,6 +71,7 @@ fun MainMenuBody(
     modifier: Modifier = Modifier,
     userCards: List<UserCard> = listOf(UserCard()),
     stoppingPlaces: List<StoppingPlace> = listOf(StoppingPlace()),
+    navController: NavHostController
 ) {
 
     Column(
@@ -84,7 +86,7 @@ fun MainMenuBody(
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Black
         )
-        MyCardsComponent(userCards)
+        MyCardsComponent(userCards, navController = navController)
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
         MyNearStoppingComponent(stoppingPlaces)
     }
@@ -98,7 +100,7 @@ fun MainMenuBody(
 @Composable
 fun MainMenuContentPreview() {
     MaasTheme {
-        MainMenuContent(DemoCardList(), demoStoppinPlaceList())
+        MainMenuContent(demoCardList(), demoStoppinPlaceList(), rememberNavController())
     }
 }
 
@@ -114,7 +116,7 @@ fun MainMenuHeadPreview() {
 @Composable
 fun MainMenuBodyPreview() {
     MaasTheme {
-        MainMenuBody()
+        MainMenuBody(navController = rememberNavController())
     }
 }
 

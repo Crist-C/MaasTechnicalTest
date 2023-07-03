@@ -1,4 +1,4 @@
-package com.ccastro.maas
+package com.ccastro.maas.domain
 
 data class StoppingPlace (
     val id : String = "xxxxxx",

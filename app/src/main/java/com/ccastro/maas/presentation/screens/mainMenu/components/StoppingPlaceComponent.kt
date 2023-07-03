@@ -1,4 +1,4 @@
-package com.ccastro.maas.screens.mainMenu.components
+package com.ccastro.maas.presentation.screens.mainMenu.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,8 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ccastro.maas.StoppingPlace
-import com.ccastro.maas.ui.theme.MaasTheme
+import com.ccastro.maas.domain.StoppingPlace
+import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
 fun StoppingPlaceComponent(stoppingPlace: StoppingPlace, modifier: Modifier = Modifier) {
