@@ -1,4 +1,4 @@
-package com.ccastro.maas.screens.mainMenu.components
+package com.ccastro.maas.presentation.screens.mainMenu.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -30,11 +30,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ccastro.maas.UserCard
-import com.ccastro.maas.ui.theme.MaasTheme
+import com.ccastro.maas.domain.UserCard
+import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
-fun UserCardComponent(userCard: UserCard = UserCard(), modifier: Modifier = Modifier) {
+fun UserCardComponent(userCard: UserCard = UserCard()) {
 
     val image = painterResource(id = userCard.imageId)
 
@@ -125,7 +125,6 @@ fun UserCardInformation(userCard: UserCard, modifier: Modifier = Modifier) {
 @Composable
 fun UserCardListComponent(
     userCardList: List<UserCard> = listOf(UserCard()),
-    modifier: Modifier = Modifier,
 ) {
     LazyRow(modifier = Modifier.padding(end = 0.dp)) {
         items(userCardList) { userCard ->
@@ -138,7 +137,7 @@ fun UserCardListComponent(
 
 //                       DATA DEMOS
 
-fun DemoCardList(): List<UserCard> {
+fun demoCardList(): List<UserCard> {
     var userCardList: List<UserCard> = listOf()
     for (i in 0..3) {
         userCardList += UserCard(
@@ -184,6 +183,6 @@ fun UserCardComponentWithoutDataPreview() {
 @Composable
 fun UserCardListPreview() {
     MaasTheme {
-        DemoCardList().let { UserCardListComponent(userCardList = it) }
+        demoCardList().let { UserCardListComponent(userCardList = it) }
     }
 }

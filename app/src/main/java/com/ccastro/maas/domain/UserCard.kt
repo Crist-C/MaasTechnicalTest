@@ -1,4 +1,6 @@
-package com.ccastro.maas
+package com.ccastro.maas.domain
+
+import com.ccastro.maas.R
 
 
 data class UserCard(

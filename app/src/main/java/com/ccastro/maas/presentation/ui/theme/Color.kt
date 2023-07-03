@@ -1,14 +1,6 @@
-package com.ccastro.maas.ui.theme
+package com.ccastro.maas.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
-
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
 
 val Green200 = Color(0xFF68D639)
 val GreenVariant200 = Color(0xFFB9F746)
@@ -39,7 +31,7 @@ val BlueVariant700 = Color(0xFF090925)
 
 val White200 = Color(0xFFFDFDF6)
 val Red200 = Color(0xFFFB1C1C)
-val Red40 = Color(0xFFFFDCDCC)
+val Red40 = Color(0xFFFFDCDC)
 val Red80 = Color(0xFFF1997B)
 val Red500 = Color(0xFFBF0C0C)
 val Red700 = Color(0xFF860B0B)
@@ -54,11 +46,3 @@ val Gray40 = Color(0xFFCED8BB)
 val Gray80 = Color(0xFF757575)
 val Gray500 = Color(0xFF3C3C3C)
 val Gray700 = Color(0xFF232420)
-
-val defaultBackground = Color(0xFFFFFBFE)
-val defaultSurface = Color(0xFFFFFBFE)
-val defaultOnPrimary = Color.White
-val defaultOnSecondary = Color.White
-val defaultOnTertiary = Color.White
-val defaultOnBackground = Color(0xFF1C1B1F)
-val defaultOnSurface = Color(0xFF1C1B1F)
