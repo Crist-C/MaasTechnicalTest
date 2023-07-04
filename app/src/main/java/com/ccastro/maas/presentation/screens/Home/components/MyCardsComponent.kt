@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.ccastro.maas.domain.UserCard
+import com.ccastro.maas.domain.model.UserCard
 import com.ccastro.maas.presentation.navigation.AppScreens
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 

@@ -5,8 +5,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import com.ccastro.maas.domain.StoppingPlace
-import com.ccastro.maas.domain.UserCard
+import com.ccastro.maas.domain.model.StoppingPlace
+import com.ccastro.maas.domain.model.UserCard
 import com.ccastro.maas.presentation.screens.Home.components.HomeScreenContent
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -17,7 +17,8 @@ fun HomeScreen(navHostController: NavHostController, userCards: List<UserCard> =
 )) {
 
     Scaffold(
-        topBar = {},
+        topBar = {
+        },
         content = {
             HomeScreenContent(userCards, stoppingPlace, navHostController)
         },

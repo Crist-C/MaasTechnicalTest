@@ -18,6 +18,7 @@
             android:name=".presentation.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Maas"
+            android:screenOrientation="userPortrait"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

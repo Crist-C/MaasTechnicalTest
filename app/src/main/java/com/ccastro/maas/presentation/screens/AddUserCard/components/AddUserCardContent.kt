@@ -1,4 +1,4 @@
-package com.ccastro.maas.presentation.screens.addUserCard.components
+package com.ccastro.maas.presentation.screens.AddUserCard.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

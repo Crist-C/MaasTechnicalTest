@@ -30,7 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ccastro.maas.domain.UserCard
+import com.ccastro.maas.domain.model.UserCard
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable

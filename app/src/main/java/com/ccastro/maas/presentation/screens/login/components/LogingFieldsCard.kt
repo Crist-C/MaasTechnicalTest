@@ -25,6 +25,7 @@ import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
 fun LogingFieldsCard(modifier: Modifier = Modifier, viewModel: LoginViewModel = hiltViewModel()){
+
     Surface(
         modifier = modifier
             .wrapContentSize(),
@@ -70,11 +71,15 @@ fun LogingFieldsCard(modifier: Modifier = Modifier, viewModel: LoginViewModel = 
             DefaultButton(
                 modifier = Modifier.padding(horizontal = 28.dp, vertical = 28.dp),
                 text = "INICIAR SESIÓN",
-                enable = viewModel.isEnabledLoginButton,
-                onClick = { /*TODO*/ }
+                enable = viewModel.isEnabledLoginButton.value,
+                onClick = {
+                    viewModel.login()
+                }
             )
         }
     }
+
+
 }
 
 @Preview(showBackground = true, showSystemUi = true)

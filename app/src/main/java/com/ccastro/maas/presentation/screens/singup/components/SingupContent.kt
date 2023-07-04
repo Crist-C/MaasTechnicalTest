@@ -1,6 +1,8 @@
 package com.ccastro.maas.presentation.screens.singup.components
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,26 +13,34 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.ccastro.maas.domain.model.Response
 import com.ccastro.maas.presentation.components.DefaultButton
 import com.ccastro.maas.presentation.components.DefaultEnunciado
 import com.ccastro.maas.presentation.components.DefaultTextField
 import com.ccastro.maas.presentation.components.LogoMaasComponent
+import com.ccastro.maas.presentation.navigation.AppScreens
 import com.ccastro.maas.presentation.screens.singup.SingupViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
-fun SingupContent(navHostController: NavHostController) {
+fun SingupContent(navHostController: NavHostController, viewModel: SingupViewModel = hiltViewModel(),) {
+
+    val singupFlow = viewModel.singupFlow.collectAsState()
 
     Column(
         modifier = Modifier
@@ -45,6 +55,32 @@ fun SingupContent(navHostController: NavHostController) {
             navHostController = navHostController
         )
     }
+
+    singupFlow.value.let {
+        when(it){
+            is Response.Fail ->{
+                Toast.makeText(LocalContext.current, it.exception?.message, Toast.LENGTH_LONG).show()
+            }
+            Response.Loading -> {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+            is Response.Success -> {
+                LaunchedEffect(Unit){
+                    navHostController.popBackStack(AppScreens.Login.route, true)
+                    navHostController.navigate(AppScreens.Login.route){
+                        popUpTo(AppScreens.Singup.route) {inclusive = true}
+                    }
+                }
+            }
+            else -> {}
+        }
+    }
+
 }
 
 @Composable
@@ -53,6 +89,7 @@ fun SingupFieldsCard(
     navHostController: NavHostController,
     viewModel: SingupViewModel = hiltViewModel(),
 ){
+
     Surface(
         modifier = modifier
             .wrapContentSize(),
@@ -100,6 +137,7 @@ fun SingupFieldsCard(
             DefaultTextField(
                 label = "Password",
                 icon = Icons.Default.Email,
+                hideText = true,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp),
@@ -116,6 +154,7 @@ fun SingupFieldsCard(
                     .padding(horizontal = 20.dp),
                 label = "Confirmar Password",
                 icon = Icons.Default.Email,
+                hideText = true,
                 value = viewModel.passwordValidate.value,
                 onValueChange = {
                     viewModel.passwordValidate.value = it
@@ -126,7 +165,9 @@ fun SingupFieldsCard(
             DefaultButton(
                 modifier = Modifier.padding(start = 28.dp, end = 28.dp, top = 28.dp),
                 text = "REGISTRARME",
-                onClick = { /*TODO*/ },
+                onClick ={
+                    viewModel.onSignup()
+                },
                 enable = viewModel.isEnabledSingupButton
             )
             DefaultButton(
@@ -139,6 +180,7 @@ fun SingupFieldsCard(
             )
         }
     }
+
 }
 
 @Preview(showSystemUi = true, showBackground = true)

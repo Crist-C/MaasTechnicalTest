@@ -17,6 +17,7 @@ import com.ccastro.maas.presentation.ui.theme.MaasTheme
 @Composable
 fun LoginScreen(navHostController: NavHostController) {
     EditKeyBoardUiMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+
     Scaffold(
         topBar = {},
         content = {
