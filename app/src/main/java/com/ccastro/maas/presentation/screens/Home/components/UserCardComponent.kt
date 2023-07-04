@@ -96,7 +96,7 @@ fun UserCardInformation(userCard: UserCard, modifier: Modifier = Modifier) {
             textAlign = TextAlign.Right
         )
         Text(
-            text = userCard.cardType,
+            text = userCard.profile,
             modifier = modifier
                 .fillMaxWidth()
                 .weight(0.1f),
@@ -143,7 +143,7 @@ fun demoCardList(): List<UserCard> {
         userCardList += UserCard(
             cardNumber = "1010 0000 0858 2785",
             userName = "Cristian Kevin Castro Parra",
-            cardType = "Adulto",
+            profile = "Adulto",
             amount = 10000,
             cardStatus = if (i % 2 == 0) "activa"
             else "inactiva"
@@ -162,7 +162,7 @@ fun UserCardComponentPreview() {
             userCard = UserCard(
                 cardNumber = "1010 0000 0858 2785",
                 userName = "Cristian Kevin Castro Parra",
-                cardType = "Adulto",
+                profile = "Adulto",
                 amount = 100000,
                 cardStatus = "activa"
             ),

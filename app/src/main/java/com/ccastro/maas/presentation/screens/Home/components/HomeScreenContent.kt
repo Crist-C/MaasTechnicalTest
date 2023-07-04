@@ -1,7 +1,6 @@
 package com.ccastro.maas.presentation.screens.Home.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,11 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +24,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ccastro.maas.domain.model.StoppingPlace
 import com.ccastro.maas.domain.model.UserCard
+import com.ccastro.maas.presentation.components.DefaultIconButton
 import com.ccastro.maas.presentation.components.LogoMaasComponent
 import com.ccastro.maas.presentation.navigation.AppScreens
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
@@ -59,7 +56,7 @@ fun HomeScreenContent(
 }
 
 @Composable
-fun HomeHead(navController: NavHostController) {
+fun HomeHead(navHostController: NavHostController) {
 
     Box(
         modifier = Modifier
@@ -83,23 +80,14 @@ fun HomeHead(navController: NavHostController) {
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(
-                modifier = Modifier
-                    .padding(horizontal = 14.dp),
+            DefaultIconButton(
+                modifier = Modifier.padding(14.dp),
+                icon = Icons.Default.Person,
                 onClick = {
-                    navController.navigate(AppScreens.Profile.route){
-                        //popUpTo(AppScreens.Home.route){ inclusive = true}
-                    }
+                    navHostController.navigate(AppScreens.Profile.route)
                 }
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .border(1.dp, MaterialTheme.colorScheme.surfaceTint, CircleShape),
-                    imageVector = Icons.Default.Person,
-                    contentDescription = "Icon profile",
-                    tint = MaterialTheme.colorScheme.surfaceTint)
-            }
+            )
+
         }
 
     }
@@ -120,7 +108,7 @@ fun HomeBody(
         verticalArrangement = Arrangement.Top
     ) {
         Text(
-            text = "Que bueno tenerte de nuevo",
+            text = "Hola!, ¿hacia dónde vas?",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 24.dp, end = 24.dp, bottom = 24.dp),
@@ -129,7 +117,7 @@ fun HomeBody(
         )
         MyCardsComponent(userCards, navController = navController)
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
-        MyNearStoppingComponent(stoppingPlaces)
+        MyNearStoppingComponent(navHostController = navController, stoppingPlaces = stoppingPlaces)
     }
 
 }
@@ -149,7 +137,7 @@ fun HomeContentPreview() {
 @Composable
 fun HomeHeadPreview() {
     MaasTheme {
-        HomeHead(navController = rememberNavController())
+        HomeHead(navHostController = rememberNavController())
     }
 }
 

@@ -18,14 +18,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ccastro.maas.R
+import com.ccastro.maas.presentation.screens.AddUserCard.AddUserCardViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
-fun UserCardBackViewComponent(cardNumber: String = "0000 0000 0000 0000"){
+fun UserCardBackViewComponent(viewModel: AddUserCardViewModel = hiltViewModel()){
 
     val image = painterResource(id = R.drawable.tullave_card_add_card)
-    val formatedCardNumber = addSpacesToText(cardNumber)
 
     Surface (
         modifier = Modifier
@@ -52,7 +53,7 @@ fun UserCardBackViewComponent(cardNumber: String = "0000 0000 0000 0000"){
             ) {
                 Text(
                     modifier = Modifier.padding(start= 30.dp, bottom = 27.dp),
-                    text = formatedCardNumber,
+                    text = viewModel.cardNumber.value,
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.tertiaryContainer
                 )
@@ -62,17 +63,6 @@ fun UserCardBackViewComponent(cardNumber: String = "0000 0000 0000 0000"){
     }
 }
 
-fun addSpacesToText(text: String): String {
-    val stringBuilder = StringBuilder(text)
-    var index = 4
-
-    while (index < stringBuilder.length) {
-        stringBuilder.insert(index, ' ')
-        index += 5
-    }
-
-    return stringBuilder.toString()
-}
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable

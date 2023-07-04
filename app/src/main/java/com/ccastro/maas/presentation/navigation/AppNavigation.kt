@@ -9,6 +9,7 @@ import com.ccastro.maas.presentation.screens.login.LoginScreen
 import com.ccastro.maas.presentation.screens.Home.HomeScreen
 import com.ccastro.maas.presentation.screens.Home.components.demoCardList
 import com.ccastro.maas.presentation.screens.Home.components.demoStoppinPlaceList
+import com.ccastro.maas.presentation.screens.Map.MapScreen
 import com.ccastro.maas.presentation.screens.Profile.ProfileScreen
 import com.ccastro.maas.presentation.screens.singup.SingupScreen
 
@@ -39,5 +40,8 @@ fun AppNavigation(navHostController: NavHostController) {
             AddUserCardScreen(navHostController = navHostController)
         }
 
+        composable(route = AppScreens.Map.route){
+            MapScreen(navHostController = navHostController)
+        }
     }
 }
