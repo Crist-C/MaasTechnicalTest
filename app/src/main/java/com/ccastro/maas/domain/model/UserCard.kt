@@ -1,4 +1,4 @@
-package com.ccastro.maas.domain
+package com.ccastro.maas.domain.model
 
 import com.ccastro.maas.R
 

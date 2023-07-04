@@ -1,4 +1,4 @@
-package com.ccastro.maas.presentation.screens.mainMenu.components
+package com.ccastro.maas.presentation.screens.Home.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ccastro.maas.domain.StoppingPlace
+import com.ccastro.maas.domain.model.StoppingPlace
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable

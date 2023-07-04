@@ -10,7 +10,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ccastro.maas.presentation.navigation.AppNavigation
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
@@ -24,9 +26,6 @@ class MainActivity : ComponentActivity() {
                 ) {
                     navController = rememberNavController()
                     AppNavigation(navHostController = navController)
-
-                    //MainMenuScreen(userCards = DemoCardList(), stoppingPlace = demoStoppinPlaceList())
-                    //AddUserCardScreen()
                 }
             }
         }

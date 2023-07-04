@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import com.ccastro.maas.presentation.navigation.AppScreens
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,7 +28,9 @@ fun DefaultTopBar(
     title: String,
     titleStyle: TextStyle = MaterialTheme.typography.titleSmall,
     upAvailable: Boolean = false,
-    navHostController: NavHostController? = null
+    navHostController: NavHostController? = null,
+    backScreen: AppScreens? = null,
+    currentScreen: AppScreens? = null,
 ){
     Surface(
         modifier = Modifier
@@ -45,7 +48,15 @@ fun DefaultTopBar(
             navigationIcon = {
                 if(upAvailable){
                     IconButton(
-                        onClick = { navHostController?.popBackStack() }) {
+                        onClick = {
+                            if (navHostController != null && backScreen != null){
+                                    navHostController.navigate(backScreen.route){
+                                        if (currentScreen != null) {
+                                            popUpTo(currentScreen.route){inclusive = true}
+                                        }
+                                }
+                            } else navHostController?.popBackStack()
+                         }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Go back",

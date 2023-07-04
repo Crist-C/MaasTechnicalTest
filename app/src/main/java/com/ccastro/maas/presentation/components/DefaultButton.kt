@@ -27,7 +27,8 @@ fun DefaultButton(
     onClick: () -> Unit,
     colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(),
     icon: ImageVector? = null,//Icons.Default.ArrowForward
-    shape: CornerBasedShape = ShapeDefaults.ExtraLarge
+    shape: CornerBasedShape = ShapeDefaults.ExtraLarge,
+    enable: Boolean = true
 ) {
 
     Button(
@@ -36,7 +37,8 @@ fun DefaultButton(
             .wrapContentHeight(),
         onClick = { onClick() },
         colors = colors,
-        shape = shape
+        shape = shape,
+        enabled = enable
     ){
         if (icon != null) {
             Icon(
