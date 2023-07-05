@@ -84,6 +84,7 @@ fun AddUserCardContent (navHostController: NavHostController, viewModel: AddUser
             text = "Agregar tarjeta",
             enable = viewModel.isEnabledSaveButton.value,
             onClick = {
+                viewModel.cardValidationConsult()
                 viewModel.onSaveCard()
             })
         DefaultButton(
