@@ -5,7 +5,6 @@ import com.ccastro.maas.data.datasource.RestDataSource
 import com.ccastro.maas.data.datasource.RoomLocalDB
 import com.ccastro.maas.domain.model.Response
 import com.ccastro.maas.domain.model.UserCard
-import com.ccastro.maas.domain.model.ValidationCardResponse
 import com.ccastro.maas.domain.repository.UserCardRepository
 import javax.inject.Inject
 
@@ -17,13 +16,24 @@ class UserCardRepositoryImpl @Inject constructor(
     override var userCardList: MutableList<UserCard>? = null
 
 
-    override suspend fun validate(cardNumber: String): Response<ValidationCardResponse> {
+    override suspend fun validate(cardNumber: String): Response<UserCard> {
         return try {
-            val response = apiDataSource.getValidationCard(cardNumber)
-            Log.i("validateCardFlowModelImpl", "Response: $response")
+            val response = apiDataSource.getValidationCardRequest(cardNumber)
+            Log.i("validateCardFlowModelImpl", "validate: Response: $response")
             Response.Success(response)
         }catch (e: Exception){
-            Log.e("validateCardFlowImpl", "Exception: $e.stackTrace")
+            Log.e("validateCardFlowImpl", "validate: Exception: ${e.message}")
+            Response.Fail(e)
+        }
+    }
+
+    override suspend fun getFullCardInfoRequest(cardNumber: String): Response<UserCard> {
+        return try {
+            val response = apiDataSource.getUserCardInfoRequest()
+            Log.i("validateCardFlowImpl", "getFullCardInfoRequest: Response: $response")
+            Response.Success(response)
+        }catch (e: Exception){
+            Log.e("validateCardFlowImpl", "getFullCardInfoRequest: Exception: ${e.message}")
             Response.Fail(e)
         }
     }

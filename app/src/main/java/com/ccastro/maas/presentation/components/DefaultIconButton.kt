@@ -1,5 +1,6 @@
 package com.ccastro.maas.presentation.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.CircleShape
@@ -22,7 +23,7 @@ fun DefaultIconButton(
     color: Color = MaterialTheme.colorScheme.surfaceTint
 ) {
     IconButton(
-        modifier = modifier,
+        modifier = modifier.background(Color.Transparent),
         onClick = {
             onClick()
             //navController.navigate(AppScreens.Profile.route){

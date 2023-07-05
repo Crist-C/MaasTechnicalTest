@@ -18,16 +18,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.ccastro.maas.domain.model.UserCard
 import com.ccastro.maas.presentation.navigation.AppScreens
+import com.ccastro.maas.presentation.screens.Home.HomeViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
 fun MyCardsComponent(
-    userCards: List<UserCard> = listOf(UserCard()),
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     Surface(
         modifier = Modifier.wrapContentSize(),
@@ -48,7 +49,9 @@ fun MyCardsComponent(
                 fontWeight = FontWeight.SemiBold
             )
             BoxWithConstraints {
-                UserCardListComponent(userCardList = userCards)
+                UserCardListComponent(
+                    userCardList = viewModel.userCards.value
+                )
                 Row(
                     Modifier
                         .fillMaxWidth()
@@ -56,7 +59,6 @@ fun MyCardsComponent(
                     verticalAlignment = Alignment.Bottom,
                     horizontalArrangement = Arrangement.End
                 ) {
-                    ButtonDelete {}
                     Spacer(modifier = Modifier.padding(4.dp))
                     ButtonAdd { navController.navigate(route = AppScreens.AddUserCard.route) }
                 }

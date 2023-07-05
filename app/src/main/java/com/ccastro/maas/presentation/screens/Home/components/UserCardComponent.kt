@@ -2,6 +2,8 @@ package com.ccastro.maas.presentation.screens.Home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +17,9 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -30,11 +35,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ccastro.maas.domain.model.UserCard
+import com.ccastro.maas.presentation.screens.Home.HomeViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
-fun UserCardComponent(userCard: UserCard = UserCard()) {
+fun UserCardComponent(userCard: UserCard = UserCard(), viewModel: HomeViewModel = hiltViewModel()) {
 
     val image = painterResource(id = userCard.imageId)
 
@@ -60,6 +67,31 @@ fun UserCardComponent(userCard: UserCard = UserCard()) {
             UserCardInformation(
                 userCard = userCard
             )
+            Surface(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(top = 10.dp, start = 10.dp),
+                shape = MaterialTheme.shapes.extraLarge,
+                shadowElevation = 6.dp,
+                color = if(isSystemInDarkTheme()) Color.White else MaterialTheme.colorScheme.surface
+            ){
+                Icon(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .size(46.dp)
+                        .border(1.dp, Color.White, CircleShape)
+                        .clickable {
+                                   viewModel.deleteUserCard(userCard)
+                        },
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Icon profile",
+                    tint = MaterialTheme.colorScheme.error,
+                )
+            }
+
+            /*ButtonDelete(
+                modifier = Modifier.padding(4.dp)
+            ) {}*///viewModel.openDialog()
         }
     }
 }
@@ -84,7 +116,7 @@ fun UserCardInformation(userCard: UserCard, modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center,
             fontSize = 32.sp,
-            color = MaterialTheme.colorScheme.onPrimary
+            color = if(isSystemInDarkTheme()) Color.White else MaterialTheme.colorScheme.onPrimary
         )
         Text(
             text = userCard.userName,
@@ -115,7 +147,7 @@ fun UserCardInformation(userCard: UserCard, modifier: Modifier = Modifier) {
                     .padding(vertical = 4.dp, horizontal = 8.dp),
             )
             Text(
-                text = userCard.cardStatus,
+                text = if(userCard.status!! == "Enable") "Activa" else "Inactiva",
                 modifier = modifier
             )
         }

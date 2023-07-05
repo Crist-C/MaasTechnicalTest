@@ -4,5 +4,5 @@ data class UserCardUseCases (
     val saveCard: SaveCard,
     val readCardByField: ReadCardByField,
     val readCardById: ReadCardById,
-    val validateCard: ValidateCard
+    val addUserCard: AddUserCard
 )

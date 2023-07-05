@@ -6,9 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ccastro.maas.domain.model.Response
+import com.ccastro.maas.domain.model.UseCaseResponse
 import com.ccastro.maas.domain.model.UserCard
-import com.ccastro.maas.domain.model.ValidationCardResponse
 import com.ccastro.maas.domain.use_cases.userCard.UserCardUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,37 +23,21 @@ class AddUserCardViewModel @Inject constructor(private val userCardUseCases: Use
     var isEnabledSaveButton: MutableState<Boolean> = mutableStateOf(false)
 
     var cardNumber: MutableState<String> = mutableStateOf("0000 0000 0000 0000")
-    var cardNumberInputUser: MutableState<String> = mutableStateOf("")
+    var cardNumberInputUser: MutableState<String> = mutableStateOf("1010000008582546")
 
-    private val _saveCardFlow = MutableStateFlow<Response<Boolean>?>(value = null)
-    val saveCardFlow: StateFlow<Response<Boolean>?> = _saveCardFlow
 
-    private val _validateCardFlow = MutableStateFlow<Response<ValidationCardResponse>?>(value = null)
-    val validateCardFlow: StateFlow<Response<ValidationCardResponse>?> = _validateCardFlow
+    private val _addUserCardFlow = MutableStateFlow<UseCaseResponse?>(value = null)
+    val addUserCardFlow: StateFlow<UseCaseResponse?> = _addUserCardFlow
 
     fun cardValidationConsult() = viewModelScope.launch{
-        _validateCardFlow.value = Response.Loading
-        val result = userCardUseCases.validateCard(cardNumberInputUser.value)
-        _validateCardFlow.value = result
-        Log.i("validateCardFlowModel", _validateCardFlow.value.toString())
+        _addUserCardFlow.value = null
+        val result = userCardUseCases.addUserCard(cardNumberInputUser.value)
+        _addUserCardFlow.value = result
+        Log.i("validateCardFlowModel", _addUserCardFlow.value.toString())
     }
 
-    fun saveCard(userCard: UserCard) = viewModelScope.launch{
-        _saveCardFlow.value = Response.Loading
-        val result = userCardUseCases.saveCard(userCard)
-        _saveCardFlow.value = result
-    }
 
-    fun onSaveCard(){
-        val userCard = UserCard(
-            cardNumber = cardNumberInputUser.value,
-            userName = "Cristian",
-            userLastName = "Castro"
-        )
-        saveCard(userCard)
-    }
-
-    // Validate functions
+    // Validaciones de los datos
 
     fun enabledSaveButton() {
         isEnabledSaveButton.value =
@@ -82,6 +65,11 @@ class AddUserCardViewModel @Inject constructor(private val userCardUseCases: Use
         }
         cardNumber.value = stringBuilder.toString()
 
+    }
+
+    fun resetValues(){
+        isEnabledSaveButton.value = true
+        _addUserCardFlow.value = null
     }
 
 }

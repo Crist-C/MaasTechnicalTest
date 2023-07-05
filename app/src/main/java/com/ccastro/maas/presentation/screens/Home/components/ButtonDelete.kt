@@ -22,11 +22,13 @@ import com.ccastro.maas.R
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
-fun ButtonDelete(onClick : ()->Unit) {
+fun ButtonDelete(
+    modifier: Modifier = Modifier,
+    onClick : ()->Unit) {
     val image = painterResource(id = R.drawable.icon_delete_24)
 
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .wrapContentSize(),
         shape = MaterialTheme.shapes.extraLarge,
         shadowElevation = 6.dp,
@@ -57,6 +59,6 @@ fun ButtonDelete(onClick : ()->Unit) {
 @Composable
 fun ButtonDeletePreview() {
     MaasTheme {
-        ButtonDelete({})
+        ButtonDelete(onClick = {})
     }
 }

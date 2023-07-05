@@ -26,7 +26,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ccastro.maas.R
-import com.ccastro.maas.domain.model.Response
 import com.ccastro.maas.presentation.components.DefaultButton
 import com.ccastro.maas.presentation.components.DefaultEnunciado
 import com.ccastro.maas.presentation.components.DefaultIconButton
@@ -38,7 +37,7 @@ import com.ccastro.maas.presentation.ui.theme.MaasTheme
 @Composable
 fun AddUserCardContent (navHostController: NavHostController, viewModel: AddUserCardViewModel = hiltViewModel()){
 
-    val saveCardFlow = viewModel.saveCardFlow.collectAsState()
+    val addUserCardFlow = viewModel.addUserCardFlow.collectAsState()
 
     Column(
         modifier = Modifier,
@@ -85,7 +84,6 @@ fun AddUserCardContent (navHostController: NavHostController, viewModel: AddUser
             enable = viewModel.isEnabledSaveButton.value,
             onClick = {
                 viewModel.cardValidationConsult()
-                viewModel.onSaveCard()
             })
         DefaultButton(
             modifier = Modifier.padding(start = 26.dp, end = 26.dp),
@@ -95,31 +93,37 @@ fun AddUserCardContent (navHostController: NavHostController, viewModel: AddUser
 
     }
 
-    saveCardFlow.value.let {
-        when(it){
-            is Response.Fail -> {
-                viewModel.isEnabledSaveButton.value = true
-                Toast.makeText(LocalContext.current, it.exception?.message ?: "Fail: Error desconocido", Toast.LENGTH_LONG).show()
-            }
-            Response.Loading -> {
-            viewModel.isEnabledSaveButton.value = false
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier.fillMaxSize()
-            ) {
-                CircularProgressIndicator()
-            }
-        }
-            is Response.Success ->{
-                Toast.makeText(LocalContext.current,  "Tarjeta almacenada con éxito", Toast.LENGTH_LONG).show()
-                LaunchedEffect(Unit){
+    addUserCardFlow.value.let {
+        if (it != null) {
+            when(it.wasSuccess){
+                true ->{
+                    Toast.makeText(LocalContext.current,  it.resultMsg, Toast.LENGTH_LONG).show()
+                    viewModel.resetValues()
+                    LaunchedEffect(Unit){
+                        navHostController.navigate(AppScreens.Home.route)
+                    }
+                }
+                false ->{
+                    Toast.makeText(LocalContext.current,  it.resultMsg, Toast.LENGTH_LONG).show()
+                    viewModel.resetValues()
+                }
+
+                null -> {
+                    viewModel.isEnabledSaveButton.value = false
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 }
             }
-
-            else -> {}
         }
     }
+
 }
+
+
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable

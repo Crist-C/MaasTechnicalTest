@@ -17,7 +17,7 @@ import com.ccastro.maas.domain.use_cases.userCard.ReadCardByField
 import com.ccastro.maas.domain.use_cases.userCard.ReadCardById
 import com.ccastro.maas.domain.use_cases.userCard.SaveCard
 import com.ccastro.maas.domain.use_cases.userCard.UserCardUseCases
-import com.ccastro.maas.domain.use_cases.userCard.ValidateCard
+import com.ccastro.maas.domain.use_cases.userCard.AddUserCard
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
@@ -99,7 +99,7 @@ object AppModule {
         saveCard = SaveCard(repository),
         readCardById = ReadCardById(repository),
         readCardByField = ReadCardByField(repository),
-        validateCard = ValidateCard(repository)
+        addUserCard = AddUserCard(repository)
     )
 }
 

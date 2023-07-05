@@ -20,13 +20,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ccastro.maas.domain.model.StoppingPlace
-import com.ccastro.maas.domain.model.UserCard
+import com.ccastro.maas.presentation.components.DefaultAlertDialog
 import com.ccastro.maas.presentation.components.DefaultIconButton
 import com.ccastro.maas.presentation.components.LogoMaasComponent
 import com.ccastro.maas.presentation.navigation.AppScreens
+import com.ccastro.maas.presentation.screens.Home.HomeViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 /**
@@ -34,23 +36,40 @@ import com.ccastro.maas.presentation.ui.theme.MaasTheme
  */
 @Composable
 fun HomeScreenContent(
-    userCards: List<UserCard> = listOf(UserCard()),
     stoppingPlaces: List<StoppingPlace> = listOf(StoppingPlace()),
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        HomeHead(navController)
-        HomeBody(
-            modifier = Modifier.weight(0.8f),
-            userCards,
-            stoppingPlaces,
-            navController
+
+    Box(modifier = Modifier.fillMaxSize()){
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            HomeHead(navController)
+            HomeBody(
+                modifier = Modifier.weight(0.8f),
+                stoppingPlaces,
+                navController
+            )
+        }
+        DefaultAlertDialog(
+            showDialog = viewModel.showDialog,
+            onConfirm = {
+                            when(viewModel.confirmFunction){
+                                "eliminar" -> viewModel.onDialogConfirm()
+                                "agregar" -> {
+                                    viewModel.onDialogDismiss()
+                                    navController.navigate(AppScreens.AddUserCard.route)
+                                }
+                            }
+                        },
+            onDismiss = { viewModel.onDialogDismiss()},
+            title = viewModel.titleDialog,
+            textDialog = viewModel.textDialog,
         )
     }
 }
@@ -76,7 +95,9 @@ fun HomeHead(navHostController: NavHostController) {
         }
         Row(
             modifier = Modifier
-                .fillMaxWidth().matchParentSize().padding(bottom = 2.dp),
+                .fillMaxWidth()
+                .matchParentSize()
+                .padding(bottom = 2.dp),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -98,7 +119,6 @@ fun HomeHead(navHostController: NavHostController) {
 @Composable
 fun HomeBody(
     modifier: Modifier = Modifier,
-    userCards: List<UserCard> = listOf(UserCard()),
     stoppingPlaces: List<StoppingPlace> = listOf(StoppingPlace()),
     navController: NavHostController
 ) {
@@ -115,7 +135,7 @@ fun HomeBody(
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Black
         )
-        MyCardsComponent(userCards, navController = navController)
+        MyCardsComponent(navController = navController)
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
         MyNearStoppingComponent(navHostController = navController, stoppingPlaces = stoppingPlaces)
     }
@@ -129,7 +149,11 @@ fun HomeBody(
 @Composable
 fun HomeContentPreview() {
     MaasTheme {
-        HomeScreenContent(demoCardList(), demoStoppinPlaceList(), rememberNavController())
+        HomeScreenContent(
+            //demoCardList(),
+            demoStoppinPlaceList(),
+            rememberNavController()
+        )
     }
 }
 

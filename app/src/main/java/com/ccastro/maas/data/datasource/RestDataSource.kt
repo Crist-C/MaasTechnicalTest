@@ -1,7 +1,6 @@
 package com.ccastro.maas.data.datasource
 
-import com.ccastro.maas.domain.model.ApiResponse
-import com.ccastro.maas.domain.model.ValidationCardResponse
+import com.ccastro.maas.domain.model.UserCard
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -9,9 +8,9 @@ interface RestDataSource {
 
 
     @GET("/card/valid/{cardNumber}") // 1010000008582546
-    suspend fun getValidationCard(@Path("cardNumber") cardNumber: String ): ValidationCardResponse
+    suspend fun getValidationCardRequest(@Path("cardNumber") cardNumber: String ): UserCard
 
-    @GET("/card/getInformation/{cardNumber}") // 1010000008582546
-    suspend fun getCardInfo(): ApiResponse
+    @GET("/card/getInformation/1010000008582546") // 1010000008582546
+    suspend fun getUserCardInfoRequest(): UserCard
 
 }
