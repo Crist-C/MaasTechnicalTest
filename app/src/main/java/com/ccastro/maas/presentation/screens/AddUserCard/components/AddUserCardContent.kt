@@ -69,6 +69,7 @@ fun AddUserCardContent (navHostController: NavHostController, viewModel: AddUser
         DefaultTextField(
             modifier = Modifier.padding(top = 25.dp),
             value = viewModel.cardNumberInputUser.value,
+            enable = viewModel.isEnabledTextInput.value,
             onValueChange =
             {
                 viewModel.setFormatToCardNumber(it)
@@ -92,6 +93,22 @@ fun AddUserCardContent (navHostController: NavHostController, viewModel: AddUser
             onClick = { /*TODO*/ })
 
     }
+    viewModel.isLoading.let {
+        when(it.value){
+            true ->  {
+                viewModel.isEnabledSaveButton.value = false
+                viewModel.isEnabledTextInput.value = false
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+            else -> {}
+        }
+
+    }
 
     addUserCardFlow.value.let {
         if (it != null) {
@@ -109,13 +126,7 @@ fun AddUserCardContent (navHostController: NavHostController, viewModel: AddUser
                 }
 
                 null -> {
-                    viewModel.isEnabledSaveButton.value = false
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        CircularProgressIndicator()
-                    }
+
                 }
             }
         }

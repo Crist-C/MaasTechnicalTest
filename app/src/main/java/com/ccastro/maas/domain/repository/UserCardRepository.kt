@@ -2,6 +2,7 @@ package com.ccastro.maas.domain.repository
 
 import com.ccastro.maas.domain.model.Response
 import com.ccastro.maas.domain.model.UserCard
+import kotlinx.coroutines.flow.Flow
 
 interface UserCardRepository {
 
@@ -12,14 +13,18 @@ interface UserCardRepository {
 
     suspend fun getFullCardInfoRequest(cardNumber: String): Response<UserCard>
 
-    suspend fun saveCard(card: UserCard): Response<Boolean>
+    fun getAllCards(): Flow<List<UserCard>>
 
+    suspend fun saveCard(card: UserCard): Response<Int>
+
+    suspend fun deleteCard(userCard: UserCard)
+
+    suspend fun getTotalUserCards() : Int
+/*
     suspend fun getCardById(id: Int): Response<UserCard?>
 
     suspend fun getCardByNumber(cardNumber: String): Response<UserCard?>
 
     suspend fun getCardByField(fieldName: String, fieldValue: Any): Response<UserCard?>
-
-    suspend fun getAllCards(): Response<MutableList<UserCard>?>
-
+*/
 }

@@ -1,21 +1,22 @@
 package com.ccastro.maas.data.repository
 
 import android.util.Log
+import com.ccastro.maas.data.Mapper.UserCardDAO
 import com.ccastro.maas.data.datasource.RestDataSource
-import com.ccastro.maas.data.datasource.RoomLocalDB
 import com.ccastro.maas.domain.model.Response
 import com.ccastro.maas.domain.model.UserCard
 import com.ccastro.maas.domain.repository.UserCardRepository
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class UserCardRepositoryImpl @Inject constructor(
     private val apiDataSource: RestDataSource,
-    private val localDB: RoomLocalDB<UserCard>) : UserCardRepository { //
+    private val userCardDAO: UserCardDAO) : UserCardRepository { //
 
-    override var userCard: UserCard? = UserCard()
+    override var userCard: UserCard? = UserCard(id = 0)
     override var userCardList: MutableList<UserCard>? = null
 
-
+    // Consumos del API
     override suspend fun validate(cardNumber: String): Response<UserCard> {
         return try {
             val response = apiDataSource.getValidationCardRequest(cardNumber)
@@ -29,7 +30,7 @@ class UserCardRepositoryImpl @Inject constructor(
 
     override suspend fun getFullCardInfoRequest(cardNumber: String): Response<UserCard> {
         return try {
-            val response = apiDataSource.getUserCardInfoRequest()
+            val response = apiDataSource.getUserCardInfoRequest(cardNumber)
             Log.i("validateCardFlowImpl", "getFullCardInfoRequest: Response: $response")
             Response.Success(response)
         }catch (e: Exception){
@@ -38,44 +39,27 @@ class UserCardRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveCard(card: UserCard): Response<Boolean> {
+    // Almacenamiento en la DB
+    override fun getAllCards(): Flow<List<UserCard>> {
+        return userCardDAO.getAll()
+    }
+
+    override suspend fun saveCard(card: UserCard): Response<Int> {
         return try {
-            localDB.create(card)
-            val result = localDB.has(card)
-            Response.Success(result)
+            userCardDAO.insert(card)
+            Response.Success(1)
         }catch (e: Exception){
             e.stackTrace
             Response.Fail(e)
         }
     }
 
-    override suspend fun getCardById(id: Int): Response<UserCard?> {
-        return try {
-            val result = localDB.readById(id)
-            userCard = result
-            Response.Success(result)
-        }catch (e: Exception){
-            e.stackTrace
-            Response.Fail(e)
-        }
+    override suspend fun deleteCard(userCard: UserCard) {
+        userCardDAO.delete(userCard)
     }
 
-    override suspend fun getAllCards(): Response<MutableList<UserCard>?> {
-        return try {
-            val result = localDB.getAll()
-            userCardList = result
-            Response.Success(result)
-        }catch (e: Exception){
-            e.stackTrace
-            Response.Fail(e)
-        }
+    override suspend fun getTotalUserCards(): Int {
+        return userCardDAO.getTotalUserCards()
     }
 
-    override suspend fun getCardByNumber(cardNumber: String): Response<UserCard?> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun getCardByField(fieldName: String, fieldValue: Any): Response<UserCard?> {
-        TODO("Not yet implemented")
-    }
 }

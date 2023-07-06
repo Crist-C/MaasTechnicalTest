@@ -10,7 +10,7 @@ interface RestDataSource {
     @GET("/card/valid/{cardNumber}") // 1010000008582546
     suspend fun getValidationCardRequest(@Path("cardNumber") cardNumber: String ): UserCard
 
-    @GET("/card/getInformation/1010000008582546") // 1010000008582546
-    suspend fun getUserCardInfoRequest(): UserCard
+    @GET("/card/getInformation/{cardNumber}") // 1010000008582546
+    suspend fun getUserCardInfoRequest(@Path("cardNumber") cardNumber: String): UserCard
 
 }

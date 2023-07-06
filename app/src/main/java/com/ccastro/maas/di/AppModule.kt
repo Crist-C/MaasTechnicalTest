@@ -1,11 +1,13 @@
 package com.ccastro.maas.di
 
+import android.content.Context
+import androidx.room.Room
+import com.ccastro.maas.data.Mapper.UserCardDAO
 import com.ccastro.maas.data.datasource.AuthInterceptor
+import com.ccastro.maas.data.datasource.LocalDataSource
 import com.ccastro.maas.data.datasource.RestDataSource
-import com.ccastro.maas.data.datasource.RoomLocalDB
 import com.ccastro.maas.data.repository.AuthRepositoryImpl
 import com.ccastro.maas.data.repository.UserCardRepositoryImpl
-import com.ccastro.maas.domain.model.UserCard
 import com.ccastro.maas.domain.repository.AuthRepository
 import com.ccastro.maas.domain.repository.UserCardRepository
 import com.ccastro.maas.domain.use_cases.auth.AuthUseCases
@@ -13,15 +15,17 @@ import com.ccastro.maas.domain.use_cases.auth.GetCurrentUser
 import com.ccastro.maas.domain.use_cases.auth.Login
 import com.ccastro.maas.domain.use_cases.auth.Logout
 import com.ccastro.maas.domain.use_cases.auth.SingUp
-import com.ccastro.maas.domain.use_cases.userCard.ReadCardByField
-import com.ccastro.maas.domain.use_cases.userCard.ReadCardById
 import com.ccastro.maas.domain.use_cases.userCard.SaveCard
 import com.ccastro.maas.domain.use_cases.userCard.UserCardUseCases
 import com.ccastro.maas.domain.use_cases.userCard.AddUserCard
+import com.ccastro.maas.domain.use_cases.userCard.DeleteCard
+import com.ccastro.maas.domain.use_cases.userCard.GetAllCards
+import com.ccastro.maas.domain.use_cases.userCard.TotalUserCards
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -33,7 +37,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    // Retrofit: API CardTullave
+    //  RETROFIT: API CARD_TULLAVE DEPENDENCIES
     @Singleton
     @Provides
     @Named("provideBaseUrl")
@@ -51,7 +55,6 @@ object AppModule {
         return AuthInterceptor(authToken = provideToken())
     }
 
-
     @Singleton
     @Provides
     fun provideRetrofit(@Named("provideBaseUrl") baseUrl: String,
@@ -68,12 +71,13 @@ object AppModule {
             .build()
 
     }
-
+    // Instancia de retrofit
     @Provides
     fun restDataSource(retrofit: Retrofit): RestDataSource =
         retrofit.create(RestDataSource::class.java)
 
-    // FIREBASE AUTHENTICATION
+
+    // FIREBASE AUTHENTICATION DEPENDENCIES
     @Provides
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
@@ -88,18 +92,34 @@ object AppModule {
         singUp = SingUp(repository)
     )
 
+
+    //  ROOM: LOCAL DATA SOURCE DEPENDENCIES
+
+    @Singleton
     @Provides
-    fun provideRoomLocalDB() = RoomLocalDB<UserCard>()
+    fun provideLocalDB(@ApplicationContext context: Context) : LocalDataSource {
+        return Room.databaseBuilder(context, LocalDataSource::class.java, "mass_database")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun userCardDao(db: LocalDataSource): UserCardDAO = db.userCardDao()
+
+
+    //  APLICATION DEPENDENCIES
 
     @Provides
     fun provideUserCardRepository(impl: UserCardRepositoryImpl): UserCardRepository = impl
 
     @Provides
     fun provideUserCardUseCases(repository: UserCardRepository) = UserCardUseCases(
+        addUserCard = AddUserCard(repository),
         saveCard = SaveCard(repository),
-        readCardById = ReadCardById(repository),
-        readCardByField = ReadCardByField(repository),
-        addUserCard = AddUserCard(repository)
+        getAllCard = GetAllCards(repository),
+        deleteCard = DeleteCard(repository),
+        totalUserCards = TotalUserCards(repository)
     )
 }
 

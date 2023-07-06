@@ -1,8 +1,9 @@
 package com.ccastro.maas.domain.use_cases.userCard
 
 data class UserCardUseCases (
+    val addUserCard: AddUserCard,
     val saveCard: SaveCard,
-    val readCardByField: ReadCardByField,
-    val readCardById: ReadCardById,
-    val addUserCard: AddUserCard
+    val getAllCard: GetAllCards,
+    val deleteCard: DeleteCard,
+    val totalUserCards: TotalUserCards
 )

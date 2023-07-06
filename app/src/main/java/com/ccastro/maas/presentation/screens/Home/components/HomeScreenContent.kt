@@ -1,5 +1,6 @@
 package com.ccastro.maas.presentation.screens.Home.components
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,8 +16,10 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -120,8 +123,10 @@ fun HomeHead(navHostController: NavHostController) {
 fun HomeBody(
     modifier: Modifier = Modifier,
     stoppingPlaces: List<StoppingPlace> = listOf(StoppingPlace()),
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
+    val totalUserCards = viewModel.countCardsFlow.collectAsState()
 
     Column(
         modifier = modifier.background(MaterialTheme.colorScheme.background),
@@ -140,6 +145,9 @@ fun HomeBody(
         MyNearStoppingComponent(navHostController = navController, stoppingPlaces = stoppingPlaces)
     }
 
+    totalUserCards.value.let {
+        Toast.makeText(LocalContext.current, "Total user cards: $it", Toast.LENGTH_SHORT)
+    }
 }
 
 
@@ -150,7 +158,6 @@ fun HomeBody(
 fun HomeContentPreview() {
     MaasTheme {
         HomeScreenContent(
-            //demoCardList(),
             demoStoppinPlaceList(),
             rememberNavController()
         )

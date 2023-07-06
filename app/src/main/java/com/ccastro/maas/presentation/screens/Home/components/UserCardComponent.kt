@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ccastro.maas.R
 import com.ccastro.maas.domain.model.UserCard
 import com.ccastro.maas.presentation.screens.Home.HomeViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
@@ -43,7 +44,7 @@ import com.ccastro.maas.presentation.ui.theme.MaasTheme
 @Composable
 fun UserCardComponent(userCard: UserCard = UserCard(), viewModel: HomeViewModel = hiltViewModel()) {
 
-    val image = painterResource(id = userCard.imageId)
+    val image = painterResource(id = if (userCard.isValid == true) R.drawable.tullave_card_3 else R.drawable.tullave_card_dont_exist)
 
     Surface(
         modifier = Modifier
@@ -77,21 +78,17 @@ fun UserCardComponent(userCard: UserCard = UserCard(), viewModel: HomeViewModel 
             ){
                 Icon(
                     modifier = Modifier
-                        .wrapContentSize()
-                        .size(46.dp)
+                        .wrapContentSize().padding(4.dp)
+                        .size(36.dp)
                         .border(1.dp, Color.White, CircleShape)
                         .clickable {
                                    viewModel.deleteUserCard(userCard)
                         },
                     imageVector = Icons.Default.Delete,
                     contentDescription = "Icon profile",
-                    tint = MaterialTheme.colorScheme.error,
+                    tint = MaterialTheme.colorScheme.secondary,
                 )
             }
-
-            /*ButtonDelete(
-                modifier = Modifier.padding(4.dp)
-            ) {}*///viewModel.openDialog()
         }
     }
 }
@@ -156,10 +153,10 @@ fun UserCardInformation(userCard: UserCard, modifier: Modifier = Modifier) {
 
 @Composable
 fun UserCardListComponent(
-    userCardList: List<UserCard> = listOf(UserCard()),
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     LazyRow(modifier = Modifier.padding(end = 0.dp)) {
-        items(userCardList) { userCard ->
+        items(viewModel.state.userCards.ifEmpty { listOf(UserCard()) }) { userCard ->
             UserCardComponent(userCard = userCard)
         }
     }
@@ -177,7 +174,7 @@ fun demoCardList(): List<UserCard> {
             userName = "Cristian Kevin Castro Parra",
             profile = "Adulto",
             amount = 10000,
-            cardStatus = if (i % 2 == 0) "activa"
+            status = if (i % 2 == 0) "Enable"
             else "inactiva"
         )
     }
@@ -196,7 +193,7 @@ fun UserCardComponentPreview() {
                 userName = "Cristian Kevin Castro Parra",
                 profile = "Adulto",
                 amount = 100000,
-                cardStatus = "activa"
+                status = "Enable"
             ),
 
             )
@@ -215,6 +212,6 @@ fun UserCardComponentWithoutDataPreview() {
 @Composable
 fun UserCardListPreview() {
     MaasTheme {
-        demoCardList().let { UserCardListComponent(userCardList = it) }
+        UserCardListComponent()
     }
 }
