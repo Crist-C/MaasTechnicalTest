@@ -20,11 +20,5 @@ interface UserCardRepository {
     suspend fun deleteCard(userCard: UserCard)
 
     suspend fun getTotalUserCards() : Int
-/*
-    suspend fun getCardById(id: Int): Response<UserCard?>
 
-    suspend fun getCardByNumber(cardNumber: String): Response<UserCard?>
-
-    suspend fun getCardByField(fieldName: String, fieldValue: Any): Response<UserCard?>
-*/
 }

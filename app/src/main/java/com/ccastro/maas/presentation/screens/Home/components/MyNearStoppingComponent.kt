@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.ccastro.maas.domain.model.StoppingPlace
 import com.ccastro.maas.presentation.components.DefaultButton
 import com.ccastro.maas.presentation.screens.Home.HomeViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
@@ -26,7 +25,6 @@ import com.ccastro.maas.presentation.ui.theme.MaasTheme
 @Composable
 fun MyNearStoppingComponent(
     navHostController: NavHostController,
-    stoppingPlaces: List<StoppingPlace> = listOf(StoppingPlace()),
     viewModel: HomeViewModel = hiltViewModel(),
 ){
 
@@ -48,14 +46,14 @@ fun MyNearStoppingComponent(
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold
             )
-            StoppingPlacesNearList(stoppingPlacesList = stoppingPlaces)
+            StoppingPlacesNearList()
             DefaultButton(
                 modifier = Modifier
                     .padding(top = 16.dp, start = 32.dp, end = 32.dp),
                 text = "Ver en el mapa",
                 icon = Icons.Default.Place,
                 onClick = {
-                    viewModel.contarTarjetas()
+                    viewModel.actualizarRutas()
                 //navHostController.navigate(AppScreens.Map.route)
             })
         }

@@ -84,19 +84,24 @@ object AppModule {
         retrofit.create(RestDataSource::class.java)
 
 
-    //  RETROFIT: API CARD_TULLAVE DEPENDENCIES
+    //  RETROFIT: API TIPPLANNER DEPENDENCIES
     @Singleton
     @Provides
     @Named("provideBaseUrlTripPlaner")
     fun provideBaseUrlTripPlaner() = "http://sisuotp.tullaveplus.gov.co/otp/routers/default/index/stops"
 
 
+    @Singleton
     @Provides
     @Named("RetrofitTripPlaner")
     fun provideRetrofitTripPlaner(@Named("provideBaseUrlTripPlaner") baseUrl: String): Retrofit{
         return Retrofit.Builder()
             .baseUrl(baseUrl)
-            .client(OkHttpClient())
+            .client(
+                OkHttpClient()
+                    .newBuilder()
+                    .build()
+            )
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

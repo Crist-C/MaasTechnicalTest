@@ -19,7 +19,7 @@ fun HomeScreen(
         topBar = {
         },
         content = {
-            HomeScreenContent(stoppingPlace, navHostController)
+            HomeScreenContent(navHostController)
         },
         bottomBar = {}
     )

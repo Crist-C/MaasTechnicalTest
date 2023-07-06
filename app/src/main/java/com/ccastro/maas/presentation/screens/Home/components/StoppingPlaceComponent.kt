@@ -18,7 +18,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ccastro.maas.domain.model.StoppingPlace
+import com.ccastro.maas.presentation.screens.Home.HomeViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
@@ -70,9 +72,9 @@ fun StoppingPlaceComponent(stoppingPlace: StoppingPlace, modifier: Modifier = Mo
 //                      DISPLAY LIST OBJECTS FUNCTIONS
 
 @Composable
-fun StoppingPlacesNearList(stoppingPlacesList: List<StoppingPlace>) {
+fun StoppingPlacesNearList(viewModel: HomeViewModel = hiltViewModel()) {
     LazyRow {
-        items(stoppingPlacesList) { stoppingPlace ->
+        items(viewModel.state.stopPlaces.ifEmpty { listOf(StoppingPlace()) }) { stoppingPlace ->
             StoppingPlaceComponent(stoppingPlace = stoppingPlace)
         }
     }
@@ -116,7 +118,7 @@ fun StoppingPlaceCardPreview() {
 @Composable
 fun StoppingListPreview() {
     MaasTheme {
-        demoStoppinPlaceList().let { StoppingPlacesNearList(stoppingPlacesList = it) }
+        //demoStoppinPlaceList().let { StoppingPlacesNearList(stoppingPlacesList = it) }
     }
 
 }

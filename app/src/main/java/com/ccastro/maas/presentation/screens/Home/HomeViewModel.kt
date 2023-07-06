@@ -1,6 +1,8 @@
 package com.ccastro.maas.presentation.screens.Home
 
 
+import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ccastro.maas.domain.model.ConfirmOptions
 import com.ccastro.maas.domain.model.UserCard
+import com.ccastro.maas.domain.use_cases.stopPlaces.StopPlacesUseCases
 import com.ccastro.maas.domain.use_cases.userCard.UserCardUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +23,7 @@ import javax.inject.Inject
 // Al ViewModel se le injectan la clase que contiene los casos de uso
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val userCardUseCases: UserCardUseCases) : ViewModel() {
+class HomeViewModel @Inject constructor(private val userCardUseCases: UserCardUseCases, private val stopPlacesUseCases: StopPlacesUseCases) : ViewModel() {
 
     var showDialog by mutableStateOf(false)
     var titleDialog by mutableStateOf("Eliminar tarjeta")
@@ -42,54 +45,74 @@ class HomeViewModel @Inject constructor(private val userCardUseCases: UserCardUs
             }
 
         }
+        /*
+        var lat: MutableState<Double> = mutableStateOf(value = 4.722557)
+        var lon: MutableState<Double> = mutableStateOf(value = -74.131103)
+        var rad: MutableState<Int> = mutableStateOf(value = 500)
+        viewModelScope.launch {
+            try {
+                state = state.copy(
+                    stopPlaces = stopPlacesUseCases.getNearStopPlaces(
+                        latitud = lat.value,
+                        longitud = lon.value,
+                        radius = rad.value
+                    )
+                )
+
+            }catch (e: Exception){
+                Log.e("MLOG","ExceptionRadList ${e.message}")
+            }
+        }*/
     }
 
 
-    private val _countCardsFlow = MutableStateFlow<Int?>(value = null)
-    val countCardsFlow : StateFlow<Int?> = _countCardsFlow
-    fun contarTarjetas() = viewModelScope.launch {
-        _countCardsFlow.value = userCardUseCases.totalUserCards()
-    }
-
-
-    fun onDialogConfirm(){
-        when(confirmFunction){
-            ConfirmOptions.Eliminar.option -> deleteUserCardOnDB()
+        val _countCardsFlow = MutableStateFlow<Int?>(value = null)
+        val countCardsFlow: StateFlow<Int?> = _countCardsFlow
+        fun contarTarjetas() = viewModelScope.launch {
+            _countCardsFlow.value = userCardUseCases.totalUserCards()
         }
-        confirmFunction = ""
-        showDialog = false
-    }
 
-    fun onDialogDismiss(){
-        confirmFunction = ""
-        showDialog = false
-    }
-
-    fun openDialog(){
-        showDialog = true
-    }
-
-    fun deleteUserCard(userCard: UserCard) {
-        if(userCard.card != ""){
-            titleDialog ="Eliminar tarjeta"
-            textDialog = "Desea eliminar la tarjeta: \n${userCard.cardNumber}?"
-            confirmFunction = ConfirmOptions.Eliminar.option
-            currentCardUser = userCard
-            openDialog()
-        } else{
-            titleDialog = "Aun no tienes una tarjeta"
-            textDialog = "¿deseas agregar una tarjeta?"
-            confirmFunction = ConfirmOptions.Agregar.option
-            openDialog()
+        fun actualizarRutas() {
+            TODO("Not yet implemented")
         }
-    }
 
-    fun deleteUserCardOnDB(){
-        viewModelScope.launch (Dispatchers.IO) {
-            userCardUseCases.deleteCard(currentCardUser)
-            currentCardUser = UserCard()
+        fun onDialogConfirm() {
+            when (confirmFunction) {
+                ConfirmOptions.Eliminar.option -> deleteUserCardOnDB()
+            }
+            confirmFunction = ""
+            showDialog = false
         }
-    }
 
+        fun onDialogDismiss() {
+            confirmFunction = ""
+            showDialog = false
+        }
+
+        fun openDialog() {
+            showDialog = true
+        }
+
+        fun deleteUserCard(userCard: UserCard) {
+            if (userCard.card != "") {
+                titleDialog = "Eliminar tarjeta"
+                textDialog = "Desea eliminar la tarjeta: \n${userCard.cardNumber}?"
+                confirmFunction = ConfirmOptions.Eliminar.option
+                currentCardUser = userCard
+                openDialog()
+            } else {
+                titleDialog = "Aun no tienes una tarjeta"
+                textDialog = "¿deseas agregar una tarjeta?"
+                confirmFunction = ConfirmOptions.Agregar.option
+                openDialog()
+            }
+        }
+
+        fun deleteUserCardOnDB() {
+            viewModelScope.launch(Dispatchers.IO) {
+                userCardUseCases.deleteCard(currentCardUser)
+                currentCardUser = UserCard()
+            }
+        }
 
 }

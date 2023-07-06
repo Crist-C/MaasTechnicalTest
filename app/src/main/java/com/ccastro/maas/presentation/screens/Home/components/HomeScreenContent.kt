@@ -39,7 +39,6 @@ import com.ccastro.maas.presentation.ui.theme.MaasTheme
  */
 @Composable
 fun HomeScreenContent(
-    stoppingPlaces: List<StoppingPlace> = listOf(StoppingPlace()),
     navController: NavHostController,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -55,7 +54,6 @@ fun HomeScreenContent(
             HomeHead(navController)
             HomeBody(
                 modifier = Modifier.weight(0.8f),
-                stoppingPlaces,
                 navController
             )
         }
@@ -122,7 +120,6 @@ fun HomeHead(navHostController: NavHostController) {
 @Composable
 fun HomeBody(
     modifier: Modifier = Modifier,
-    stoppingPlaces: List<StoppingPlace> = listOf(StoppingPlace()),
     navController: NavHostController,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -142,7 +139,7 @@ fun HomeBody(
         )
         MyCardsComponent(navController = navController)
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
-        MyNearStoppingComponent(navHostController = navController, stoppingPlaces = stoppingPlaces)
+        MyNearStoppingComponent(navHostController = navController)
     }
 
     totalUserCards.value.let {
@@ -158,7 +155,7 @@ fun HomeBody(
 fun HomeContentPreview() {
     MaasTheme {
         HomeScreenContent(
-            demoStoppinPlaceList(),
+            //demoStoppinPlaceList(),
             rememberNavController()
         )
     }

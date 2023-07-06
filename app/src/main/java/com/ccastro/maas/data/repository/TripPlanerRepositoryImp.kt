@@ -6,18 +6,21 @@ import com.ccastro.maas.domain.model.Response
 import com.ccastro.maas.domain.model.StoppingPlace
 import com.ccastro.maas.domain.repository.TripPlanerRepository
 import javax.inject.Inject
+import javax.inject.Named
 
-class TripPlanerRepositoryImp @Inject constructor(private val apiDataSource: RestTripDataSource) : TripPlanerRepository {
+class TripPlanerRepositoryImp @Inject constructor(@Named("restDataSourceTrip") private val apiDataSource: RestTripDataSource) : TripPlanerRepository {
 
 
-    override suspend fun getNeaStoppinPlaces(latitud: Double, longitud: Double, radius: Int): Response<List<StoppingPlace>> {
+    override suspend fun getNearStoppinPlaces(latitud: Double, longitud: Double, radius: Int): List<StoppingPlace> {
         return try {
             val response = apiDataSource.getStops(latitud, longitud, radius)
             Log.i("MLOG", "Info(getNeaStoppinPlaces): ResponseAPI: $response")
-            Response.Success(response)
+            response
+            //Response.Success(response)
         }catch (e: Exception){
             Log.e("validateCardFlowImpl", "getFullCardInfoRequest: Exception: ${e.message}")
-            Response.Fail(e)
+            //Response.Fail(e)
+            listOf()
         }
 
     }
