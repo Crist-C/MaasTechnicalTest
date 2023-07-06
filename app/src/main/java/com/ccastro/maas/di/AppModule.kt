@@ -6,15 +6,20 @@ import com.ccastro.maas.data.Mapper.UserCardDAO
 import com.ccastro.maas.data.datasource.AuthInterceptor
 import com.ccastro.maas.data.datasource.LocalDataSource
 import com.ccastro.maas.data.datasource.RestDataSource
+import com.ccastro.maas.data.datasource.RestTripDataSource
 import com.ccastro.maas.data.repository.AuthRepositoryImpl
+import com.ccastro.maas.data.repository.TripPlanerRepositoryImp
 import com.ccastro.maas.data.repository.UserCardRepositoryImpl
 import com.ccastro.maas.domain.repository.AuthRepository
+import com.ccastro.maas.domain.repository.TripPlanerRepository
 import com.ccastro.maas.domain.repository.UserCardRepository
 import com.ccastro.maas.domain.use_cases.auth.AuthUseCases
 import com.ccastro.maas.domain.use_cases.auth.GetCurrentUser
 import com.ccastro.maas.domain.use_cases.auth.Login
 import com.ccastro.maas.domain.use_cases.auth.Logout
 import com.ccastro.maas.domain.use_cases.auth.SingUp
+import com.ccastro.maas.domain.use_cases.stopPlaces.GetNearStopPlaces
+import com.ccastro.maas.domain.use_cases.stopPlaces.StopPlacesUseCases
 import com.ccastro.maas.domain.use_cases.userCard.SaveCard
 import com.ccastro.maas.domain.use_cases.userCard.UserCardUseCases
 import com.ccastro.maas.domain.use_cases.userCard.AddUserCard
@@ -57,6 +62,7 @@ object AppModule {
 
     @Singleton
     @Provides
+    @Named("tullave")
     fun provideRetrofit(@Named("provideBaseUrl") baseUrl: String,
                         @Named("provideAuthInterceptor") authInterceptor: AuthInterceptor): Retrofit{
         return Retrofit.Builder()
@@ -71,10 +77,36 @@ object AppModule {
             .build()
 
     }
+
     // Instancia de retrofit
     @Provides
-    fun restDataSource(retrofit: Retrofit): RestDataSource =
+    fun restDataSource(@Named("tullave") retrofit: Retrofit): RestDataSource =
         retrofit.create(RestDataSource::class.java)
+
+
+    //  RETROFIT: API CARD_TULLAVE DEPENDENCIES
+    @Singleton
+    @Provides
+    @Named("provideBaseUrlTripPlaner")
+    fun provideBaseUrlTripPlaner() = "http://sisuotp.tullaveplus.gov.co/otp/routers/default/index/stops"
+
+
+    @Provides
+    @Named("RetrofitTripPlaner")
+    fun provideRetrofitTripPlaner(@Named("provideBaseUrlTripPlaner") baseUrl: String): Retrofit{
+        return Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(OkHttpClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    // Instancia de retrofit
+    @Provides
+    @Named("restDataSourceTrip")
+    fun restDataSourceTrip(@Named("RetrofitTripPlaner") retrofit: Retrofit): RestTripDataSource =
+        retrofit.create(RestTripDataSource::class.java)
+
 
 
     // FIREBASE AUTHENTICATION DEPENDENCIES
@@ -120,6 +152,14 @@ object AppModule {
         getAllCard = GetAllCards(repository),
         deleteCard = DeleteCard(repository),
         totalUserCards = TotalUserCards(repository)
+    )
+
+    @Provides
+    fun provideTripRepository(impl: TripPlanerRepositoryImp): TripPlanerRepository = impl
+
+    @Provides
+    fun provideStopPlacesUseCases(repository: TripPlanerRepository) = StopPlacesUseCases(
+        getNearStopPlaces = GetNearStopPlaces(repository)
     )
 }
 

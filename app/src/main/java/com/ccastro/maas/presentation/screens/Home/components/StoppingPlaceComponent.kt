@@ -60,7 +60,7 @@ fun StoppingPlaceComponent(stoppingPlace: StoppingPlace, modifier: Modifier = Mo
             )
             Text(
                 modifier = Modifier,
-                text = stoppingPlace.distance + " m"
+                text = stoppingPlace.dist + " m"
             )
         }
     }
@@ -85,10 +85,10 @@ fun demoStoppinPlaceList(): List<StoppingPlace> {
 
     for (i in 0..3) {
         stoppinPlaceList += StoppingPlace(
-            "086A06",
-            "Batallon Caldas",
-            "AK 50 - CL 15",
-            "219",
+            id = "086A06",
+            name = "Batallon Caldas",
+            addres =  "AK 50 - CL 15",
+            dist = "219",
         )
     }
     return stoppinPlaceList
@@ -103,10 +103,10 @@ fun StoppingPlaceCardPreview() {
     MaasTheme {
         StoppingPlaceComponent(
             stoppingPlace = StoppingPlace(
-                "086A06",
-                "Batallon Caldas",
-                "AK 50 - CL 15",
-                "219",
+                id = "086A06",
+                name = "Batallon Caldas",
+                addres =  "AK 50 - CL 15",
+                dist = "219",
             )
         )
     }
