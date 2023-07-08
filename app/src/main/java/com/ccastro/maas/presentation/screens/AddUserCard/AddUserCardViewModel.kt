@@ -38,9 +38,10 @@ class AddUserCardViewModel @Inject constructor(private val userCardUseCases: Use
     fun cardValidationConsult() = viewModelScope.launch{
 
         _addUserCardFlow.value = UseCaseResponse()
-        isLoading.value = true
 
         runBlocking {
+
+            isLoading.value = true
             val validateCardTask = async { userCardUseCases.addUserCard.validateCard(cardNumberInputUser.value) }
             _userCardBi.value = validateCardTask.await()
 

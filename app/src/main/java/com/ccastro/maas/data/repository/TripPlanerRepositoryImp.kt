@@ -2,7 +2,6 @@ package com.ccastro.maas.data.repository
 
 import android.util.Log
 import com.ccastro.maas.data.datasource.RestTripDataSource
-import com.ccastro.maas.domain.model.Response
 import com.ccastro.maas.domain.model.StoppingPlace
 import com.ccastro.maas.domain.repository.TripPlanerRepository
 import javax.inject.Inject
@@ -18,9 +17,9 @@ class TripPlanerRepositoryImp @Inject constructor(@Named("restDataSourceTrip") p
             response
             //Response.Success(response)
         }catch (e: Exception){
-            Log.e("validateCardFlowImpl", "getFullCardInfoRequest: Exception: ${e.message}")
+            Log.e("MLOG", "getNearStoppinPlaces: Exception: ${e.message}")
             //Response.Fail(e)
-            listOf()
+            listOf(StoppingPlace(id = "123456", name = "Fail TestStop", dist = "100"))
         }
 
     }

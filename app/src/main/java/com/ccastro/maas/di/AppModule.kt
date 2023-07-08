@@ -1,5 +1,6 @@
 package com.ccastro.maas.di
 
+import UnsafeOkHttpClient
 import android.content.Context
 import androidx.room.Room
 import com.ccastro.maas.data.Mapper.UserCardDAO
@@ -20,12 +21,12 @@ import com.ccastro.maas.domain.use_cases.auth.Logout
 import com.ccastro.maas.domain.use_cases.auth.SingUp
 import com.ccastro.maas.domain.use_cases.stopPlaces.GetNearStopPlaces
 import com.ccastro.maas.domain.use_cases.stopPlaces.StopPlacesUseCases
-import com.ccastro.maas.domain.use_cases.userCard.SaveCard
-import com.ccastro.maas.domain.use_cases.userCard.UserCardUseCases
 import com.ccastro.maas.domain.use_cases.userCard.AddUserCard
 import com.ccastro.maas.domain.use_cases.userCard.DeleteCard
 import com.ccastro.maas.domain.use_cases.userCard.GetAllCards
+import com.ccastro.maas.domain.use_cases.userCard.SaveCard
 import com.ccastro.maas.domain.use_cases.userCard.TotalUserCards
+import com.ccastro.maas.domain.use_cases.userCard.UserCardUseCases
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
@@ -45,7 +46,7 @@ object AppModule {
     //  RETROFIT: API CARD_TULLAVE DEPENDENCIES
     @Singleton
     @Provides
-    @Named("provideBaseUrl")
+    @Named("provideBaseUrlTullave")
     fun provideBaseUrl() = "https://osgqhdx2wf.execute-api.us-west-2.amazonaws.com"
 
     @Provides
@@ -60,10 +61,9 @@ object AppModule {
         return AuthInterceptor(authToken = provideToken())
     }
 
-    @Singleton
     @Provides
     @Named("tullave")
-    fun provideRetrofit(@Named("provideBaseUrl") baseUrl: String,
+    fun provideRetrofit(@Named("provideBaseUrlTullave") baseUrl: String,
                         @Named("provideAuthInterceptor") authInterceptor: AuthInterceptor): Retrofit{
         return Retrofit.Builder()
             .baseUrl(baseUrl)
@@ -80,6 +80,7 @@ object AppModule {
 
     // Instancia de retrofit
     @Provides
+    @Named("RestDataSourceTullave")
     fun restDataSource(@Named("tullave") retrofit: Retrofit): RestDataSource =
         retrofit.create(RestDataSource::class.java)
 
@@ -88,20 +89,17 @@ object AppModule {
     @Singleton
     @Provides
     @Named("provideBaseUrlTripPlaner")
-    fun provideBaseUrlTripPlaner() = "http://sisuotp.tullaveplus.gov.co/otp/routers/default/index/stops"
+    fun provideBaseUrlTripPlaner() = "http://sisuotp.tullaveplus.gov.co"
 
 
-    @Singleton
     @Provides
     @Named("RetrofitTripPlaner")
-    fun provideRetrofitTripPlaner(@Named("provideBaseUrlTripPlaner") baseUrl: String): Retrofit{
+    fun provideRetrofitTripPlaner(@Named("provideBaseUrlTripPlaner") baseUrl: String ): Retrofit{
+
+        val okHttpClient = UnsafeOkHttpClient.getUnsafeOkHttpClient()
         return Retrofit.Builder()
             .baseUrl(baseUrl)
-            .client(
-                OkHttpClient()
-                    .newBuilder()
-                    .build()
-            )
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

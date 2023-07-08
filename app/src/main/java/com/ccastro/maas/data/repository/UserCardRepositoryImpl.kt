@@ -8,9 +8,10 @@ import com.ccastro.maas.domain.model.UserCard
 import com.ccastro.maas.domain.repository.UserCardRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import javax.inject.Named
 
 class UserCardRepositoryImpl @Inject constructor(
-    private val apiDataSource: RestDataSource,
+    @Named("RestDataSourceTullave") private val apiDataSource: RestDataSource,
     private val userCardDAO: UserCardDAO) : UserCardRepository { //
 
     override var userCard: UserCard? = UserCard(id = 0)

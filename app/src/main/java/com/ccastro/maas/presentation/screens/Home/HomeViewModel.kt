@@ -14,10 +14,12 @@ import com.ccastro.maas.domain.use_cases.stopPlaces.StopPlacesUseCases
 import com.ccastro.maas.domain.use_cases.userCard.UserCardUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 // Al ViewModel se le injectan la clase que contiene los casos de uso
@@ -31,6 +33,9 @@ class HomeViewModel @Inject constructor(private val userCardUseCases: UserCardUs
     var confirmFunction by mutableStateOf("")
     var currentCardUser: UserCard = UserCard()
 
+    var lat: MutableState<Double> = mutableStateOf(value = 4.722557)
+    var lon: MutableState<Double> = mutableStateOf(value = -74.131103)
+    var rad: MutableState<Int> = mutableStateOf(value = 150)
 
     var state by mutableStateOf(HomeState())
 
@@ -45,35 +50,36 @@ class HomeViewModel @Inject constructor(private val userCardUseCases: UserCardUs
             }
 
         }
-        /*
-        var lat: MutableState<Double> = mutableStateOf(value = 4.722557)
-        var lon: MutableState<Double> = mutableStateOf(value = -74.131103)
-        var rad: MutableState<Int> = mutableStateOf(value = 500)
-        viewModelScope.launch {
-            try {
-                state = state.copy(
-                    stopPlaces = stopPlacesUseCases.getNearStopPlaces(
-                        latitud = lat.value,
-                        longitud = lon.value,
-                        radius = rad.value
-                    )
-                )
 
-            }catch (e: Exception){
-                Log.e("MLOG","ExceptionRadList ${e.message}")
-            }
-        }*/
     }
 
 
         val _countCardsFlow = MutableStateFlow<Int?>(value = null)
         val countCardsFlow: StateFlow<Int?> = _countCardsFlow
-        fun contarTarjetas() = viewModelScope.launch {
-            _countCardsFlow.value = userCardUseCases.totalUserCards()
-        }
 
         fun actualizarRutas() {
-            TODO("Not yet implemented")
+            viewModelScope.launch {
+                try {
+                    runBlocking {
+                        val task = async { stopPlacesUseCases.getNearStopPlaces(
+                            latitude = lat.value,
+                            longitud = lon.value,
+                            radius = rad.value
+                        ) }
+                        val stopList = task.await()
+
+                        state = state.copy(
+                            stopPlaces = stopList
+                        )
+
+
+                    }
+
+
+                }catch (e: Exception){
+                    Log.e("MLOG","ExceptionRadList ${e.message}")
+                }
+            }
         }
 
         fun onDialogConfirm() {

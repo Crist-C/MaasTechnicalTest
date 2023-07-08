@@ -5,6 +5,6 @@ import javax.inject.Inject
 
 class GetNearStopPlaces @Inject constructor(private val repository: TripPlanerRepository) {
 
-    suspend operator fun invoke(latitud: Double, longitud: Double, radius: Int) = repository.getNearStoppinPlaces(latitud, longitud, radius)
+    suspend operator fun invoke(latitude: Double, longitud: Double, radius: Int) = repository.getNearStoppinPlaces(latitude, longitud, radius)
 
 }
