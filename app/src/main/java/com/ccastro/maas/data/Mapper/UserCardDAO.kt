@@ -11,6 +11,9 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface UserCardDAO {
 
+    @Query("SELECT COUNT(id) FROM userCards WHERE cardNumber = :userCardNumber AND currentUserId = :currentUserId")
+    suspend fun verifyIfCardExist(userCardNumber: String, currentUserId: String): Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(userCard: UserCard)
 

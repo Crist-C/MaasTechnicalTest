@@ -12,10 +12,17 @@ import javax.inject.Named
 
 class UserCardRepositoryImpl @Inject constructor(
     @Named("RestDataSourceTullave") private val apiDataSource: RestDataSource,
-    private val userCardDAO: UserCardDAO) : UserCardRepository { //
+    private val userCardDAO: UserCardDAO) : UserCardRepository {
 
-    override var userCard: UserCard? = UserCard(id = 0)
-    override var userCardList: MutableList<UserCard>? = null
+    override suspend fun existUserCardOnDB(cardNumber: String, currentUserId: String): Boolean? {
+        return try {
+            val id = userCardDAO.verifyIfCardExist(cardNumber, currentUserId)
+            id > 0
+        }catch (e: Exception){
+            Log.e("MLOG","Error: existUserCardOnDB = "+e.stackTrace)
+            null
+        }
+    } //
 
     // Consumos del API
     override suspend fun validate(cardNumber: String): Response<UserCard> {

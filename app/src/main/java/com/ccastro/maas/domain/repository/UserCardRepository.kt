@@ -6,8 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface UserCardRepository {
 
-    val userCard: UserCard?
-    val userCardList: MutableList<UserCard>?
+    suspend fun existUserCardOnDB(cardNumber: String, currentUserId: String): Boolean?
 
     suspend fun validate(cardNumber: String): Response<UserCard>
 

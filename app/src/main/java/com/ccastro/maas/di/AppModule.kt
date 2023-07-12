@@ -25,6 +25,7 @@ import com.ccastro.maas.domain.use_cases.auth.SingUp
 import com.ccastro.maas.domain.use_cases.stopPlaces.GetNearStopPlaces
 import com.ccastro.maas.domain.use_cases.stopPlaces.StopPlacesUseCases
 import com.ccastro.maas.domain.use_cases.user.Create
+import com.ccastro.maas.domain.use_cases.user.GetUserById
 import com.ccastro.maas.domain.use_cases.user.UserUseCases
 import com.ccastro.maas.domain.use_cases.userCard.AddUserCard
 import com.ccastro.maas.domain.use_cases.userCard.DeleteCard
@@ -32,6 +33,7 @@ import com.ccastro.maas.domain.use_cases.userCard.GetAllUserCards
 import com.ccastro.maas.domain.use_cases.userCard.SaveCard
 import com.ccastro.maas.domain.use_cases.userCard.TotalUserCards
 import com.ccastro.maas.domain.use_cases.userCard.UserCardUseCases
+import com.ccastro.maas.domain.use_cases.userCard.VerifyIfCardExistInDB
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -173,7 +175,8 @@ object AppModule {
         saveCard = SaveCard(repository),
         getAllUserCards = GetAllUserCards(repository),
         deleteCard = DeleteCard(repository),
-        totalUserCards = TotalUserCards(repository)
+        totalUserCards = TotalUserCards(repository),
+        verifyIfCardExistInDB = VerifyIfCardExistInDB(repository)
     )
 
     // User Services
@@ -182,7 +185,8 @@ object AppModule {
 
     @Provides
     fun provideUserUseCases(userRepository: UserRepository) = UserUseCases(
-        create = Create(userRepository)
+        create = Create(userRepository),
+        getUserById = GetUserById(userRepository)
     )
 
 

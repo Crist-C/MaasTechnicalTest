@@ -63,13 +63,13 @@ fun ProfileContent(navHostController: NavHostController, viewModel: ProfileViewM
                 )
                 Text(
                     modifier = Modifier.padding(),
-                    text = "User Name",
+                    text = viewModel.userData.username,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
                     modifier = Modifier.padding(),
-                    text = "email@gmail.com",
+                    text = viewModel.userData.email,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )

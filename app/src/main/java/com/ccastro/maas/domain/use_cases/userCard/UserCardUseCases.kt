@@ -5,5 +5,6 @@ data class UserCardUseCases (
     val saveCard: SaveCard,
     val getAllUserCards: GetAllUserCards,
     val deleteCard: DeleteCard,
-    val totalUserCards: TotalUserCards
+    val totalUserCards: TotalUserCards,
+    val verifyIfCardExistInDB: VerifyIfCardExistInDB
 )

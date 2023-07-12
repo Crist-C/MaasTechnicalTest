@@ -26,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ccastro.maas.R
+import com.ccastro.maas.domain.model.Response
 import com.ccastro.maas.presentation.components.DefaultButton
 import com.ccastro.maas.presentation.components.DefaultEnunciado
 import com.ccastro.maas.presentation.components.DefaultIconButton
@@ -93,43 +94,34 @@ fun AddUserCardContent (navHostController: NavHostController, viewModel: AddUser
             onClick = { /*TODO*/ })
 
     }
-    viewModel.isLoading.let {
-        when(it.value){
-            true ->  {
-                viewModel.isEnabledSaveButton.value = false
-                viewModel.isEnabledTextInput.value = false
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-            else -> {}
-        }
-
-    }
 
     addUserCardFlow.value.let {
-        if (it != null) {
-            when(it.wasSuccess){
-                true ->{
-                    Toast.makeText(LocalContext.current,  it.resultMsg, Toast.LENGTH_LONG).show()
-                    viewModel.resetValues()
-                    LaunchedEffect(Unit){
+            when(it){
+                is Response.Fail -> {
+                    viewModel.enabledSaveButton()
+                }
+                Response.Loading -> {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+                is Response.Success -> {
+                    LaunchedEffect(Unit) {
                         navHostController.navigate(AppScreens.Home.route)
                     }
                 }
-                false ->{
-                    Toast.makeText(LocalContext.current,  it.resultMsg, Toast.LENGTH_LONG).show()
-                    viewModel.resetValues()
-                }
 
-                null -> {
-
-                }
+                null -> ""
             }
-        }
+    }
+
+    if(viewModel.showToast.value){
+        Toast.makeText(LocalContext.current, viewModel.userMessage, Toast.LENGTH_LONG).show()
+        viewModel.showToast.value = false
+        viewModel.resetValues()
     }
 
 }
