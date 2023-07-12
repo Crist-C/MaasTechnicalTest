@@ -1,0 +1,39 @@
+package com.ccastro.maas.data.repository
+
+import com.ccastro.maas.domain.model.Response
+import com.ccastro.maas.domain.model.User
+import com.ccastro.maas.domain.repository.AuthRepository
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
+
+class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseAuth) : AuthRepository {
+
+    override val currentUser: FirebaseUser? get() = firebaseAuth.currentUser
+
+    override suspend fun login(email: String, password: String): Response<FirebaseUser> {
+
+        return try {
+            val result = firebaseAuth.signInWithEmailAndPassword(email, password).await()
+            Response.Success(result.user)
+        }catch (e: Exception){
+            e.printStackTrace()
+            Response.Fail(e)
+        }
+    }
+
+    override fun logout() {
+        firebaseAuth.signOut()
+    }
+
+    override suspend fun singUp(user: User, password: String): Response<FirebaseUser> {
+        return try {
+            val result = firebaseAuth.createUserWithEmailAndPassword(user.email, password).await()
+            Response.Success(result.user)
+        }catch (e: Exception){
+            e.printStackTrace()
+            Response.Fail(e)
+        }
+    }
+}
