@@ -27,9 +27,9 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
         firebaseAuth.signOut()
     }
 
-    override suspend fun singUp(user: User): Response<FirebaseUser> {
+    override suspend fun singUp(user: User, password: String): Response<FirebaseUser> {
         return try {
-            val result = firebaseAuth.createUserWithEmailAndPassword(user.email, user.password).await()
+            val result = firebaseAuth.createUserWithEmailAndPassword(user.email, password).await()
             Response.Success(result.user)
         }catch (e: Exception){
             e.printStackTrace()

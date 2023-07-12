@@ -71,6 +71,7 @@ fun SingupContent(navHostController: NavHostController, viewModel: SingupViewMod
             }
             is Response.Success -> {
                 LaunchedEffect(Unit){
+                    viewModel.createUser()
                     navHostController.popBackStack(AppScreens.Login.route, true)
                     navHostController.navigate(AppScreens.Login.route){
                         popUpTo(AppScreens.Singup.route) {inclusive = true}
@@ -166,7 +167,7 @@ fun SingupFieldsCard(
                 modifier = Modifier.padding(start = 28.dp, end = 28.dp, top = 28.dp),
                 text = "REGISTRARME",
                 onClick ={
-                    viewModel.onSignup()
+                    viewModel.onClickSignup()
                 },
                 enable = viewModel.isEnabledSingupButton
             )

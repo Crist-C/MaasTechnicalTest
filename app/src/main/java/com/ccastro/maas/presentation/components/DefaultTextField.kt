@@ -28,7 +28,8 @@ fun DefaultTextField (
     value: String,
     onValueChange: (value: String) -> Unit,
     onValidateData: (value: String) -> Unit = {},
-    errorMsg: String = ""
+    errorMsg: String = "",
+    enable : Boolean = true
 ){
     Column() {
         OutlinedTextField(
@@ -37,6 +38,7 @@ fun DefaultTextField (
             onValueChange = {onValueChange(it)
                             onValidateData(it)},
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+            enabled = enable,
             label = {
                 Text(text = label)
             },
