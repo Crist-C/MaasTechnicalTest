@@ -156,7 +156,7 @@ fun UserCardListComponent(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     LazyRow(modifier = Modifier.padding(end = 0.dp)) {
-        items(viewModel.state.value.userCards.value.ifEmpty { listOf(UserCard()) }) { userCard ->
+        items(viewModel.state.userCards.value.ifEmpty { listOf(UserCard()) }) { userCard ->
             UserCardComponent(userCard = userCard)
         }
     }

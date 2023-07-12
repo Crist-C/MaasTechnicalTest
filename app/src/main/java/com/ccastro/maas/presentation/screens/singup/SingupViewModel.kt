@@ -2,8 +2,9 @@ package com.ccastro.maas.presentation.screens.singup
 
 import android.util.Log
 import android.util.Patterns
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ccastro.maas.domain.model.Response
@@ -20,33 +21,33 @@ import javax.inject.Inject
 @HiltViewModel
 class SingupViewModel @Inject constructor(private val authUseCases: AuthUseCases, private val userUseCases: UserUseCases): ViewModel(){
 
-    var name: MutableState<String> = mutableStateOf("")
-    var isNameValid: MutableState<Boolean> = mutableStateOf(false)
-    var nameErrorMsg: MutableState<String> = mutableStateOf("")
+    var name by mutableStateOf("")
+    var isNameValid by mutableStateOf(false)
+    var nameErrorMsg by mutableStateOf("")
     
-    var email: MutableState<String> = mutableStateOf("")
-    var isEmailValid: MutableState<Boolean> = mutableStateOf(false)
-    var emailErrorMsg: MutableState<String> = mutableStateOf("")
+    var email by mutableStateOf("")
+    var isEmailValid by mutableStateOf(false)
+    var emailErrorMsg by mutableStateOf("")
     
-    var password: MutableState<String> = mutableStateOf("")
-    var isPasswordValid: MutableState<Boolean> = mutableStateOf(false)
-    var passwordErrorMsg: MutableState<String> = mutableStateOf("")
+    var password by mutableStateOf("")
+    var isPasswordValid by mutableStateOf(false)
+    var passwordErrorMsg by mutableStateOf("")
     
-    var passwordValidate: MutableState<String> = mutableStateOf("")
-    var isPasswordValidateValid: MutableState<Boolean> = mutableStateOf(false)
-    var passwordValidateErrorMsg: MutableState<String> = mutableStateOf("")
+    var passwordValidate by mutableStateOf("")
+    var isPasswordValidateValid by mutableStateOf(false)
+    var passwordValidateErrorMsg by mutableStateOf("")
 
     var isEnabledSingupButton = false
 
-    private val _singupFlow = MutableStateFlow<Response<FirebaseUser>?>(null)
+    private var _singupFlow = MutableStateFlow<Response<FirebaseUser>?>(null)
     val singupFlow: StateFlow<Response<FirebaseUser>?> = _singupFlow
 
     var user = User()
 
     fun onClickSignup(){
         user = user.copy(
-            username = name.value,
-            email = email.value
+            username = name,
+            email = email
         )
         singup(user)
     }
@@ -54,7 +55,7 @@ class SingupViewModel @Inject constructor(private val authUseCases: AuthUseCases
     fun singup(user: User) = viewModelScope.launch {
         // Valor inicial
         _singupFlow.value = Response.Loading
-        val result = authUseCases.singUp(user, password.value)
+        val result = authUseCases.singUp(user, password)
         _singupFlow.value = result
     }
 
@@ -67,52 +68,52 @@ class SingupViewModel @Inject constructor(private val authUseCases: AuthUseCases
 
     //      Validaición de los campos del formulario
     fun enabledLoginButton() {
-        isEnabledSingupButton = isNameValid.value && isEmailValid.value && isPasswordValid.value && isPasswordValidateValid.value
+        isEnabledSingupButton = isNameValid && isEmailValid && isPasswordValid && isPasswordValidateValid
     }
 
     fun validateUserName() {
-        val totalPalabras = name.value.trim().split("\\s+".toRegex()).size
+        val totalPalabras = name.trim().split("\\s+".toRegex()).size
         Log.d("SingupViewModel", "totalPalabras : $totalPalabras")
-        if(name.value.trim().split("\\s+".toRegex()).size >= 2){
-            isNameValid.value = true
-            nameErrorMsg.value = ""
+        if(name.trim().split("\\s+".toRegex()).size >= 2){
+            isNameValid = true
+            nameErrorMsg = ""
         }else{
-            isNameValid.value = false
-            nameErrorMsg.value = "Ingresa al menos un nombre y apellido"
+            isNameValid = false
+            nameErrorMsg = "Ingresa al menos un nombre y apellido"
         }
     }
 
     fun validateEmail() {
-        if(Patterns.EMAIL_ADDRESS.matcher(email.value).matches()){
-            isEmailValid.value = true
-            emailErrorMsg.value = ""
+        if(Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            isEmailValid = true
+            emailErrorMsg = ""
         }else{
-            isEmailValid.value = false
-            emailErrorMsg.value = "email no valido"
+            isEmailValid = false
+            emailErrorMsg = "email no valido"
         }
 
         enabledLoginButton()
     }
 
     fun validatePassword(){
-        if(password.value.length >= 6){
-            isPasswordValid.value = true
-            passwordErrorMsg.value = ""
+        if(password.length >= 6){
+            isPasswordValid = true
+            passwordErrorMsg = ""
         } else{
-            isPasswordValid.value = false
-            passwordErrorMsg.value = "Ingresa al menos 6 caracteres"
+            isPasswordValid = false
+            passwordErrorMsg = "Ingresa al menos 6 caracteres"
         }
 
         enabledLoginButton()
     }
 
     fun validatePasswordConfirm(){
-        if(passwordValidate.value == password.value){
-            isPasswordValidateValid.value = true
-            passwordValidateErrorMsg.value = ""
+        if(passwordValidate == password){
+            isPasswordValidateValid = true
+            passwordValidateErrorMsg = ""
         } else{
-            isPasswordValidateValid.value = false
-            passwordValidateErrorMsg.value = "Las contraseñas no coinciden"
+            isPasswordValidateValid = false
+            passwordValidateErrorMsg = "Las contraseñas no coinciden"
         }
 
         enabledLoginButton()

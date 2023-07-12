@@ -69,8 +69,8 @@ fun AddUserCardContent (navHostController: NavHostController, viewModel: AddUser
 
         DefaultTextField(
             modifier = Modifier.padding(top = 25.dp),
-            value = viewModel.cardNumberInputUser.value,
-            enable = viewModel.isEnabledTextInput.value,
+            value = viewModel.cardNumberInputUser,
+            enable = viewModel.isEnabledTextInput,
             onValueChange =
             {
                 viewModel.setFormatToCardNumber(it)
@@ -83,7 +83,7 @@ fun AddUserCardContent (navHostController: NavHostController, viewModel: AddUser
         DefaultButton(
             modifier = Modifier.padding(start = 26.dp, end = 26.dp),
             text = "Agregar tarjeta",
-            enable = viewModel.isEnabledSaveButton.value,
+            enable = viewModel.isEnabledSaveButton,
             onClick = {
                 viewModel.cardValidationConsult()
             })
@@ -118,9 +118,9 @@ fun AddUserCardContent (navHostController: NavHostController, viewModel: AddUser
             }
     }
 
-    if(viewModel.showToast.value){
+    if(viewModel.showToast){
         Toast.makeText(LocalContext.current, viewModel.userMessage, Toast.LENGTH_LONG).show()
-        viewModel.showToast.value = false
+        viewModel.showToast = false
         viewModel.resetValues()
     }
 

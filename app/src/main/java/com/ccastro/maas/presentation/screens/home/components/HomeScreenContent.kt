@@ -54,9 +54,9 @@ fun HomeScreenContent(
             )
         }
         DefaultAlertDialog(
-            showDialog = viewModel.state.value.showDialog.value,
+            showDialog = viewModel.state.showDialog.value,
             onConfirm = {
-                            when(viewModel.state.value.confirmFunction){
+                            when(viewModel.state.confirmFunction){
                                 "eliminar" -> viewModel.onDialogConfirm()
                                 "agregar" -> {
                                     viewModel.onDialogDismiss()
@@ -65,8 +65,8 @@ fun HomeScreenContent(
                             }
                         },
             onDismiss = { viewModel.onDialogDismiss()},
-            title = viewModel.state.value.titleDialog,
-            textDialog = viewModel.state.value.textDialog,
+            title = viewModel.state.titleDialog,
+            textDialog = viewModel.state.textDialog,
         )
     }
 }

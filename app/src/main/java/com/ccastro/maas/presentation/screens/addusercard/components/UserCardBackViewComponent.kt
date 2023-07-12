@@ -53,7 +53,7 @@ fun UserCardBackViewComponent(viewModel: AddUserCardViewModel = hiltViewModel())
             ) {
                 Text(
                     modifier = Modifier.padding(start= 30.dp, bottom = 27.dp),
-                    text = viewModel.cardNumber.value,
+                    text = viewModel.cardNumber,
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.tertiaryContainer
                 )

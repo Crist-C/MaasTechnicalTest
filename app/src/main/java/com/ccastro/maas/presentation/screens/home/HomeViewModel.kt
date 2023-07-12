@@ -2,8 +2,9 @@ package com.ccastro.maas.presentation.screens.home
 
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ccastro.maas.domain.model.ConfirmOptions
@@ -27,12 +28,12 @@ class HomeViewModel @Inject constructor(
     private val stopPlacesUseCases: StopPlacesUseCases,
         authUseCases: AuthUseCases) : ViewModel() {
 
-    var state: MutableState<HomeState> = mutableStateOf(HomeState())
+    var state by mutableStateOf(HomeState())
 
     init {
         viewModelScope.launch {
             userCardUseCases.getAllUserCards(authUseCases.getCurrentUser()!!.uid).collectLatest {
-                state.value.userCards.value = it
+                state.userCards.value = it
             }
 
         }
@@ -44,12 +45,12 @@ class HomeViewModel @Inject constructor(
                 try {
                     runBlocking {
                         val task = async { stopPlacesUseCases.getNearStopPlaces(
-                            latitude = state.value.lat,
-                            longitud = state.value.lon,
-                            radius = state.value.rad
+                            latitude = state.lat,
+                            longitud = state.lon,
+                            radius = state.rad
                         ) }
                         val stopList = task.await()
-                        state.value.stopPlaces.value = stopList
+                        state.stopPlaces.value = stopList
                     }
 
 
@@ -60,41 +61,41 @@ class HomeViewModel @Inject constructor(
         }
 
     fun onDialogConfirm() {
-        when (state.value.confirmFunction) {
+        when (state.confirmFunction) {
             ConfirmOptions.Eliminar.option -> deleteUserCardOnDB()
         }
-        state.value.confirmFunction = ""
-        state.value.showDialog.value = false
+        state.confirmFunction = ""
+        state.showDialog.value = false
     }
 
     fun onDialogDismiss() {
-        state.value.confirmFunction = ""
-        state.value.showDialog.value = false
+        state.confirmFunction = ""
+        state.showDialog.value = false
     }
 
     fun openDialog() {
-        state.value.showDialog.value = true
+        state.showDialog.value = true
     }
 
     fun deleteUserCard(userCard: UserCard) {
         if (userCard.card != "") {
-            state.value.titleDialog = "Eliminar tarjeta"
-            state.value.textDialog = "Desea eliminar la tarjeta: \n${userCard.cardNumber}?"
-            state.value.confirmFunction = ConfirmOptions.Eliminar.option
-            state.value.currentCardUser = userCard
+            state.titleDialog = "Eliminar tarjeta"
+            state.textDialog = "Desea eliminar la tarjeta: \n${userCard.cardNumber}?"
+            state.confirmFunction = ConfirmOptions.Eliminar.option
+            state.currentCardUser = userCard
             openDialog()
         } else {
-            state.value.titleDialog = "Aun no tienes una tarjeta"
-            state.value.textDialog = "¿deseas agregar una tarjeta?"
-            state.value.confirmFunction = ConfirmOptions.Agregar.option
+            state.titleDialog = "Aun no tienes una tarjeta"
+            state.textDialog = "¿deseas agregar una tarjeta?"
+            state.confirmFunction = ConfirmOptions.Agregar.option
             openDialog()
         }
     }
 
     fun deleteUserCardOnDB() {
         viewModelScope.launch(Dispatchers.IO) {
-            userCardUseCases.deleteCard(state.value.currentCardUser)
-            state.value.currentCardUser = UserCard()
+            userCardUseCases.deleteCard(state.currentCardUser)
+            state.currentCardUser = UserCard()
         }
     }
 

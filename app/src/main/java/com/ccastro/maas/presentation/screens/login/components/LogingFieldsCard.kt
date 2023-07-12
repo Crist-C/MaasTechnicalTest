@@ -48,30 +48,30 @@ fun LogingFieldsCard(modifier: Modifier = Modifier, viewModel: LoginViewModel = 
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 25.dp),
-                value = viewModel.email.value,
-                onValueChange = { viewModel.email.value = it.trim() },
+                value = viewModel.email,
+                onValueChange = { viewModel.email = it.trim() },
                 label = "Correo electrónico",
                 icon = Icons.Default.Email,
                 keyboardType = KeyboardType.Email,
-                errorMsg = viewModel.emailErrorMsg.value,
+                errorMsg = viewModel.emailErrorMsg,
                 onValidateData = {viewModel.validateEmail()}
             )
             DefaultTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 25.dp),
-                value = viewModel.password.value,
-                onValueChange = { viewModel.password.value = it.trim() },
+                value = viewModel.password,
+                onValueChange = { viewModel.password = it.trim() },
                 label = "Contraseña",
                 icon = Icons.Default.Email,
                 hideText = true,
-                errorMsg = viewModel.passwordErrorMsg.value,
+                errorMsg = viewModel.passwordErrorMsg,
                 onValidateData = {viewModel.validatePassword()}
             )
             DefaultButton(
                 modifier = Modifier.padding(horizontal = 28.dp, vertical = 28.dp),
                 text = "INICIAR SESIÓN",
-                enable = viewModel.isEnabledLoginButton.value,
+                enable = viewModel.isEnabledLoginButton,
                 onClick = {
                     viewModel.login()
                 }

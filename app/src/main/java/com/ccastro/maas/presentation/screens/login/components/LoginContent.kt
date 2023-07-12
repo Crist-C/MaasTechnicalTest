@@ -45,7 +45,7 @@ fun LoginContent (navHostController: NavHostController, viewModel: LoginViewMode
     loginFlow.value.let {
         when(it){
             Response.Loading -> {
-                viewModel.isEnabledLoginButton.value = false
+                viewModel.isEnabledLoginButton = false
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier.fillMaxSize()
@@ -61,7 +61,7 @@ fun LoginContent (navHostController: NavHostController, viewModel: LoginViewMode
                 }
             }
             is Response.Fail -> {
-                viewModel.isEnabledLoginButton.value = true
+                viewModel.isEnabledLoginButton = true
                 Toast.makeText(LocalContext.current, it.exception?.message ?: "Error desconocido", Toast.LENGTH_LONG).show()
             }
             else -> {}

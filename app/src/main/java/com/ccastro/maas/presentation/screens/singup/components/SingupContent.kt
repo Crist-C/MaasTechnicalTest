@@ -115,12 +115,12 @@ fun SingupFieldsCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp),
-                value = viewModel.name.value,
+                value = viewModel.name,
                 onValueChange = {
-                    viewModel.name.value = it
+                    viewModel.name = it
                     viewModel.validateUserName()
                 },
-                errorMsg = viewModel.nameErrorMsg.value
+                errorMsg = viewModel.nameErrorMsg
             )
             DefaultTextField(
                 label = "Correo electrónico",
@@ -128,12 +128,12 @@ fun SingupFieldsCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp),
-                value = viewModel.email.value,
+                value = viewModel.email,
                 onValueChange = {
-                    viewModel.email.value = it
+                    viewModel.email = it
                     viewModel.validateEmail()
                 },
-                errorMsg = viewModel.emailErrorMsg.value
+                errorMsg = viewModel.emailErrorMsg
             )
             DefaultTextField(
                 label = "Password",
@@ -142,12 +142,12 @@ fun SingupFieldsCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp),
-                value = viewModel.password.value,
+                value = viewModel.password,
                 onValueChange = {
-                    viewModel.password.value = it
+                    viewModel.password = it
                     viewModel.validatePassword()
                 },
-                errorMsg = viewModel.passwordErrorMsg.value
+                errorMsg = viewModel.passwordErrorMsg
             )
             DefaultTextField(
                 modifier = Modifier
@@ -156,12 +156,12 @@ fun SingupFieldsCard(
                 label = "Confirmar Password",
                 icon = Icons.Default.Email,
                 hideText = true,
-                value = viewModel.passwordValidate.value,
+                value = viewModel.passwordValidate,
                 onValueChange = {
-                    viewModel.passwordValidate.value = it
+                    viewModel.passwordValidate = it
                     viewModel.validatePasswordConfirm()
                 },
-                errorMsg = viewModel.passwordValidateErrorMsg.value
+                errorMsg = viewModel.passwordValidateErrorMsg
             )
             DefaultButton(
                 modifier = Modifier.padding(start = 28.dp, end = 28.dp, top = 28.dp),

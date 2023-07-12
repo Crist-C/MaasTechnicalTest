@@ -1,8 +1,9 @@
 package com.ccastro.maas.presentation.screens.login
 
 import android.util.Patterns
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ccastro.maas.domain.model.Response
@@ -17,20 +18,20 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val authUseCases: AuthUseCases): ViewModel() {
 
-    var email: MutableState<String> = mutableStateOf("")
-    var isEmailValid: MutableState<Boolean> = mutableStateOf(false)
-    var emailErrorMsg: MutableState<String> = mutableStateOf("")
+    var email by mutableStateOf("")
+    var isEmailValid by mutableStateOf(false)
+    var emailErrorMsg by mutableStateOf("")
 
-    var password: MutableState<String> = mutableStateOf("")
-    var isPasswordValid: MutableState<Boolean> = mutableStateOf(false)
-    var passwordErrorMsg: MutableState<String> = mutableStateOf("")
+    var password by mutableStateOf("")
+    var isPasswordValid by mutableStateOf(false)
+    var passwordErrorMsg by mutableStateOf("")
 
-    var isEnabledLoginButton: MutableState<Boolean> = mutableStateOf(false)
+    var isEnabledLoginButton by mutableStateOf(false)
 
     private val _loginFlow = MutableStateFlow<Response<FirebaseUser>?>(value = null)
     val loginFlow: StateFlow<Response<FirebaseUser>?> = _loginFlow
 
-    val currentUser = authUseCases.getCurrentUser()
+    private val currentUser = authUseCases.getCurrentUser()
 
     init {
         if (currentUser != null){   // SESIÓN INICIADA - INGRESA DIRECTAMENTE PORQUE YA EXISTE UN USUARIO LOGUEADO
@@ -41,7 +42,7 @@ class LoginViewModel @Inject constructor(private val authUseCases: AuthUseCases)
     //      Login
     fun login() = viewModelScope.launch {
         _loginFlow.value = Response.Loading
-        val result = authUseCases.login(email = email.value, password = password.value)
+        val result = authUseCases.login(email = email, password = password)
         _loginFlow.value = result
 
     }
@@ -50,28 +51,28 @@ class LoginViewModel @Inject constructor(private val authUseCases: AuthUseCases)
     //      Validaciones del formulario
 
     fun enabledLoginButton() {
-        isEnabledLoginButton.value = isEmailValid.value && isPasswordValid.value
+        isEnabledLoginButton = isEmailValid && isPasswordValid
     }
 
     fun validateEmail() {
-        if(Patterns.EMAIL_ADDRESS.matcher(email.value).matches()){
-            isEmailValid.value = true
-            emailErrorMsg.value = ""
+        if(Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            isEmailValid = true
+            emailErrorMsg = ""
         }else{
-            isEmailValid.value = false
-            emailErrorMsg.value = "email no valido"
+            isEmailValid = false
+            emailErrorMsg = "email no valido"
         }
 
         enabledLoginButton()
     }
 
     fun validatePassword(){
-        if(password.value.length >= 6){
-            isPasswordValid.value = true
-            passwordErrorMsg.value = ""
+        if(password.length >= 6){
+            isPasswordValid = true
+            passwordErrorMsg = ""
         } else{
-            isPasswordValid.value = false
-            passwordErrorMsg.value = "al menos 6 caracteres"
+            isPasswordValid = false
+            passwordErrorMsg = "al menos 6 caracteres"
         }
 
         enabledLoginButton()
