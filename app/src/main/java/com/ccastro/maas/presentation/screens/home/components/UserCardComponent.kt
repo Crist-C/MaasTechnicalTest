@@ -1,4 +1,4 @@
-package com.ccastro.maas.presentation.screens.Home.components
+package com.ccastro.maas.presentation.screens.home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ccastro.maas.R
 import com.ccastro.maas.domain.model.UserCard
-import com.ccastro.maas.presentation.screens.Home.HomeViewModel
+import com.ccastro.maas.presentation.screens.home.HomeViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
@@ -156,7 +156,7 @@ fun UserCardListComponent(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     LazyRow(modifier = Modifier.padding(end = 0.dp)) {
-        items(viewModel.state.userCards.ifEmpty { listOf(UserCard()) }) { userCard ->
+        items(viewModel.state.value.userCards.value.ifEmpty { listOf(UserCard()) }) { userCard ->
             UserCardComponent(userCard = userCard)
         }
     }

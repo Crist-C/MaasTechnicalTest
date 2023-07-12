@@ -1,4 +1,4 @@
-package com.ccastro.maas.presentation.screens.Profile
+package com.ccastro.maas.presentation.screens.profile
 
 import androidx.lifecycle.ViewModel
 import com.ccastro.maas.domain.use_cases.auth.AuthUseCases

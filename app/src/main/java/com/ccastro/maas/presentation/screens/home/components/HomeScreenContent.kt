@@ -1,6 +1,5 @@
-package com.ccastro.maas.presentation.screens.Home.components
+package com.ccastro.maas.presentation.screens.home.components
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,22 +15,19 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.ccastro.maas.domain.model.StoppingPlace
 import com.ccastro.maas.presentation.components.DefaultAlertDialog
 import com.ccastro.maas.presentation.components.DefaultIconButton
 import com.ccastro.maas.presentation.components.LogoMaasComponent
 import com.ccastro.maas.presentation.navigation.AppScreens
-import com.ccastro.maas.presentation.screens.Home.HomeViewModel
+import com.ccastro.maas.presentation.screens.home.HomeViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 /**
@@ -58,9 +54,9 @@ fun HomeScreenContent(
             )
         }
         DefaultAlertDialog(
-            showDialog = viewModel.showDialog,
+            showDialog = viewModel.state.value.showDialog.value,
             onConfirm = {
-                            when(viewModel.confirmFunction){
+                            when(viewModel.state.value.confirmFunction){
                                 "eliminar" -> viewModel.onDialogConfirm()
                                 "agregar" -> {
                                     viewModel.onDialogDismiss()
@@ -69,8 +65,8 @@ fun HomeScreenContent(
                             }
                         },
             onDismiss = { viewModel.onDialogDismiss()},
-            title = viewModel.titleDialog,
-            textDialog = viewModel.textDialog,
+            title = viewModel.state.value.titleDialog,
+            textDialog = viewModel.state.value.textDialog,
         )
     }
 }
@@ -120,10 +116,8 @@ fun HomeHead(navHostController: NavHostController) {
 @Composable
 fun HomeBody(
     modifier: Modifier = Modifier,
-    navController: NavHostController,
-    viewModel: HomeViewModel = hiltViewModel(),
+    navController: NavHostController
 ) {
-    val totalUserCards = viewModel.countCardsFlow.collectAsState()
 
     Column(
         modifier = modifier.background(MaterialTheme.colorScheme.background),
@@ -139,12 +133,9 @@ fun HomeBody(
         )
         MyCardsComponent(navController = navController)
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
-        MyNearStoppingComponent(navHostController = navController)
+        MyNearStoppingComponent()
     }
 
-    totalUserCards.value.let {
-        Toast.makeText(LocalContext.current, "Total user cards: $it", Toast.LENGTH_SHORT)
-    }
 }
 
 

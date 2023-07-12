@@ -1,4 +1,4 @@
-package com.ccastro.maas.presentation.screens.Profile.contents
+package com.ccastro.maas.presentation.screens.profile.contents
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,7 +29,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ccastro.maas.presentation.components.DefaultButton
 import com.ccastro.maas.presentation.navigation.AppScreens
-import com.ccastro.maas.presentation.screens.Profile.ProfileViewModel
+import com.ccastro.maas.presentation.screens.profile.ProfileViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
@@ -64,13 +67,30 @@ fun ProfileContent(navHostController: NavHostController, viewModel: ProfileViewM
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.SemiBold
                 )
+                Text(
+                    modifier = Modifier.padding(),
+                    text = "email@gmail.com",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold
+                )
                 DefaultButton(
-                    modifier = Modifier.padding(25.dp),
-                    text = "LogOut",
+                    modifier = Modifier.padding(start = 25.dp, end = 25.dp, top = 25.dp, bottom = 8.dp),
+                    text = "Editar datos",
+                    icon = Icons.Default.Edit,
+                    onClick = {
+
+                    }
+                )
+                DefaultButton(
+                    modifier = Modifier.padding(start = 25.dp, end = 25.dp, bottom = 25.dp),
+                    text = "Cerrar Sesion",
+                    icon = Icons.Default.Close,
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
                     onClick = {
                         viewModel.logout()
                         navHostController.popBackStack(AppScreens.Login.route, true)
                         navHostController.navigate(route = AppScreens.Login.route){
+                            navHostController.popBackStack(AppScreens.Home.route, true)
                             popUpTo(route = AppScreens.Profile.route){inclusive = true}
                         }
                     }

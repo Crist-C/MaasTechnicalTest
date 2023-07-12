@@ -1,4 +1,4 @@
-package com.ccastro.maas.presentation.screens.AddUserCard
+package com.ccastro.maas.presentation.screens.addusercard
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ccastro.maas.domain.model.UseCaseResponse
 import com.ccastro.maas.domain.model.UserCard
+import com.ccastro.maas.domain.use_cases.auth.AuthUseCases
 import com.ccastro.maas.domain.use_cases.userCard.UserCardUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -18,7 +19,7 @@ import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
-class AddUserCardViewModel @Inject constructor(private val userCardUseCases: UserCardUseCases) : ViewModel() {
+class AddUserCardViewModel @Inject constructor(private val userCardUseCases: UserCardUseCases, private val authUseCases: AuthUseCases) : ViewModel() {
 
     var userCard: UserCard = UserCard()
 
@@ -51,7 +52,7 @@ class AddUserCardViewModel @Inject constructor(private val userCardUseCases: Use
                 _userCardFi.value = getInfoCardTask.await()
 
                 if (_userCardFi.value?.cardNumber?.isDigitsOnly() == true){
-                    userCardUseCases.addUserCard.completeCardData(_userCardFi.value, _userCardBi.value)
+                    userCardUseCases.addUserCard.completeCardData(_userCardFi.value, _userCardBi.value, authUseCases.getCurrentUser()!!.uid)
                     userCardUseCases.saveCard(_userCardFi.value!!)
                     _addUserCardFlow.value = UseCaseResponse(true, "¡ Ya tienes vinculada tu tarjeta !")
                 }else{

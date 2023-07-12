@@ -5,7 +5,7 @@ import com.ccastro.maas.domain.repository.UserCardRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetAllCards @Inject constructor(private val repository: UserCardRepository){
+class GetAllUserCards @Inject constructor(private val repository: UserCardRepository){
 
-    operator fun invoke() : Flow<List<UserCard>> = repository.getAllCards()
+    operator fun invoke(currentUserId: String) : Flow<List<UserCard>> = repository.getAllUserCards(currentUserId)
 }

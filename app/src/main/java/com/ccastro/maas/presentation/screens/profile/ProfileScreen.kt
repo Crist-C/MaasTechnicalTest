@@ -1,4 +1,4 @@
-package com.ccastro.maas.presentation.screens.Profile
+package com.ccastro.maas.presentation.screens.profile
 
 import android.annotation.SuppressLint
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -8,7 +8,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ccastro.maas.presentation.components.DefaultTopBar
-import com.ccastro.maas.presentation.screens.Profile.contents.ProfileContent
+import com.ccastro.maas.presentation.screens.profile.contents.ProfileContent
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

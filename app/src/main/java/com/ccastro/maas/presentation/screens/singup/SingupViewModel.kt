@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.ccastro.maas.domain.model.Response
 import com.ccastro.maas.domain.model.User
 import com.ccastro.maas.domain.use_cases.auth.AuthUseCases
+import com.ccastro.maas.domain.use_cases.user.UserUseCases
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SingupViewModel @Inject constructor(private val authUseCases: AuthUseCases): ViewModel(){
+class SingupViewModel @Inject constructor(private val authUseCases: AuthUseCases, private val userUseCases: UserUseCases): ViewModel(){
 
     var name: MutableState<String> = mutableStateOf("")
     var isNameValid: MutableState<Boolean> = mutableStateOf(false)
@@ -37,28 +38,31 @@ class SingupViewModel @Inject constructor(private val authUseCases: AuthUseCases
 
     var isEnabledSingupButton = false
 
+    private val _singupFlow = MutableStateFlow<Response<FirebaseUser>?>(null)
+    val singupFlow: StateFlow<Response<FirebaseUser>?> = _singupFlow
 
-    fun onSignup(){
-        val user = User(
+    var user = User()
+
+    fun onClickSignup(){
+        user = user.copy(
             username = name.value,
-            email = email.value,
-            password = password.value,
-            passwordConfirm = passwordValidate.value
+            email = email.value
         )
-
         singup(user)
     }
 
-    // Corroutines
-
-    private val _singupFlow = MutableStateFlow<Response<FirebaseUser>?>(null)
-    val singupFlow: StateFlow<Response<FirebaseUser>?> = _singupFlow
     fun singup(user: User) = viewModelScope.launch {
         // Valor inicial
         _singupFlow.value = Response.Loading
-        val result = authUseCases.singUp(user)
+        val result = authUseCases.singUp(user, password.value)
         _singupFlow.value = result
     }
+
+    fun createUser() = viewModelScope.launch{
+        user.id = authUseCases.getCurrentUser()!!.uid
+        userUseCases.create(user)
+    }
+
 
 
     //      Validaición de los campos del formulario

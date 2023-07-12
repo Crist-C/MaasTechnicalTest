@@ -17,11 +17,12 @@ class AddUserCard @Inject constructor (private val repository: UserCardRepositor
         return null
     }
 
-    fun completeCardData(cardTwo: UserCard?, cardOne: UserCard?) : UserCard? {
+    fun completeCardData(cardTwo: UserCard?, cardOne: UserCard?, currentUserId: String) : UserCard? {
         cardTwo?.card = cardOne?.card
         cardTwo?.isValid = cardOne?.isValid
         cardTwo?.status = cardOne?.status
         cardTwo?.statusCode = cardOne?.statusCode
+        cardTwo?.currentUserId = currentUserId
         return cardTwo
     }
 

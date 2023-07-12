@@ -1,4 +1,4 @@
-package com.ccastro.maas.presentation.screens.AddUserCard.components
+package com.ccastro.maas.presentation.screens.addusercard.components
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +31,7 @@ import com.ccastro.maas.presentation.components.DefaultEnunciado
 import com.ccastro.maas.presentation.components.DefaultIconButton
 import com.ccastro.maas.presentation.components.DefaultTextField
 import com.ccastro.maas.presentation.navigation.AppScreens
-import com.ccastro.maas.presentation.screens.AddUserCard.AddUserCardViewModel
+import com.ccastro.maas.presentation.screens.addusercard.AddUserCardViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable

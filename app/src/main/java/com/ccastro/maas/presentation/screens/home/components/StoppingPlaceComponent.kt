@@ -1,4 +1,4 @@
-package com.ccastro.maas.presentation.screens.Home.components
+package com.ccastro.maas.presentation.screens.home.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ccastro.maas.domain.model.StoppingPlace
-import com.ccastro.maas.presentation.screens.Home.HomeViewModel
+import com.ccastro.maas.presentation.screens.home.HomeViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
@@ -74,7 +74,7 @@ fun StoppingPlaceComponent(stoppingPlace: StoppingPlace, modifier: Modifier = Mo
 @Composable
 fun StoppingPlacesNearList(viewModel: HomeViewModel = hiltViewModel()) {
     LazyRow {
-        items(viewModel.state.stopPlaces.ifEmpty { listOf(StoppingPlace()) }) { stoppingPlace ->
+        items(viewModel.state.value.stopPlaces.value.ifEmpty { listOf(StoppingPlace()) }) { stoppingPlace ->
             StoppingPlaceComponent(stoppingPlace = stoppingPlace)
         }
     }

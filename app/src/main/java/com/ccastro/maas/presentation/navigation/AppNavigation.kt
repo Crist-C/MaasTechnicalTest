@@ -4,11 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.ccastro.maas.presentation.screens.AddUserCard.AddUserCardScreen
-import com.ccastro.maas.presentation.screens.Home.HomeScreen
-import com.ccastro.maas.presentation.screens.Home.components.demoStoppinPlaceList
-import com.ccastro.maas.presentation.screens.Map.MapScreen
-import com.ccastro.maas.presentation.screens.Profile.ProfileScreen
+import com.ccastro.maas.presentation.screens.addusercard.AddUserCardScreen
+import com.ccastro.maas.presentation.screens.home.HomeScreen
+import com.ccastro.maas.presentation.screens.map.MapScreen
+import com.ccastro.maas.presentation.screens.profile.ProfileScreen
 import com.ccastro.maas.presentation.screens.login.LoginScreen
 import com.ccastro.maas.presentation.screens.singup.SingupScreen
 
@@ -32,7 +31,7 @@ fun AppNavigation(navHostController: NavHostController) {
         }
 
         composable(route = AppScreens.Home.route){
-            HomeScreen(navHostController = navHostController, stoppingPlace = demoStoppinPlaceList())
+            HomeScreen(navHostController = navHostController)
         }
 
         composable(route = AppScreens.AddUserCard.route){
@@ -40,7 +39,7 @@ fun AppNavigation(navHostController: NavHostController) {
         }
 
         composable(route = AppScreens.Map.route){
-            MapScreen(navHostController = navHostController)
+            MapScreen()
         }
     }
 }

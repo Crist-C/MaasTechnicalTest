@@ -14,8 +14,8 @@ interface UserCardDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(userCard: UserCard)
 
-    @Query("SELECT * FROM userCards ORDER BY id DESC")
-    fun getAll(): Flow<List<UserCard>>
+    @Query("SELECT * FROM userCards WHERE currentUserId = :currentUserId ORDER BY id DESC")
+    fun getAll(currentUserId: String): Flow<List<UserCard>>
 
     @Delete
     suspend fun delete(userCard: UserCard)

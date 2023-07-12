@@ -23,6 +23,7 @@ data class UserCard(
     @ColumnInfo(name = "status") var status: String? = "",
     @ColumnInfo(name = "statusCode") var statusCode: Int? = 0,
 
+    @ColumnInfo(name = "currentUserId") var currentUserId: String = "",
     @ColumnInfo(name = "amount") val amount: Int = 0,
     @ColumnInfo(name = "imageId") val imageId: Int = if (isValid == true) {
         R.drawable.tullave_card_3

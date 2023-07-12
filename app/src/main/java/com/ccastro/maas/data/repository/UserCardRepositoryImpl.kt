@@ -41,8 +41,8 @@ class UserCardRepositoryImpl @Inject constructor(
     }
 
     // Almacenamiento en la DB
-    override fun getAllCards(): Flow<List<UserCard>> {
-        return userCardDAO.getAll()
+    override fun getAllUserCards(currentUserId: String): Flow<List<UserCard>> {
+        return userCardDAO.getAll(currentUserId)
     }
 
     override suspend fun saveCard(card: UserCard): Response<Int> {

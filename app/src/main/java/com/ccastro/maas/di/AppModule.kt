@@ -3,6 +3,7 @@ package com.ccastro.maas.di
 import UnsafeOkHttpClient
 import android.content.Context
 import androidx.room.Room
+import com.ccastro.maas.core.Constans.USERS
 import com.ccastro.maas.data.Mapper.UserCardDAO
 import com.ccastro.maas.data.datasource.AuthInterceptor
 import com.ccastro.maas.data.datasource.LocalDataSource
@@ -11,9 +12,11 @@ import com.ccastro.maas.data.datasource.RestTripDataSource
 import com.ccastro.maas.data.repository.AuthRepositoryImpl
 import com.ccastro.maas.data.repository.TripPlanerRepositoryImp
 import com.ccastro.maas.data.repository.UserCardRepositoryImpl
+import com.ccastro.maas.data.repository.UserRepositoryImpl
 import com.ccastro.maas.domain.repository.AuthRepository
 import com.ccastro.maas.domain.repository.TripPlanerRepository
 import com.ccastro.maas.domain.repository.UserCardRepository
+import com.ccastro.maas.domain.repository.UserRepository
 import com.ccastro.maas.domain.use_cases.auth.AuthUseCases
 import com.ccastro.maas.domain.use_cases.auth.GetCurrentUser
 import com.ccastro.maas.domain.use_cases.auth.Login
@@ -21,13 +24,19 @@ import com.ccastro.maas.domain.use_cases.auth.Logout
 import com.ccastro.maas.domain.use_cases.auth.SingUp
 import com.ccastro.maas.domain.use_cases.stopPlaces.GetNearStopPlaces
 import com.ccastro.maas.domain.use_cases.stopPlaces.StopPlacesUseCases
+import com.ccastro.maas.domain.use_cases.user.Create
+import com.ccastro.maas.domain.use_cases.user.UserUseCases
 import com.ccastro.maas.domain.use_cases.userCard.AddUserCard
 import com.ccastro.maas.domain.use_cases.userCard.DeleteCard
-import com.ccastro.maas.domain.use_cases.userCard.GetAllCards
+import com.ccastro.maas.domain.use_cases.userCard.GetAllUserCards
 import com.ccastro.maas.domain.use_cases.userCard.SaveCard
 import com.ccastro.maas.domain.use_cases.userCard.TotalUserCards
 import com.ccastro.maas.domain.use_cases.userCard.UserCardUseCases
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,6 +51,15 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
+    // Obtener Firestore
+    @Provides
+    fun provideFirestore() : FirebaseFirestore = Firebase.firestore
+
+    // Obtener las colecciones
+    @Provides
+    fun provideUserColectionsRef(db: FirebaseFirestore): CollectionReference = db.collection(USERS)
+
 
     //  RETROFIT: API CARD_TULLAVE DEPENDENCIES
     @Singleton
@@ -107,7 +125,7 @@ object AppModule {
     // Instancia de retrofit
     @Provides
     @Named("restDataSourceTrip")
-    fun restDataSourceTrip(@Named("RetrofitTripPlaner") retrofit: Retrofit): RestTripDataSource =
+    fun provideRestDataSourceTrip(@Named("RetrofitTripPlaner") retrofit: Retrofit): RestTripDataSource =
         retrofit.create(RestTripDataSource::class.java)
 
 
@@ -145,6 +163,7 @@ object AppModule {
 
     //  APLICATION DEPENDENCIES
 
+    // Auth Services
     @Provides
     fun provideUserCardRepository(impl: UserCardRepositoryImpl): UserCardRepository = impl
 
@@ -152,11 +171,22 @@ object AppModule {
     fun provideUserCardUseCases(repository: UserCardRepository) = UserCardUseCases(
         addUserCard = AddUserCard(repository),
         saveCard = SaveCard(repository),
-        getAllCard = GetAllCards(repository),
+        getAllUserCards = GetAllUserCards(repository),
         deleteCard = DeleteCard(repository),
         totalUserCards = TotalUserCards(repository)
     )
 
+    // User Services
+    @Provides
+    fun providesUserRepository(impl: UserRepositoryImpl): UserRepository = impl
+
+    @Provides
+    fun provideUserUseCases(userRepository: UserRepository) = UserUseCases(
+        create = Create(userRepository)
+    )
+
+
+    // TripPlanner Services
     @Provides
     fun provideTripRepository(impl: TripPlanerRepositoryImp): TripPlanerRepository = impl
 

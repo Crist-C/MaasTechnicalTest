@@ -13,7 +13,7 @@ interface UserCardRepository {
 
     suspend fun getFullCardInfoRequest(cardNumber: String): Response<UserCard>
 
-    fun getAllCards(): Flow<List<UserCard>>
+    fun getAllUserCards(currentUserId: String): Flow<List<UserCard>>
 
     suspend fun saveCard(card: UserCard): Response<Int>
 

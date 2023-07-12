@@ -1,4 +1,4 @@
-package com.ccastro.maas.presentation.screens.AddUserCard.components
+package com.ccastro.maas.presentation.screens.addusercard.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ccastro.maas.R
-import com.ccastro.maas.presentation.screens.AddUserCard.AddUserCardViewModel
+import com.ccastro.maas.presentation.screens.addusercard.AddUserCardViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable

@@ -1,4 +1,4 @@
-package com.ccastro.maas.presentation.screens.AddUserCard
+package com.ccastro.maas.presentation.screens.addusercard
 
 import android.annotation.SuppressLint
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.ccastro.maas.presentation.screens.AddUserCard.components.AddUserCardContent
+import com.ccastro.maas.presentation.screens.addusercard.components.AddUserCardContent
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
