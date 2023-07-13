@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ccastro.maas.domain.model.ConfirmOptions
+import com.ccastro.maas.domain.model.DialogContents
 import com.ccastro.maas.domain.model.UserCard
 import com.ccastro.maas.domain.use_cases.auth.AuthUseCases
 import com.ccastro.maas.domain.use_cases.stopPlaces.StopPlacesUseCases
@@ -26,73 +26,62 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val userCardUseCases: UserCardUseCases,
     private val stopPlacesUseCases: StopPlacesUseCases,
-        authUseCases: AuthUseCases) : ViewModel() {
+    private val authUseCases: AuthUseCases) : ViewModel() {
 
     var state by mutableStateOf(HomeState())
+        private set
 
     init {
         viewModelScope.launch {
             userCardUseCases.getAllUserCards(authUseCases.getCurrentUser()!!.uid).collectLatest {
-                state.userCards.value = it
+                state = state.copy(userCards = it)
             }
-
         }
     }
 
-
     fun actualizarRutas() {
-            viewModelScope.launch {
-                try {
-                    runBlocking {
-                        val task = async { stopPlacesUseCases.getNearStopPlaces(
-                            latitude = state.lat,
-                            longitud = state.lon,
-                            radius = state.rad
-                        ) }
-                        val stopList = task.await()
-                        state.stopPlaces.value = stopList
+        viewModelScope.launch {
+            try {
+                runBlocking {
+                    val task = async {
+                        stopPlacesUseCases.getNearStopPlaces(latitude = state.lat, longitud = state.lon, radius = state.rad)
                     }
-
-
-                }catch (e: Exception){
-                    Log.e("MLOG","ExceptionRadList ${e.message}")
+                    val stopList = task.await()
+                    state.stopPlaces.value = stopList
                 }
+            }catch (e: Exception){
+                Log.e("MLOG","ExceptionRadList ${e.message}")
             }
         }
+    }
+
+    fun validateDialogContent(userCard: UserCard){
+        if(userCard == UserCard()){
+            state.dialogContent = DialogContents.Agregar
+            (state.dialogContent as DialogContents.Agregar).onCallFunction = {}
+        }else{
+            state.currentCardUser = userCard
+            state.dialogContent = DialogContents.Eliminar
+            (state.dialogContent as DialogContents.Eliminar).onCallFunction = {deleteUserCardOnDB()}
+        }
+        openDialog()
+    }
+
+    private fun openDialog() {
+        state = state.copy(showDialog = true)
+    }
 
     fun onDialogConfirm() {
-        when (state.confirmFunction) {
-            ConfirmOptions.Eliminar.option -> deleteUserCardOnDB()
-        }
-        state.confirmFunction = ""
-        state.showDialog.value = false
+        state.dialogContent = null
+        state = state.copy(showDialog = false)
     }
 
     fun onDialogDismiss() {
-        state.confirmFunction = ""
-        state.showDialog.value = false
+        state.dialogContent = null
+        state = state.copy(showDialog = false)
     }
 
-    fun openDialog() {
-        state.showDialog.value = true
-    }
-
-    fun deleteUserCard(userCard: UserCard) {
-        if (userCard.card != "") {
-            state.titleDialog = "Eliminar tarjeta"
-            state.textDialog = "Desea eliminar la tarjeta: \n${userCard.cardNumber}?"
-            state.confirmFunction = ConfirmOptions.Eliminar.option
-            state.currentCardUser = userCard
-            openDialog()
-        } else {
-            state.titleDialog = "Aun no tienes una tarjeta"
-            state.textDialog = "¿deseas agregar una tarjeta?"
-            state.confirmFunction = ConfirmOptions.Agregar.option
-            openDialog()
-        }
-    }
-
-    fun deleteUserCardOnDB() {
+    private fun deleteUserCardOnDB() {
         viewModelScope.launch(Dispatchers.IO) {
             userCardUseCases.deleteCard(state.currentCardUser)
             state.currentCardUser = UserCard()

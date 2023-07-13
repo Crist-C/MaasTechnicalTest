@@ -1,23 +1,16 @@
 package com.ccastro.maas.presentation.screens.addusercard.components
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,7 +19,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ccastro.maas.R
-import com.ccastro.maas.domain.model.Response
 import com.ccastro.maas.presentation.components.DefaultButton
 import com.ccastro.maas.presentation.components.DefaultEnunciado
 import com.ccastro.maas.presentation.components.DefaultIconButton
@@ -38,7 +30,7 @@ import com.ccastro.maas.presentation.ui.theme.MaasTheme
 @Composable
 fun AddUserCardContent (navHostController: NavHostController, viewModel: AddUserCardViewModel = hiltViewModel()){
 
-    val addUserCardFlow = viewModel.addUserCardFlow.collectAsState()
+    val state = viewModel.state
 
     Column(
         modifier = Modifier,
@@ -69,8 +61,8 @@ fun AddUserCardContent (navHostController: NavHostController, viewModel: AddUser
 
         DefaultTextField(
             modifier = Modifier.padding(top = 25.dp),
-            value = viewModel.cardNumberInputUser,
-            enable = viewModel.isEnabledTextInput,
+            value = state.cardNumberInputUser,
+            enable = state.isEnabledTextInput,
             onValueChange =
             {
                 viewModel.setFormatToCardNumber(it)
@@ -83,9 +75,9 @@ fun AddUserCardContent (navHostController: NavHostController, viewModel: AddUser
         DefaultButton(
             modifier = Modifier.padding(start = 26.dp, end = 26.dp),
             text = "Agregar tarjeta",
-            enable = viewModel.isEnabledSaveButton,
+            enable = state.isEnabledSaveButton,
             onClick = {
-                viewModel.cardValidationConsult()
+                viewModel.addUserCardFlow()
             })
         DefaultButton(
             modifier = Modifier.padding(start = 26.dp, end = 26.dp),
@@ -93,35 +85,6 @@ fun AddUserCardContent (navHostController: NavHostController, viewModel: AddUser
             colors = ButtonDefaults.outlinedButtonColors(),
             onClick = { /*TODO*/ })
 
-    }
-
-    addUserCardFlow.value.let {
-            when(it){
-                is Response.Fail -> {
-                    viewModel.enabledSaveButton()
-                }
-                Response.Loading -> {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        CircularProgressIndicator()
-                    }
-                }
-                is Response.Success -> {
-                    LaunchedEffect(Unit) {
-                        navHostController.navigate(AppScreens.Home.route)
-                    }
-                }
-
-                null -> ""
-            }
-    }
-
-    if(viewModel.showToast){
-        Toast.makeText(LocalContext.current, viewModel.userMessage, Toast.LENGTH_LONG).show()
-        viewModel.showToast = false
-        viewModel.resetValues()
     }
 
 }

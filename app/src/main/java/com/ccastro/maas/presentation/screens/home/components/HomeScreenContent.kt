@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.ccastro.maas.domain.model.DialogContents
 import com.ccastro.maas.presentation.components.DefaultAlertDialog
 import com.ccastro.maas.presentation.components.DefaultIconButton
 import com.ccastro.maas.presentation.components.LogoMaasComponent
@@ -38,6 +39,7 @@ fun HomeScreenContent(
     navController: NavHostController,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
+    val state = viewModel.state
 
     Box(modifier = Modifier.fillMaxSize()){
         Column(
@@ -54,19 +56,20 @@ fun HomeScreenContent(
             )
         }
         DefaultAlertDialog(
-            showDialog = viewModel.state.showDialog.value,
+            showDialog = state.showDialog,
             onConfirm = {
-                            when(viewModel.state.confirmFunction){
-                                "eliminar" -> viewModel.onDialogConfirm()
-                                "agregar" -> {
-                                    viewModel.onDialogDismiss()
-                                    navController.navigate(AppScreens.AddUserCard.route)
-                                }
-                            }
-                        },
+                if(state.dialogContent is DialogContents.Eliminar)
+                {
+                    state.dialogContent?.onCallFunction?.invoke()
+                    viewModel.onDialogConfirm()
+                }else{
+                    viewModel.onDialogDismiss()
+                    navController.navigate(AppScreens.AddUserCard.route)
+                }
+            },
             onDismiss = { viewModel.onDialogDismiss()},
-            title = viewModel.state.titleDialog,
-            textDialog = viewModel.state.textDialog,
+            title = state.dialogContent?.title ?: "",
+            textDialog = state.dialogContent?.description + "\n${state.currentCardUser.card}",
         )
     }
 }

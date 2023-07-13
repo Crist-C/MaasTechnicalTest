@@ -13,109 +13,103 @@ import com.ccastro.maas.domain.use_cases.auth.AuthUseCases
 import com.ccastro.maas.domain.use_cases.user.UserUseCases
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SingupViewModel @Inject constructor(private val authUseCases: AuthUseCases, private val userUseCases: UserUseCases): ViewModel(){
 
-    var name by mutableStateOf("")
-    var isNameValid by mutableStateOf(false)
-    var nameErrorMsg by mutableStateOf("")
-    
-    var email by mutableStateOf("")
-    var isEmailValid by mutableStateOf(false)
-    var emailErrorMsg by mutableStateOf("")
-    
-    var password by mutableStateOf("")
-    var isPasswordValid by mutableStateOf(false)
-    var passwordErrorMsg by mutableStateOf("")
-    
-    var passwordValidate by mutableStateOf("")
-    var isPasswordValidateValid by mutableStateOf(false)
-    var passwordValidateErrorMsg by mutableStateOf("")
+    var state by mutableStateOf(SingupState())
+        private set
 
-    var isEnabledSingupButton = false
 
-    private var _singupFlow = MutableStateFlow<Response<FirebaseUser>?>(null)
-    val singupFlow: StateFlow<Response<FirebaseUser>?> = _singupFlow
-
-    var user = User()
+    // SingUp Response
+    var singupResponse by mutableStateOf<Response<FirebaseUser>?>(null)
 
     fun onClickSignup(){
-        user = user.copy(
-            username = name,
-            email = email
+        state.user = state.user.copy(
+            username = state.name,
+            email = state.email
         )
-        singup(user)
+        singup(state.user)
     }
 
     fun singup(user: User) = viewModelScope.launch {
         // Valor inicial
-        _singupFlow.value = Response.Loading
-        val result = authUseCases.singUp(user, password)
-        _singupFlow.value = result
+        singupResponse = Response.Loading
+        val result = authUseCases.singUp(user, state.password)
+        singupResponse = result
     }
 
     fun createUser() = viewModelScope.launch{
-        user.id = authUseCases.getCurrentUser()!!.uid
-        userUseCases.create(user)
+        state.user.id = authUseCases.getCurrentUser()!!.uid
+        userUseCases.create(state.user)
     }
 
+    // Input User states
+    fun onNameChange(name: String){
+        state = state.copy(name = name)
+    }
 
+    fun onEmailChange(email: String){
+        state = state.copy(email = email)
+    }
 
-    //      Validaición de los campos del formulario
-    fun enabledLoginButton() {
-        isEnabledSingupButton = isNameValid && isEmailValid && isPasswordValid && isPasswordValidateValid
+    fun onPasswordChange(password: String){
+        state = state.copy(password = password)
+    }
+
+    fun onPasswordValidateChange(paswordValidate: String){
+        state = state.copy(passwordValidate = paswordValidate)
+    }
+
+    //  Validaición de los campos del formulario
+    private fun enabledLoginButton() {
+        state.isEnabledSingupButton = state.isNameValid && state.isEmailValid && state.isPasswordValid && state.isPasswordValidateValid
     }
 
     fun validateUserName() {
-        val totalPalabras = name.trim().split("\\s+".toRegex()).size
+        val totalPalabras = state.name.trim().split("\\s+".toRegex()).size
         Log.d("SingupViewModel", "totalPalabras : $totalPalabras")
-        if(name.trim().split("\\s+".toRegex()).size >= 2){
-            isNameValid = true
-            nameErrorMsg = ""
+        if(state.name.trim().split("\\s+".toRegex()).size >= 2){
+            state.isNameValid = true
+            state.nameErrorMsg = ""
         }else{
-            isNameValid = false
-            nameErrorMsg = "Ingresa al menos un nombre y apellido"
+            state.isNameValid = false
+            state.nameErrorMsg = "Ingresa al menos un nombre y apellido"
         }
     }
 
     fun validateEmail() {
-        if(Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            isEmailValid = true
-            emailErrorMsg = ""
+        if(Patterns.EMAIL_ADDRESS.matcher(state.email).matches()){
+            state.isEmailValid = true
+            state.emailErrorMsg = ""
         }else{
-            isEmailValid = false
-            emailErrorMsg = "email no valido"
+            state.isEmailValid = false
+            state.emailErrorMsg = "state.email no valido"
         }
-
         enabledLoginButton()
     }
 
     fun validatePassword(){
-        if(password.length >= 6){
-            isPasswordValid = true
-            passwordErrorMsg = ""
+        if(state.password.length >= 6){
+            state.isPasswordValid = true
+            state.passwordErrorMsg = ""
         } else{
-            isPasswordValid = false
-            passwordErrorMsg = "Ingresa al menos 6 caracteres"
+            state.isPasswordValid = false
+            state.passwordErrorMsg = "Ingresa al menos 6 caracteres"
         }
-
         enabledLoginButton()
     }
 
     fun validatePasswordConfirm(){
-        if(passwordValidate == password){
-            isPasswordValidateValid = true
-            passwordValidateErrorMsg = ""
+        if(state.passwordValidate == state.password){
+            state.isPasswordValidateValid = true
+            state.passwordValidateErrorMsg = ""
         } else{
-            isPasswordValidateValid = false
-            passwordValidateErrorMsg = "Las contraseñas no coinciden"
+            state.isPasswordValidateValid = false
+            state.passwordValidateErrorMsg = "Las contraseñas no coinciden"
         }
-
         enabledLoginButton()
     }
 

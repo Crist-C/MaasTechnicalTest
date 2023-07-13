@@ -82,10 +82,10 @@ fun UserCardComponent(userCard: UserCard = UserCard(), viewModel: HomeViewModel 
                         .size(36.dp)
                         .border(1.dp, Color.White, CircleShape)
                         .clickable {
-                                   viewModel.deleteUserCard(userCard)
+                            viewModel.validateDialogContent(userCard)
                         },
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Icon profile",
+                    contentDescription = "Delete icon",
                     tint = MaterialTheme.colorScheme.secondary,
                 )
             }
@@ -156,7 +156,7 @@ fun UserCardListComponent(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     LazyRow(modifier = Modifier.padding(end = 0.dp)) {
-        items(viewModel.state.userCards.value.ifEmpty { listOf(UserCard()) }) { userCard ->
+        items(viewModel.state.userCards.ifEmpty { listOf(UserCard()) }) { userCard ->
             UserCardComponent(userCard = userCard)
         }
     }
@@ -167,7 +167,7 @@ fun UserCardListComponent(
 //                       DATA DEMOS
 
 fun demoCardList(): List<UserCard> {
-    var userCardList: List<UserCard> = listOf()
+    val userCardList: MutableList<UserCard> = mutableListOf()
     for (i in 0..3) {
         userCardList += UserCard(
             cardNumber = "1010 0000 0858 2785",

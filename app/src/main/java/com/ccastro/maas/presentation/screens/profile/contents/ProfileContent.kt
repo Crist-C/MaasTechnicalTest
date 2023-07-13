@@ -35,6 +35,8 @@ import com.ccastro.maas.presentation.ui.theme.MaasTheme
 @Composable
 fun ProfileContent(navHostController: NavHostController, viewModel: ProfileViewModel = hiltViewModel()) {
 
+    val state = viewModel.state
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -63,13 +65,13 @@ fun ProfileContent(navHostController: NavHostController, viewModel: ProfileViewM
                 )
                 Text(
                     modifier = Modifier.padding(),
-                    text = viewModel.userData.username,
+                    text = state.userData.username,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
                     modifier = Modifier.padding(),
-                    text = viewModel.userData.email,
+                    text = state.userData.email,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.SemiBold
                 )

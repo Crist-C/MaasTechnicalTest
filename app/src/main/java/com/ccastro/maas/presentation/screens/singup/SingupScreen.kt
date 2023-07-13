@@ -9,6 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ccastro.maas.presentation.components.EditKeyBoardUiMode
+import com.ccastro.maas.presentation.screens.singup.components.Singup
 import com.ccastro.maas.presentation.screens.singup.components.SingupContent
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
@@ -26,6 +27,7 @@ fun SingupScreen(navHostController: NavHostController) {
         },
         bottomBar = {}
     )
+    Singup(navHostController = navHostController)
 }
 
 @Preview(showBackground = true, showSystemUi = true)

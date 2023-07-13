@@ -10,71 +10,66 @@ import com.ccastro.maas.domain.model.Response
 import com.ccastro.maas.domain.use_cases.auth.AuthUseCases
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val authUseCases: AuthUseCases): ViewModel() {
 
-    var email by mutableStateOf("")
-    var isEmailValid by mutableStateOf(false)
-    var emailErrorMsg by mutableStateOf("")
+    // Login State
+    var state by mutableStateOf(LoginState())
+        private set
 
-    var password by mutableStateOf("")
-    var isPasswordValid by mutableStateOf(false)
-    var passwordErrorMsg by mutableStateOf("")
-
-    var isEnabledLoginButton by mutableStateOf(false)
-
-    private val _loginFlow = MutableStateFlow<Response<FirebaseUser>?>(value = null)
-    val loginFlow: StateFlow<Response<FirebaseUser>?> = _loginFlow
-
-    private val currentUser = authUseCases.getCurrentUser()
+    // Login Response
+    var loginResponse by mutableStateOf<Response<FirebaseUser>?>(null)
 
     init {
-        if (currentUser != null){   // SESIÓN INICIADA - INGRESA DIRECTAMENTE PORQUE YA EXISTE UN USUARIO LOGUEADO
-            _loginFlow.value = Response.Success(currentUser)
+        state.currentUser = authUseCases.getCurrentUser()
+        if (state.currentUser != null){   // SESIÓN INICIADA - INGRESA DIRECTAMENTE PORQUE YA EXISTE UN USUARIO LOGUEADO
+            loginResponse = Response.Success(state.currentUser)
         }
     }
 
-    //      Login
+    // Login coroutine
     fun login() = viewModelScope.launch {
-        _loginFlow.value = Response.Loading
-        val result = authUseCases.login(email = email, password = password)
-        _loginFlow.value = result
-
+        loginResponse = Response.Loading
+        val result = authUseCases.login(email = state.email, password = state.password)
+        loginResponse = result
     }
 
+    // Modificación de los campos en el formulario
+    fun onPasswordInput(password: String){
+        state = state.copy(password = password)
+    }
 
-    //      Validaciones del formulario
+    fun onEmailInput(email: String){
+        state = state.copy(email = email)
+    }
 
-    fun enabledLoginButton() {
-        isEnabledLoginButton = isEmailValid && isPasswordValid
+    // Validaciones del formulario
+    private fun enabledLoginButton() {
+        state.isEnabledLoginButton = state.isEmailValid && state.isPasswordValid
     }
 
     fun validateEmail() {
-        if(Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            isEmailValid = true
-            emailErrorMsg = ""
+        if(Patterns.EMAIL_ADDRESS.matcher(state.email).matches()){
+            state.isEmailValid = true
+            state.emailErrorMsg = ""
         }else{
-            isEmailValid = false
-            emailErrorMsg = "email no valido"
+            state.isEmailValid = false
+            state.emailErrorMsg = "email no valido"
         }
-
         enabledLoginButton()
     }
 
     fun validatePassword(){
-        if(password.length >= 6){
-            isPasswordValid = true
-            passwordErrorMsg = ""
+        if(state.password.length >= 6){
+            state.isPasswordValid = true
+            state.passwordErrorMsg = ""
         } else{
-            isPasswordValid = false
-            passwordErrorMsg = "al menos 6 caracteres"
+            state.isPasswordValid = false
+            state.passwordErrorMsg = "al menos 6 caracteres"
         }
-
         enabledLoginButton()
     }
 
