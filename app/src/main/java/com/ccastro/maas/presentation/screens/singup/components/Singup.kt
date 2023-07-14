@@ -8,7 +8,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.ccastro.maas.domain.model.Response
 import com.ccastro.maas.presentation.components.DefaultCircularProgress
-import com.ccastro.maas.presentation.navigation.AppScreens
+import com.ccastro.maas.presentation.navigation.AuthNavScreens
+import com.ccastro.maas.presentation.navigation.Graph
 import com.ccastro.maas.presentation.screens.singup.SingupViewModel
 
 @Composable
@@ -16,6 +17,7 @@ fun Singup(navHostController: NavHostController, viewModel: SingupViewModel = hi
     when(val singupResponse = viewModel.singupResponse){
         is Response.Fail ->{
             Toast.makeText(LocalContext.current, singupResponse.exception?.message, Toast.LENGTH_LONG).show()
+            viewModel.singupResponse = null
         }
         Response.Loading -> {
             DefaultCircularProgress()
@@ -23,9 +25,8 @@ fun Singup(navHostController: NavHostController, viewModel: SingupViewModel = hi
         is Response.Success -> {
             LaunchedEffect(Unit){
                 viewModel.createUser()
-                navHostController.popBackStack(AppScreens.Login.route, true)
-                navHostController.navigate(AppScreens.Login.route){
-                    popUpTo(AppScreens.Singup.route) {inclusive = true}
+                navHostController.navigate(AuthNavScreens.Login.route){
+                    popUpTo(Graph.AUTHENTICATION) {inclusive = true}
                 }
             }
         }

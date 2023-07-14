@@ -16,13 +16,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.ccastro.maas.presentation.components.DefaultButton
+import com.ccastro.maas.presentation.navigation.HomeNavigationScreens
 import com.ccastro.maas.presentation.screens.home.HomeViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
 fun MyNearStoppingComponent(
     viewModel: HomeViewModel = hiltViewModel(),
+    navHostController: NavHostController
 ){
 
     Surface(
@@ -50,8 +54,8 @@ fun MyNearStoppingComponent(
                 text = "Ver en el mapa",
                 icon = Icons.Default.Place,
                 onClick = {
-                    viewModel.actualizarRutas()
-                //navHostController.navigate(AppScreens.Map.route)
+                    //viewModel.actualizarRutas()
+                    navHostController.navigate(HomeNavigationScreens.Map.route)
             })
         }
     }
@@ -63,6 +67,6 @@ fun MyNearStoppingComponent(
 @Composable
 fun MyNearStoppingsComponentPreview() {
     MaasTheme {
-        MyNearStoppingComponent()
+        MyNearStoppingComponent(navHostController = rememberNavController())
     }
 }

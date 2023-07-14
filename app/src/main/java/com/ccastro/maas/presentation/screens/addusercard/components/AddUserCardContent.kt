@@ -23,7 +23,7 @@ import com.ccastro.maas.presentation.components.DefaultButton
 import com.ccastro.maas.presentation.components.DefaultEnunciado
 import com.ccastro.maas.presentation.components.DefaultIconButton
 import com.ccastro.maas.presentation.components.DefaultTextField
-import com.ccastro.maas.presentation.navigation.AppScreens
+import com.ccastro.maas.presentation.navigation.HomeNavigationScreens
 import com.ccastro.maas.presentation.screens.addusercard.AddUserCardViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
@@ -44,7 +44,7 @@ fun AddUserCardContent (navHostController: NavHostController, viewModel: AddUser
             DefaultIconButton(
                 modifier = Modifier.padding(14.dp),
                 onClick = {
-                    navHostController.navigate(AppScreens.Home.route)
+                    navHostController.navigate(HomeNavigationScreens.Home.route)
                 }
             )
         }

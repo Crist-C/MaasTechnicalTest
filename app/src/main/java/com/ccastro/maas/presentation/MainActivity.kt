@@ -8,7 +8,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.ccastro.maas.presentation.navigation.AppNavigation
+import com.ccastro.maas.presentation.navigation.RootNavGraph
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     navController = rememberNavController()
-                    AppNavigation(navHostController = navController)
+                    RootNavGraph(navHostController = navController)
                 }
             }
         }

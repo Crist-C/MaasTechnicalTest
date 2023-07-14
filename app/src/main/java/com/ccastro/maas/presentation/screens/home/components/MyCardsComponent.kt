@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.ccastro.maas.presentation.navigation.AppScreens
+import com.ccastro.maas.presentation.navigation.HomeNavigationScreens
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
@@ -56,7 +56,7 @@ fun MyCardsComponent(
                     horizontalArrangement = Arrangement.End
                 ) {
                     Spacer(modifier = Modifier.padding(4.dp))
-                    ButtonAdd { navController.navigate(route = AppScreens.AddUserCard.route) }
+                    ButtonAdd { navController.navigate(route = HomeNavigationScreens.AddUserCard.route) }
                 }
 
             }

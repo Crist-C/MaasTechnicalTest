@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.MaterialTheme
@@ -27,7 +29,7 @@ import com.ccastro.maas.domain.model.DialogContents
 import com.ccastro.maas.presentation.components.DefaultAlertDialog
 import com.ccastro.maas.presentation.components.DefaultIconButton
 import com.ccastro.maas.presentation.components.LogoMaasComponent
-import com.ccastro.maas.presentation.navigation.AppScreens
+import com.ccastro.maas.presentation.navigation.HomeNavigationScreens
 import com.ccastro.maas.presentation.screens.home.HomeViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
@@ -64,7 +66,7 @@ fun HomeScreenContent(
                     viewModel.onDialogConfirm()
                 }else{
                     viewModel.onDialogDismiss()
-                    navController.navigate(AppScreens.AddUserCard.route)
+                    navController.navigate(HomeNavigationScreens.AddUserCard.route)
                 }
             },
             onDismiss = { viewModel.onDialogDismiss()},
@@ -105,7 +107,7 @@ fun HomeHead(navHostController: NavHostController) {
                 modifier = Modifier.padding(14.dp),
                 icon = Icons.Default.Person,
                 onClick = {
-                    navHostController.navigate(AppScreens.Profile.route)
+                    navHostController.navigate(HomeNavigationScreens.Profile.route)
                 }
             )
 
@@ -123,7 +125,11 @@ fun HomeBody(
 ) {
 
     Column(
-        modifier = modifier.background(MaterialTheme.colorScheme.background),
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(
+                rememberScrollState()
+            ),
         verticalArrangement = Arrangement.Top
     ) {
         Text(
@@ -136,7 +142,7 @@ fun HomeBody(
         )
         MyCardsComponent(navController = navController)
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
-        MyNearStoppingComponent()
+        MyNearStoppingComponent(navHostController = navController)
     }
 
 }

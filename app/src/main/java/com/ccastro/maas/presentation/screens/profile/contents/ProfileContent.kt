@@ -28,7 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ccastro.maas.presentation.components.DefaultButton
-import com.ccastro.maas.presentation.navigation.AppScreens
+import com.ccastro.maas.presentation.navigation.Graph
 import com.ccastro.maas.presentation.screens.profile.ProfileViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
@@ -90,10 +90,9 @@ fun ProfileContent(navHostController: NavHostController, viewModel: ProfileViewM
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
                     onClick = {
                         viewModel.logout()
-                        navHostController.popBackStack(AppScreens.Login.route, true)
-                        navHostController.navigate(route = AppScreens.Login.route){
-                            navHostController.popBackStack(AppScreens.Home.route, true)
-                            popUpTo(route = AppScreens.Profile.route){inclusive = true}
+                        navHostController.popBackStack()
+                        navHostController.navigate(Graph.AUTHENTICATION){
+                            popUpTo(Graph.HOME){inclusive = true}
                         }
                     }
                 )

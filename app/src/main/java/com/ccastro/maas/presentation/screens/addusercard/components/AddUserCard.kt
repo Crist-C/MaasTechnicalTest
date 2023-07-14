@@ -8,7 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.ccastro.maas.domain.model.Response
 import com.ccastro.maas.presentation.components.DefaultCircularProgress
-import com.ccastro.maas.presentation.navigation.AppScreens
+import com.ccastro.maas.presentation.navigation.HomeNavigationScreens
 import com.ccastro.maas.presentation.screens.addusercard.AddUserCardViewModel
 
 @Composable
@@ -23,7 +23,7 @@ fun AddUserCard(navHostController: NavHostController, viewModel: AddUserCardView
         }
         is Response.Success -> {
             LaunchedEffect(Unit) {
-                navHostController.navigate(AppScreens.Home.route)
+                navHostController.navigate(HomeNavigationScreens.Home.route)
             }
         }
 

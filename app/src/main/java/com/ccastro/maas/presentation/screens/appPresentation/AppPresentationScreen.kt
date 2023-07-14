@@ -1,22 +1,22 @@
-package com.ccastro.maas.presentation.screens.map
+package com.ccastro.maas.presentation.screens.appPresentation.components
+
 
 import android.annotation.SuppressLint
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import com.ccastro.maas.presentation.screens.map.components.MapContent
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun MapScreen(navHostController: NavHostController) {
-    Scaffold(
+fun AppPresentationScreen(navHostController: NavHostController) {
+    Scaffold (
         topBar = {},
         content = {
-            MapContent()
+            AppPresentationContent()
         },
         bottomBar = {}
     )
+    HeadTo(navHostController = navHostController)
 }
-

@@ -8,7 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.ccastro.maas.domain.model.Response
 import com.ccastro.maas.presentation.components.DefaultCircularProgress
-import com.ccastro.maas.presentation.navigation.AppScreens
+import com.ccastro.maas.presentation.navigation.Graph
 import com.ccastro.maas.presentation.screens.login.LoginViewModel
 
 @Composable
@@ -23,14 +23,16 @@ fun Login(navHostController: NavHostController, viewModel: LoginViewModel = hilt
         }
         is Response.Success -> {
             LaunchedEffect(Unit){
-                navHostController.navigate(AppScreens.Home.route){
-                    popUpTo(AppScreens.Login.route) {inclusive = true}
+                navHostController.navigate(Graph.HOME){
+                    navHostController.popBackStack()
+                    popUpTo(Graph.AUTHENTICATION) {inclusive = true}
                 }
             }
         }
         is Response.Fail -> {
             state.isEnabledLoginButton = true
-            Toast.makeText(LocalContext.current, loginResponse.exception?.message ?: "Error desconocido", Toast.LENGTH_LONG).show()
+            Toast.makeText(LocalContext.current, "Error: " + loginResponse.exception?.message, Toast.LENGTH_LONG).show()
+            viewModel.resetValues()
         }
         else -> {}
     }

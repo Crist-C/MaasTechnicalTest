@@ -73,4 +73,8 @@ class LoginViewModel @Inject constructor(private val authUseCases: AuthUseCases)
         enabledLoginButton()
     }
 
+    fun resetValues(){
+        loginResponse = null
+    }
+
 }
