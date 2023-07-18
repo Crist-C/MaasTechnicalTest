@@ -10,7 +10,7 @@ import com.ccastro.maas.presentation.screens.map.components.MapContent
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MapScreen(navHostController: NavHostController) {
+fun MapScreen(navHostController: NavHostController, nearPlaces: String) {
     Scaffold(
         topBar = {},
         content = {

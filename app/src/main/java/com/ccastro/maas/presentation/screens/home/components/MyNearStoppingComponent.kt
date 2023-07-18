@@ -55,7 +55,10 @@ fun MyNearStoppingComponent(
                 icon = Icons.Default.Place,
                 onClick = {
                     //viewModel.actualizarRutas()
-                    navHostController.navigate(HomeNavigationScreens.Map.route)
+                    viewModel.stopLocationRequest()
+                    navHostController.navigate(HomeNavigationScreens.Map.passNearStopPlaces(
+                        viewModel.state.gson.toJson(viewModel.state.stopPlaces.value)
+                    ))
             })
         }
     }

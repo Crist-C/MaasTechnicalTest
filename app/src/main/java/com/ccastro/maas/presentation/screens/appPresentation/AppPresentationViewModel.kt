@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.ccastro.maas.domain.use_cases.auth.AuthUseCases
 import com.ccastro.maas.presentation.navigation.Graph
-import com.ccastro.maas.presentation.screens.appPresentation.components.AppPresentationState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

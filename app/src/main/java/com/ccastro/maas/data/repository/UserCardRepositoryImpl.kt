@@ -1,8 +1,8 @@
 package com.ccastro.maas.data.repository
 
 import android.util.Log
-import com.ccastro.maas.data.Mapper.UserCardDAO
-import com.ccastro.maas.data.datasource.RestDataSource
+import com.ccastro.maas.data.datasource.dao.UserCardDAO
+import com.ccastro.maas.data.API.RestDataSource
 import com.ccastro.maas.domain.model.Response
 import com.ccastro.maas.domain.model.UserCard
 import com.ccastro.maas.domain.repository.UserCardRepository
@@ -12,7 +12,8 @@ import javax.inject.Named
 
 class UserCardRepositoryImpl @Inject constructor(
     @Named("RestDataSourceTullave") private val apiDataSource: RestDataSource,
-    private val userCardDAO: UserCardDAO) : UserCardRepository {
+    private val userCardDAO: UserCardDAO
+) : UserCardRepository {
 
     override suspend fun existUserCardOnDB(cardNumber: String, currentUserId: String): Boolean? {
         return try {

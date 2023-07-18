@@ -4,16 +4,17 @@ import UnsafeOkHttpClient
 import android.content.Context
 import androidx.room.Room
 import com.ccastro.maas.core.Constans.USERS
-import com.ccastro.maas.data.Mapper.UserCardDAO
-import com.ccastro.maas.data.datasource.AuthInterceptor
+import com.ccastro.maas.data.datasource.dao.UserCardDAO
+import com.ccastro.maas.data.API.AuthInterceptor
 import com.ccastro.maas.data.datasource.LocalDataSource
-import com.ccastro.maas.data.datasource.RestDataSource
-import com.ccastro.maas.data.datasource.RestTripDataSource
+import com.ccastro.maas.data.API.RestDataSource
+import com.ccastro.maas.data.API.RestTripDataSource
 import com.ccastro.maas.data.repository.AuthRepositoryImpl
 import com.ccastro.maas.data.repository.TripPlanerRepositoryImp
 import com.ccastro.maas.data.repository.UserCardRepositoryImpl
 import com.ccastro.maas.data.repository.UserRepositoryImpl
 import com.ccastro.maas.domain.repository.AuthRepository
+import com.ccastro.maas.domain.repository.LocationProviderRepository
 import com.ccastro.maas.domain.repository.TripPlanerRepository
 import com.ccastro.maas.domain.repository.UserCardRepository
 import com.ccastro.maas.domain.repository.UserRepository
@@ -34,6 +35,10 @@ import com.ccastro.maas.domain.use_cases.userCard.SaveCard
 import com.ccastro.maas.domain.use_cases.userCard.TotalUserCards
 import com.ccastro.maas.domain.use_cases.userCard.UserCardUseCases
 import com.ccastro.maas.domain.use_cases.userCard.VerifyIfCardExistInDB
+import com.ccastro.maas.domain.use_cases.userDevice.GetUserLocation
+import com.ccastro.maas.domain.use_cases.userDevice.RequestLocationPermission
+import com.ccastro.maas.domain.use_cases.userDevice.UserDeviceUsesCases
+import com.ccastro.maas.presentation.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -84,7 +89,8 @@ object AppModule {
     @Provides
     @Named("tullave")
     fun provideRetrofit(@Named("provideBaseUrlTullave") baseUrl: String,
-                        @Named("provideAuthInterceptor") authInterceptor: AuthInterceptor): Retrofit{
+                        @Named("provideAuthInterceptor") authInterceptor: AuthInterceptor
+    ): Retrofit{
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(
@@ -187,6 +193,16 @@ object AppModule {
     fun provideUserUseCases(userRepository: UserRepository) = UserUseCases(
         create = Create(userRepository),
         getUserById = GetUserById(userRepository)
+    )
+
+    @Provides
+    fun provideContext(): Context = MainActivity().applicationContext
+
+    // User Device services
+    @Provides
+    fun provideUserDeviceUserCases(locationProviderRepository: LocationProviderRepository) = UserDeviceUsesCases(
+        requestLocationPermission = RequestLocationPermission(),
+        getUserLocation = GetUserLocation(locationProviderRepository)
     )
 
 

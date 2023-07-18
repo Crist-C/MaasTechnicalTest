@@ -66,6 +66,7 @@ fun HomeScreenContent(
                     viewModel.onDialogConfirm()
                 }else{
                     viewModel.onDialogDismiss()
+                    viewModel.stopLocationRequest()
                     navController.navigate(HomeNavigationScreens.AddUserCard.route)
                 }
             },
@@ -77,7 +78,7 @@ fun HomeScreenContent(
 }
 
 @Composable
-fun HomeHead(navHostController: NavHostController) {
+fun HomeHead(navHostController: NavHostController, viewModel: HomeViewModel = hiltViewModel()) {
 
     Box(
         modifier = Modifier
@@ -107,6 +108,7 @@ fun HomeHead(navHostController: NavHostController) {
                 modifier = Modifier.padding(14.dp),
                 icon = Icons.Default.Person,
                 onClick = {
+                    viewModel.stopLocationRequest()
                     navHostController.navigate(HomeNavigationScreens.Profile.route)
                 }
             )

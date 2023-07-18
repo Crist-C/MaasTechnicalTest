@@ -1,4 +1,4 @@
-package com.ccastro.maas.data.Mapper
+package com.ccastro.maas.data.datasource.dao
 
 import androidx.room.Dao
 import androidx.room.Delete

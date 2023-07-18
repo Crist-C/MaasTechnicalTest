@@ -1,4 +1,4 @@
-package com.ccastro.maas.presentation.screens.appPresentation.components
+package com.ccastro.maas.presentation.screens.appPresentation
 
 import com.google.firebase.auth.FirebaseUser
 

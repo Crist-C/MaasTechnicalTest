@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     navController = rememberNavController()
-                    RootNavGraph(navHostController = navController)
+                    RootNavGraph(navHostController = navController, this)
                 }
             }
         }

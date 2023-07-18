@@ -3,9 +3,10 @@ package com.ccastro.maas.presentation.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.ccastro.maas.presentation.MainActivity
 
 @Composable
-fun RootNavGraph(navHostController: NavHostController) {
+fun RootNavGraph(navHostController: NavHostController, activity: MainActivity) {
     /**
      * Este RootNavGraph, es un Grafo de Grafos
      */
@@ -26,7 +27,7 @@ fun RootNavGraph(navHostController: NavHostController) {
          */
         introduceNavGraph(navHostController = navHostController)
         authNavGrap(navHostController = navHostController)
-        homeNavGrap(navHostController = navHostController)
+        homeNavGrap(navHostController = navHostController, activity)
 
     }
 }
