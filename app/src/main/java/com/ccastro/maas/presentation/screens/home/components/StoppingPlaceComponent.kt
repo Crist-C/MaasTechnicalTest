@@ -74,7 +74,7 @@ fun StoppingPlaceComponent(stoppingPlace: StoppingPlace, modifier: Modifier = Mo
 @Composable
 fun StoppingPlacesNearList(viewModel: HomeViewModel = hiltViewModel()) {
     LazyRow {
-        items(viewModel.state.value.stopPlaces.value.ifEmpty { listOf(StoppingPlace()) }) { stoppingPlace ->
+        items(viewModel.state.stopPlaces.value.sortedBy { it.dist }.ifEmpty { listOf(StoppingPlace()) }) { stoppingPlace ->
             StoppingPlaceComponent(stoppingPlace = stoppingPlace)
         }
     }

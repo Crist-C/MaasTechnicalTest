@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.MaterialTheme
@@ -23,10 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.ccastro.maas.domain.model.DialogContents
 import com.ccastro.maas.presentation.components.DefaultAlertDialog
 import com.ccastro.maas.presentation.components.DefaultIconButton
 import com.ccastro.maas.presentation.components.LogoMaasComponent
-import com.ccastro.maas.presentation.navigation.AppScreens
+import com.ccastro.maas.presentation.navigation.HomeNavigationScreens
 import com.ccastro.maas.presentation.screens.home.HomeViewModel
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
@@ -38,6 +41,7 @@ fun HomeScreenContent(
     navController: NavHostController,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
+    val state = viewModel.state
 
     Box(modifier = Modifier.fillMaxSize()){
         Column(
@@ -54,25 +58,27 @@ fun HomeScreenContent(
             )
         }
         DefaultAlertDialog(
-            showDialog = viewModel.state.value.showDialog.value,
+            showDialog = state.showDialog,
             onConfirm = {
-                            when(viewModel.state.value.confirmFunction){
-                                "eliminar" -> viewModel.onDialogConfirm()
-                                "agregar" -> {
-                                    viewModel.onDialogDismiss()
-                                    navController.navigate(AppScreens.AddUserCard.route)
-                                }
-                            }
-                        },
+                if(state.dialogContent is DialogContents.Eliminar)
+                {
+                    state.dialogContent?.onCallFunction?.invoke()
+                    viewModel.onDialogConfirm()
+                }else{
+                    viewModel.onDialogDismiss()
+                    viewModel.stopLocationRequest()
+                    navController.navigate(HomeNavigationScreens.AddUserCard.route)
+                }
+            },
             onDismiss = { viewModel.onDialogDismiss()},
-            title = viewModel.state.value.titleDialog,
-            textDialog = viewModel.state.value.textDialog,
+            title = state.dialogContent?.title ?: "",
+            textDialog = state.dialogContent?.description + "\n${state.currentCardUser.card}",
         )
     }
 }
 
 @Composable
-fun HomeHead(navHostController: NavHostController) {
+fun HomeHead(navHostController: NavHostController, viewModel: HomeViewModel = hiltViewModel()) {
 
     Box(
         modifier = Modifier
@@ -102,7 +108,8 @@ fun HomeHead(navHostController: NavHostController) {
                 modifier = Modifier.padding(14.dp),
                 icon = Icons.Default.Person,
                 onClick = {
-                    navHostController.navigate(AppScreens.Profile.route)
+                    viewModel.stopLocationRequest()
+                    navHostController.navigate(HomeNavigationScreens.Profile.route)
                 }
             )
 
@@ -120,7 +127,11 @@ fun HomeBody(
 ) {
 
     Column(
-        modifier = modifier.background(MaterialTheme.colorScheme.background),
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.background)
+            .verticalScroll(
+                rememberScrollState()
+            ),
         verticalArrangement = Arrangement.Top
     ) {
         Text(
@@ -133,7 +144,7 @@ fun HomeBody(
         )
         MyCardsComponent(navController = navController)
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
-        MyNearStoppingComponent()
+        MyNearStoppingComponent(navHostController = navController)
     }
 
 }

@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.ccastro.maas.presentation.screens.login.components.LoginContent
 import com.ccastro.maas.presentation.components.EditKeyBoardUiMode
+import com.ccastro.maas.presentation.screens.login.components.Login
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -25,6 +26,7 @@ fun LoginScreen(navHostController: NavHostController) {
         },
         bottomBar = {}
     )
+    Login(navHostController = navHostController)
 }
 
 @Preview(showSystemUi = true, showBackground = true)

@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.ccastro.maas.presentation.navigation.AppScreens
+import com.ccastro.maas.presentation.navigation.AuthNavScreens
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
@@ -36,7 +36,7 @@ fun LoginBottonBar(navHostController: NavHostController){
         Text(
             modifier = Modifier
                 .clickable {
-                           navHostController.navigate(AppScreens.Singup.route)
+                           navHostController.navigate(AuthNavScreens.Singup.route)
             },
             text = "Registrate",
             style = MaterialTheme.typography.titleMedium,
