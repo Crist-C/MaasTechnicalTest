@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.ccastro.maas.presentation.screens.addusercard.components.AddUserCard
 import com.ccastro.maas.presentation.screens.addusercard.components.AddUserCardContent
 import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
@@ -21,12 +22,13 @@ fun AddUserCardScreen(navHostController: NavHostController) {
         },
         bottomBar = {}
     )
+    AddUserCard(navHostController = navHostController)
 }
 
 @Preview
 @Composable
 fun AddUserCardScreenPreview(){
-    MaasTheme() {
+    MaasTheme {
         AddUserCardScreen(rememberNavController())
     }
 }

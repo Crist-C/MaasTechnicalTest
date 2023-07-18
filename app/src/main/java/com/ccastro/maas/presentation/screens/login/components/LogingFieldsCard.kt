@@ -25,7 +25,9 @@ import com.ccastro.maas.presentation.ui.theme.MaasTheme
 
 @Composable
 fun LogingFieldsCard(modifier: Modifier = Modifier, viewModel: LoginViewModel = hiltViewModel()){
-
+    
+    val state = viewModel.state
+    
     Surface(
         modifier = modifier
             .wrapContentSize(),
@@ -48,30 +50,30 @@ fun LogingFieldsCard(modifier: Modifier = Modifier, viewModel: LoginViewModel = 
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 25.dp),
-                value = viewModel.email.value,
-                onValueChange = { viewModel.email.value = it.trim() },
+                value = state.email,
+                onValueChange = { viewModel.onEmailInput(it.trim()) },
                 label = "Correo electrónico",
                 icon = Icons.Default.Email,
                 keyboardType = KeyboardType.Email,
-                errorMsg = viewModel.emailErrorMsg.value,
+                errorMsg = state.emailErrorMsg,
                 onValidateData = {viewModel.validateEmail()}
             )
             DefaultTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 25.dp),
-                value = viewModel.password.value,
-                onValueChange = { viewModel.password.value = it.trim() },
+                value = state.password,
+                onValueChange = { viewModel.onPasswordInput(it.trim()) },
                 label = "Contraseña",
                 icon = Icons.Default.Email,
                 hideText = true,
-                errorMsg = viewModel.passwordErrorMsg.value,
+                errorMsg = state.passwordErrorMsg,
                 onValidateData = {viewModel.validatePassword()}
             )
             DefaultButton(
                 modifier = Modifier.padding(horizontal = 28.dp, vertical = 28.dp),
                 text = "INICIAR SESIÓN",
-                enable = viewModel.isEnabledLoginButton.value,
+                enable = state.isEnabledLoginButton,
                 onClick = {
                     viewModel.login()
                 }
@@ -85,7 +87,7 @@ fun LogingFieldsCard(modifier: Modifier = Modifier, viewModel: LoginViewModel = 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun LogingFieldsCardPreview(){
-    MaasTheme() {
+    MaasTheme {
         LogingFieldsCard()
     }
 }

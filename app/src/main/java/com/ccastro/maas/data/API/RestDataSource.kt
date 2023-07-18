@@ -1,4 +1,4 @@
-package com.ccastro.maas.data.datasource
+package com.ccastro.maas.data.API
 
 import com.ccastro.maas.domain.model.UserCard
 import retrofit2.http.GET

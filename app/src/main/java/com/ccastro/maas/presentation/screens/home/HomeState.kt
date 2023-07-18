@@ -1,27 +1,46 @@
 package com.ccastro.maas.presentation.screens.home
 
+import android.app.Activity
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import com.ccastro.maas.domain.model.DialogContents
 import com.ccastro.maas.domain.model.StoppingPlace
 import com.ccastro.maas.domain.model.UserCard
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.gson.Gson
 
 
 data class HomeState(
 
-    var userCards: MutableState<List<UserCard>> = mutableStateOf(emptyList()),
+    val TAG: String = "MLOG",
+
+    var activity: Activity? = null,
+
+    val CODIGO_EN_SEGUNDO_PLANO: Int = 100,
+    var isPermission: Boolean = false,
+    var fusedLocationClient: FusedLocationProviderClient? = null,
+    var locationCallback: LocationCallback? = null,
+    var locationRequest: LocationRequest? = null,
+    var timeRequest: Long = 30000,
+
+    var userCards: List<UserCard> = emptyList(),
     var stopPlaces: MutableState<List<StoppingPlace>> = mutableStateOf(emptyList()),
 
-    var showDialog: MutableState<Boolean>  = mutableStateOf(false),
+    val gson: Gson = Gson(),
 
-    var titleDialog: String = "Eliminar tarjeta",
-    var textDialog: String = "Desea eliminar la tarjeta?\n",
+    var habilitarActualizarRutas: Boolean = true,
 
-    var confirmFunction: String = "",
+    var showDialog: Boolean = false,
+
+    var dialogContent: DialogContents? = null,
+
     var currentCardUser: UserCard = UserCard(),
 
     var lat: Double = 4.722557,
     var lon: Double = -74.131103,
-    var rad: Int = 150,
+    var rad: Int = 500,
 
 
     )
