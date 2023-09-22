@@ -4,7 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.ccastro.maas.presentation.screens.appPresentation.components.AppPresentationScreen
+import com.ccastro.maas.presentation.screens.appPresentation.AppPresentationScreen
 
 fun NavGraphBuilder.introduceNavGraph(navHostController: NavHostController) {
     navigation(

@@ -9,9 +9,9 @@ package com.ccastro.maas.domain.use_cases.auth
  */
 data class AuthUseCases (
 
-    val getCurrentUser: GetCurrentUser,
+    val singUp: SingUp,
     val login: Login,
     val logout: Logout,
-    val singUp: SingUp
+    val getCurrentUser: GetCurrentUser,
 
 )
