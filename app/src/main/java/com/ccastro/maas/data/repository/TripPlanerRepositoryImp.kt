@@ -1,7 +1,7 @@
 package com.ccastro.maas.data.repository
 
 import android.util.Log
-import com.ccastro.maas.data.API.RestTripDataSource
+import com.ccastro.maas.data.api.openTripPlaner.RestTripDataSource
 import com.ccastro.maas.domain.model.StoppingPlace
 import com.ccastro.maas.domain.repository.TripPlanerRepository
 import javax.inject.Inject

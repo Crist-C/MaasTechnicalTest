@@ -1,4 +1,4 @@
-package com.ccastro.maas.data.API
+package com.ccastro.maas.data.api.tullave
 
 import okhttp3.Interceptor
 import okhttp3.Response

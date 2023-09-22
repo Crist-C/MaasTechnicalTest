@@ -70,7 +70,9 @@ class SingupViewModel @Inject constructor(private val authUseCases: AuthUseCases
 
     fun validateUserName() {
         val totalPalabras = state.name.trim().split("\\s+".toRegex()).size
+
         Log.d("SingupViewModel", "totalPalabras : $totalPalabras")
+
         if(state.name.trim().split("\\s+".toRegex()).size >= 2){
             state.isNameValid = true
             state.nameErrorMsg = ""

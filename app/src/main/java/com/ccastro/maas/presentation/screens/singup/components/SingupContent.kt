@@ -40,7 +40,7 @@ fun SingupContent(navHostController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         LogoMaasComponent(modifier = Modifier.padding(bottom = 0.dp))
-        SingupFieldsCard(
+        SignUpFieldsCard(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 32.dp),
             navHostController = navHostController
         )
@@ -48,7 +48,7 @@ fun SingupContent(navHostController: NavHostController) {
 }
 
 @Composable
-fun SingupFieldsCard(
+fun SignUpFieldsCard(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
     viewModel: SingupViewModel = hiltViewModel(),

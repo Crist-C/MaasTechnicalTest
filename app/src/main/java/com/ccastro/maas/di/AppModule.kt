@@ -4,11 +4,11 @@ import UnsafeOkHttpClient
 import android.content.Context
 import androidx.room.Room
 import com.ccastro.maas.core.Constans.USERS
-import com.ccastro.maas.data.datasource.dao.UserCardDAO
-import com.ccastro.maas.data.API.AuthInterceptor
-import com.ccastro.maas.data.datasource.LocalDataSource
-import com.ccastro.maas.data.API.RestDataSource
-import com.ccastro.maas.data.API.RestTripDataSource
+import com.ccastro.maas.data.datasource.local.daos.UserCardDAO
+import com.ccastro.maas.data.api.tullave.AuthInterceptor
+import com.ccastro.maas.data.datasource.local.LocalDataSource
+import com.ccastro.maas.data.api.tullave.RestCardDataSource
+import com.ccastro.maas.data.api.openTripPlaner.RestTripDataSource
 import com.ccastro.maas.data.repository.AuthRepositoryImpl
 import com.ccastro.maas.data.repository.TripPlanerRepositoryImp
 import com.ccastro.maas.data.repository.UserCardRepositoryImpl
@@ -107,8 +107,8 @@ object AppModule {
     // Instancia de retrofit
     @Provides
     @Named("RestDataSourceTullave")
-    fun restDataSource(@Named("tullave") retrofit: Retrofit): RestDataSource =
-        retrofit.create(RestDataSource::class.java)
+    fun restDataSource(@Named("tullave") retrofit: Retrofit): RestCardDataSource =
+        retrofit.create(RestCardDataSource::class.java)
 
 
     //  RETROFIT: API TIPPLANNER DEPENDENCIES
@@ -166,7 +166,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun userCardDao(db: LocalDataSource): UserCardDAO = db.userCardDao()
+        fun userCardDao(db: LocalDataSource): UserCardDAO = db.userCardDao()
 
 
     //  APLICATION DEPENDENCIES
